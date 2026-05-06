@@ -6,23 +6,31 @@
 <title>Security Blog</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,700;0,9..40,800;1,9..40,400&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Lora:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap" rel="stylesheet">
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
   :root {
-    --bg: #0c0c0c;
-    --bg-card: #111111;
-    --bg-hover: #161616;
-    --border: #222222;
-    --border-light: #1a1a1a;
-    --text: #f0ede8;
-    --text-muted: #666;
-    --text-dim: #444;
-    --accent: #e8541a;
-    --accent-hover: #ff6b30;
-    --tag-border: #2a2a2a;
-    --tag-text: #777;
+    --bg:        #1a1208;
+    --bg2:       #221a0a;
+    --bg3:       #2a2010;
+    --gold:      #d4a017;
+    --gold2:     #e8b820;
+    --amber:     #c8820a;
+    --green:     #2d5a1b;
+    --green2:    #3d7a2b;
+    --green3:    #4e9438;
+    --teal:      #1e6b5a;
+    --red:       #8b1a0a;
+    --red2:      #b52a10;
+    --cream:     #f0e8c8;
+    --cream2:    #e8ddb0;
+    --cream3:    #d4c890;
+    --text:      #f0e8c8;
+    --text-dim:  #a09060;
+    --text-mute: #706040;
+    --outline:   #0a0806;
+    --border:    #3a2e18;
   }
 
   html { scroll-behavior: smooth; }
@@ -30,289 +38,336 @@
   body {
     background: var(--bg);
     color: var(--text);
-    font-family: 'DM Sans', sans-serif;
+    font-family: 'Lora', Georgia, serif;
     font-size: 15px;
-    line-height: 1.6;
+    line-height: 1.7;
     min-height: 100vh;
     -webkit-font-smoothing: antialiased;
+    /* Subtle canvas/impasto texture overlay */
+    background-image:
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='400'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='400' height='400' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
   }
 
   /* PAGE TRANSITIONS */
-  .page {
-    animation: fadeUp 0.35s ease both;
-  }
-  @keyframes fadeUp {
-    from { opacity: 0; transform: translateY(14px); }
-    to { opacity: 1; transform: translateY(0); }
+  .page { animation: emerge 0.5s cubic-bezier(0.22, 1, 0.36, 1) both; }
+  @keyframes emerge {
+    from { opacity: 0; transform: translateY(20px) scale(0.99); }
+    to   { opacity: 1; transform: translateY(0) scale(1); }
   }
 
-  /* HEADER */
+  /* SWIRL DECORATIVE SVG pattern — used as repeating bg in header/hero */
+  .swirl-bg {
+    background-color: var(--bg2);
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Ccircle cx='20' cy='20' r='6' fill='none' stroke='%23d4a01722' stroke-width='1.5'/%3E%3Ccircle cx='20' cy='20' r='12' fill='none' stroke='%23d4a01715' stroke-width='1'/%3E%3Ccircle cx='60' cy='60' r='8' fill='none' stroke='%232d5a1b22' stroke-width='1.5'/%3E%3Ccircle cx='60' cy='60' r='16' fill='none' stroke='%232d5a1b15' stroke-width='1'/%3E%3Ccircle cx='100' cy='20' r='5' fill='none' stroke='%23d4a01718' stroke-width='1.2'/%3E%3Ccircle cx='20' cy='100' r='7' fill='none' stroke='%232d5a1b18' stroke-width='1.2'/%3E%3Ccircle cx='100' cy='100' r='9' fill='none' stroke='%23d4a01720' stroke-width='1.5'/%3E%3C/svg%3E");
+  }
+
+  /* ===== HEADER ===== */
   .site-header {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 22px 48px;
-    border-bottom: 1px solid var(--border);
+    padding: 20px 48px;
+    border-bottom: 3px solid var(--outline);
+    box-shadow: 0 3px 0 var(--gold), 0 6px 0 var(--outline);
     position: sticky;
     top: 0;
-    background: rgba(12,12,12,0.92);
-    backdrop-filter: blur(12px);
     z-index: 100;
+    background: var(--bg2);
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80'%3E%3Ccircle cx='10' cy='10' r='4' fill='none' stroke='%23d4a01720' stroke-width='1'/%3E%3Ccircle cx='40' cy='40' r='6' fill='none' stroke='%232d5a1b20' stroke-width='1'/%3E%3Ccircle cx='70' cy='10' r='3' fill='none' stroke='%23d4a01718' stroke-width='1'/%3E%3Ccircle cx='10' cy='70' r='5' fill='none' stroke='%232d5a1b18' stroke-width='1'/%3E%3C/svg%3E");
   }
 
   .site-logo {
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 12px;
     cursor: pointer;
     text-decoration: none;
     color: var(--text);
   }
 
-  .logo-mark {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 3px;
-    width: 24px;
-    height: 24px;
+  .logo-bloom {
+    width: 36px;
+    height: 36px;
+    flex-shrink: 0;
   }
-
-  .logo-mark span {
-    border-radius: 2px;
-    display: block;
-  }
-  .logo-mark span:nth-child(1) { background: #FF7262; border-radius: 3px 3px 3px 3px; }
-  .logo-mark span:nth-child(2) { background: #A259FF; border-radius: 50%; }
-  .logo-mark span:nth-child(3) { background: #0ACF83; border-radius: 50%; }
-  .logo-mark span:nth-child(4) { background: #1ABCFE; border-radius: 3px; }
 
   .logo-text {
-    font-size: 14px;
+    font-family: 'Playfair Display', serif;
+    font-size: 17px;
     font-weight: 700;
-    letter-spacing: -0.01em;
+    letter-spacing: 0.01em;
+    line-height: 1.1;
+    color: var(--cream);
   }
+
   .logo-text em {
-    font-style: normal;
-    color: var(--text-muted);
+    display: block;
+    font-style: italic;
     font-weight: 400;
-    margin-left: 4px;
+    font-size: 12px;
+    color: var(--gold);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
   }
 
   .header-tags {
     display: flex;
-    gap: 6px;
+    gap: 8px;
   }
 
   .header-tag {
+    font-family: 'Lora', serif;
     font-size: 11px;
     font-weight: 600;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-    color: var(--text-muted);
-    padding: 5px 12px;
-    border: 1px solid var(--tag-border);
-    border-radius: 100px;
+    font-style: italic;
+    color: var(--text-dim);
+    padding: 6px 14px;
+    border: 2px solid var(--border);
+    border-radius: 3px;
     cursor: pointer;
-    transition: color 0.15s, border-color 0.15s;
+    transition: all 0.2s;
     background: none;
-    font-family: inherit;
+    position: relative;
+  }
+
+  .header-tag::after {
+    content: '';
+    position: absolute;
+    inset: 1px;
+    border: 1px solid transparent;
+    border-radius: 1px;
+    transition: border-color 0.2s;
   }
 
   .header-tag:hover, .header-tag.active {
-    color: var(--text);
-    border-color: #444;
+    color: var(--cream);
+    border-color: var(--gold);
+    background: rgba(212,160,23,0.1);
   }
 
-  /* HERO SECTION */
+  .header-tag:hover::after, .header-tag.active::after {
+    border-color: rgba(212,160,23,0.3);
+  }
+
+  /* ===== HERO ===== */
   .hero {
-    padding: 72px 48px 56px;
-    border-bottom: 1px solid var(--border);
+    padding: 80px 48px 64px;
+    border-bottom: 3px solid var(--outline);
+    box-shadow: 0 3px 0 var(--gold);
     display: flex;
     align-items: flex-end;
     justify-content: space-between;
     gap: 48px;
+    position: relative;
+    overflow: hidden;
   }
 
-  .hero-left {}
+  /* Swirling background flowers */
+  .hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Ccircle cx='30' cy='30' r='10' fill='none' stroke='%23d4a01712' stroke-width='2'/%3E%3Ccircle cx='30' cy='30' r='20' fill='none' stroke='%23d4a01708' stroke-width='1.5'/%3E%3Ccircle cx='100' cy='100' r='14' fill='none' stroke='%232d5a1b12' stroke-width='2'/%3E%3Ccircle cx='100' cy='100' r='26' fill='none' stroke='%232d5a1b08' stroke-width='1.5'/%3E%3Ccircle cx='170' cy='30' r='8' fill='none' stroke='%23d4a01710' stroke-width='1.5'/%3E%3Ccircle cx='30' cy='170' r='12' fill='none' stroke='%232d5a1b10' stroke-width='2'/%3E%3Ccircle cx='170' cy='170' r='16' fill='none' stroke='%23d4a01710' stroke-width='2'/%3E%3C/svg%3E");
+    opacity: 1;
+    pointer-events: none;
+  }
+
+  .hero-left { position: relative; z-index: 1; }
 
   .hero-eyebrow {
+    font-family: 'Lora', serif;
     font-size: 11px;
-    font-weight: 600;
-    letter-spacing: 0.1em;
+    font-style: italic;
+    font-weight: 500;
+    letter-spacing: 0.12em;
     text-transform: uppercase;
-    color: var(--text-muted);
+    color: var(--gold);
     margin-bottom: 20px;
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 12px;
   }
 
   .hero-eyebrow::before {
     content: '';
     display: block;
-    width: 24px;
-    height: 1px;
-    background: var(--text-muted);
+    width: 28px;
+    height: 2px;
+    background: var(--gold);
+    border-radius: 1px;
   }
 
   .hero-title {
-    font-family: 'DM Serif Display', serif;
-    font-size: 62px;
-    font-weight: 400;
-    letter-spacing: -0.03em;
-    line-height: 1.0;
-    max-width: 520px;
-    color: var(--text);
+    font-family: 'Playfair Display', serif;
+    font-size: 68px;
+    font-weight: 900;
+    letter-spacing: -0.02em;
+    line-height: 0.95;
+    color: var(--cream);
+    text-shadow: 3px 3px 0 var(--outline), 4px 4px 0 rgba(0,0,0,0.4);
   }
 
   .hero-title em {
     font-style: italic;
-    color: var(--accent);
+    color: var(--gold2);
+    display: block;
   }
 
   .hero-right {
-    max-width: 280px;
+    max-width: 260px;
     flex-shrink: 0;
+    position: relative;
+    z-index: 1;
   }
 
   .hero-desc {
+    font-family: 'Lora', serif;
     font-size: 14px;
-    color: var(--text-muted);
-    line-height: 1.7;
-    margin-bottom: 20px;
-  }
-
-  .hero-stat {
-    font-size: 11px;
-    font-weight: 600;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
+    font-style: italic;
     color: var(--text-dim);
+    line-height: 1.75;
+    margin-bottom: 24px;
+    border-left: 3px solid var(--gold);
+    padding-left: 16px;
   }
 
   .hero-stat strong {
-    color: var(--text);
-    font-size: 22px;
-    font-weight: 800;
+    font-family: 'Playfair Display', serif;
+    color: var(--cream);
+    font-size: 36px;
+    font-weight: 900;
     display: block;
     letter-spacing: -0.02em;
-    margin-bottom: 2px;
+    text-shadow: 2px 2px 0 var(--outline);
   }
 
-  /* FILTER BAR */
+  .hero-stat span {
+    font-size: 11px;
+    font-style: italic;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--text-mute);
+  }
+
+  /* ===== FILTER BAR ===== */
   .filter-bar {
     display: flex;
     align-items: center;
     gap: 8px;
-    padding: 18px 48px;
-    border-bottom: 1px solid var(--border);
+    padding: 16px 48px;
+    border-bottom: 3px solid var(--outline);
+    box-shadow: 0 3px 0 var(--green);
+    background: var(--bg3);
     overflow-x: auto;
   }
 
   .filter-label {
-    font-size: 11px;
+    font-size: 10px;
+    font-style: italic;
     font-weight: 600;
-    letter-spacing: 0.08em;
+    letter-spacing: 0.1em;
     text-transform: uppercase;
-    color: var(--text-dim);
-    margin-right: 6px;
+    color: var(--text-mute);
+    margin-right: 4px;
     white-space: nowrap;
   }
 
   .filter-btn {
+    font-family: 'Lora', serif;
     font-size: 11px;
-    font-weight: 600;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-    color: var(--text-muted);
-    padding: 5px 13px;
-    border: 1px solid var(--tag-border);
-    border-radius: 100px;
+    font-style: italic;
+    color: var(--text-dim);
+    padding: 5px 14px;
+    border: 2px solid var(--border);
+    border-radius: 2px;
     cursor: pointer;
-    transition: all 0.15s;
+    transition: all 0.2s;
     background: none;
-    font-family: inherit;
     white-space: nowrap;
   }
 
-  .filter-btn:hover { color: var(--text); border-color: #444; }
-  .filter-btn.active { color: var(--bg); background: var(--text); border-color: var(--text); }
+  .filter-btn:hover { color: var(--cream); border-color: var(--green3); }
+  .filter-btn.active { color: var(--bg); background: var(--green3); border-color: var(--green3); font-style: normal; font-weight: 600; }
 
-  /* BLOG GRID */
+  /* ===== BLOG GRID ===== */
   .blog-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
   }
 
   .blog-card {
-    border-right: 1px solid var(--border);
-    border-bottom: 1px solid var(--border);
+    border-right: 3px solid var(--outline);
+    border-bottom: 3px solid var(--outline);
+    box-shadow: inset -1px 0 0 var(--border), inset 0 -1px 0 var(--border);
     cursor: pointer;
-    transition: background 0.2s;
+    transition: background 0.25s;
     position: relative;
+    background: var(--bg);
   }
 
   .blog-card:nth-child(3n) { border-right: none; }
+  .blog-card:hover { background: var(--bg3); }
 
-  .blog-card:hover { background: var(--bg-hover); }
-
+  /* featured accent — warm amber/gold instead of orange */
   .blog-card.featured::after {
     content: '';
     position: absolute;
     inset: 0;
-    border: 2px solid var(--accent);
+    border: 3px solid var(--gold2);
+    box-shadow: 0 0 0 1px var(--outline), inset 0 0 0 1px var(--outline);
     pointer-events: none;
+    z-index: 2;
   }
 
   .card-thumb {
     width: 100%;
     aspect-ratio: 16/9;
     overflow: hidden;
+    border-bottom: 3px solid var(--outline);
   }
 
   .card-thumb svg {
     width: 100%;
     height: 100%;
     display: block;
-    transition: transform 0.4s ease;
+    transition: transform 0.5s cubic-bezier(0.22,1,0.36,1);
   }
 
-  .blog-card:hover .card-thumb svg {
-    transform: scale(1.03);
-  }
+  .blog-card:hover .card-thumb svg { transform: scale(1.04); }
 
-  .card-body {
-    padding: 22px 26px 26px;
-  }
+  .card-body { padding: 22px 26px 28px; }
 
   .card-date {
-    font-size: 12px;
-    color: var(--text-dim);
-    font-weight: 500;
+    font-size: 11px;
+    font-style: italic;
+    color: var(--text-mute);
     margin-bottom: 10px;
+    letter-spacing: 0.04em;
   }
 
   .card-title {
-    font-family: 'DM Sans', sans-serif;
-    font-size: 19px;
-    font-weight: 800;
-    letter-spacing: -0.025em;
+    font-family: 'Playfair Display', serif;
+    font-size: 20px;
+    font-weight: 700;
     line-height: 1.2;
-    color: var(--text);
+    color: var(--cream);
     margin-bottom: 10px;
+    text-shadow: 1px 1px 0 var(--outline);
   }
 
   .card-author {
-    font-size: 13px;
-    font-weight: 700;
-    color: var(--text);
+    font-size: 12px;
+    font-style: italic;
+    font-weight: 600;
+    color: var(--gold);
     margin-bottom: 11px;
+    letter-spacing: 0.02em;
   }
 
   .card-excerpt {
     font-size: 13px;
-    color: var(--text-muted);
-    line-height: 1.65;
+    color: var(--text-dim);
+    line-height: 1.7;
     margin-bottom: 18px;
     display: -webkit-box;
     -webkit-line-clamp: 3;
@@ -324,23 +379,23 @@
     display: flex;
     gap: 6px;
     flex-wrap: wrap;
-    align-items: center;
   }
 
   .tag {
+    font-family: 'Lora', serif;
     font-size: 10px;
-    font-weight: 600;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    border: 1px solid var(--tag-border);
-    color: var(--tag-text);
-    padding: 4px 10px;
-    border-radius: 100px;
+    font-style: italic;
+    font-weight: 500;
+    letter-spacing: 0.06em;
+    border: 2px solid var(--border);
+    color: var(--text-mute);
+    padding: 3px 10px;
+    border-radius: 2px;
   }
 
-  /* ARTICLE PAGE */
+  /* ===== ARTICLE PAGE ===== */
   .article-page {
-    max-width: 720px;
+    max-width: 740px;
     margin: 0 auto;
     padding: 64px 48px 120px;
   }
@@ -349,21 +404,21 @@
     display: inline-flex;
     align-items: center;
     gap: 8px;
+    font-family: 'Lora', serif;
     font-size: 12px;
+    font-style: italic;
     font-weight: 600;
     letter-spacing: 0.06em;
-    text-transform: uppercase;
-    color: var(--text-muted);
+    color: var(--text-mute);
     cursor: pointer;
-    margin-bottom: 48px;
+    margin-bottom: 52px;
     transition: color 0.15s;
     background: none;
     border: none;
-    font-family: inherit;
     padding: 0;
   }
 
-  .back-btn:hover { color: var(--text); }
+  .back-btn:hover { color: var(--gold); }
 
   .back-btn svg {
     width: 16px;
@@ -371,7 +426,7 @@
     transition: transform 0.15s;
   }
 
-  .back-btn:hover svg { transform: translateX(-3px); }
+  .back-btn:hover svg { transform: translateX(-4px); }
 
   .article-eyebrow {
     display: flex;
@@ -382,10 +437,12 @@
 
   .article-hero-thumb {
     width: 100%;
-    border-radius: 4px;
+    border-radius: 2px;
     overflow: hidden;
-    margin-bottom: 48px;
+    margin-bottom: 52px;
     aspect-ratio: 16/8;
+    border: 3px solid var(--outline);
+    box-shadow: 4px 4px 0 var(--outline), 6px 6px 0 rgba(0,0,0,0.3);
   }
 
   .article-hero-thumb svg {
@@ -395,13 +452,14 @@
   }
 
   .article-title {
-    font-family: 'DM Serif Display', serif;
-    font-size: 46px;
-    font-weight: 400;
-    letter-spacing: -0.025em;
-    line-height: 1.1;
-    color: var(--text);
-    margin-bottom: 24px;
+    font-family: 'Playfair Display', serif;
+    font-size: 50px;
+    font-weight: 900;
+    letter-spacing: -0.02em;
+    line-height: 1.05;
+    color: var(--cream);
+    margin-bottom: 28px;
+    text-shadow: 3px 3px 0 var(--outline);
   }
 
   .article-meta {
@@ -409,97 +467,112 @@
     align-items: center;
     gap: 20px;
     padding: 20px 0;
-    border-top: 1px solid var(--border);
-    border-bottom: 1px solid var(--border);
-    margin-bottom: 48px;
+    border-top: 3px solid var(--outline);
+    border-bottom: 3px solid var(--outline);
+    box-shadow: 0 -1px 0 var(--gold), 0 3px 0 var(--gold);
+    margin-bottom: 52px;
   }
 
   .meta-author {
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 12px;
   }
 
   .author-avatar {
-    width: 36px;
-    height: 36px;
-    border-radius: 50%;
+    width: 38px;
+    height: 38px;
+    border-radius: 2px;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 12px;
+    font-family: 'Playfair Display', serif;
+    font-size: 13px;
     font-weight: 700;
-    background: #222;
-    color: var(--text-muted);
+    background: var(--green);
+    color: var(--cream);
+    border: 2px solid var(--outline);
+    box-shadow: 2px 2px 0 var(--outline);
     flex-shrink: 0;
   }
 
   .author-name {
+    font-family: 'Playfair Display', serif;
     font-size: 13px;
     font-weight: 700;
-    color: var(--text);
+    color: var(--cream);
   }
 
   .author-role {
-    font-size: 12px;
-    color: var(--text-muted);
+    font-size: 11px;
+    font-style: italic;
+    color: var(--text-mute);
   }
 
   .meta-sep {
-    width: 1px;
+    width: 2px;
     height: 32px;
     background: var(--border);
   }
 
   .meta-info {
-    font-size: 12px;
-    color: var(--text-muted);
+    font-size: 11px;
+    font-style: italic;
+    color: var(--text-mute);
   }
 
   .meta-info strong {
     display: block;
-    color: var(--text);
+    font-family: 'Playfair Display', serif;
+    font-style: normal;
+    color: var(--cream);
     font-size: 13px;
+    font-weight: 700;
   }
 
   /* Article body */
-  .article-body { color: #c8c4be; font-size: 16px; line-height: 1.8; }
+  .article-body {
+    color: var(--cream2);
+    font-size: 16px;
+    line-height: 1.85;
+  }
 
   .article-body p { margin-bottom: 1.5em; }
 
   .article-body h2 {
-    font-family: 'DM Sans', sans-serif;
-    font-size: 22px;
-    font-weight: 800;
-    letter-spacing: -0.02em;
-    color: var(--text);
+    font-family: 'Playfair Display', serif;
+    font-size: 26px;
+    font-weight: 700;
+    color: var(--cream);
     margin: 2.5em 0 0.8em;
-    line-height: 1.3;
+    line-height: 1.2;
+    text-shadow: 2px 2px 0 var(--outline);
   }
 
   .article-body h3 {
-    font-family: 'DM Sans', sans-serif;
-    font-size: 17px;
+    font-family: 'Playfair Display', serif;
+    font-size: 18px;
     font-weight: 700;
-    color: var(--text);
+    color: var(--cream);
     margin: 2em 0 0.6em;
   }
 
   .article-body code {
     font-family: 'Courier New', monospace;
     font-size: 13px;
-    background: #161616;
-    border: 1px solid var(--border);
+    background: var(--bg3);
+    border: 2px solid var(--border);
     padding: 2px 7px;
-    border-radius: 4px;
-    color: #a8c4a0;
+    border-radius: 2px;
+    color: var(--green3);
   }
 
   .article-body pre {
-    background: #0f0f0f;
-    border: 1px solid var(--border);
-    border-radius: 6px;
-    padding: 20px 24px;
+    background: var(--bg2);
+    border: 3px solid var(--outline);
+    box-shadow: 3px 3px 0 var(--outline);
+    border-radius: 2px;
+    padding: 22px 26px;
     overflow-x: auto;
     margin: 1.5em 0;
   }
@@ -510,16 +583,18 @@
     padding: 0;
     font-size: 13px;
     line-height: 1.7;
-    color: #c8c4be;
+    color: var(--cream2);
   }
 
   .article-body blockquote {
-    border-left: 2px solid var(--accent);
-    padding-left: 20px;
+    border-left: 4px solid var(--gold);
+    padding: 4px 0 4px 22px;
     margin: 2em 0;
-    color: var(--text-muted);
+    color: var(--text-dim);
     font-style: italic;
-    font-size: 18px;
+    font-size: 19px;
+    font-family: 'Playfair Display', serif;
+    line-height: 1.5;
   }
 
   .article-body ul, .article-body ol {
@@ -528,89 +603,109 @@
   }
 
   .article-body li { margin-bottom: 0.5em; }
-
-  .article-body a { color: var(--accent); text-decoration: none; }
+  .article-body a { color: var(--gold); text-decoration: none; }
   .article-body a:hover { text-decoration: underline; }
 
   .reading-time {
-    display: inline-block;
     font-size: 11px;
-    font-weight: 600;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    color: var(--text-dim);
+    font-style: italic;
+    letter-spacing: 0.06em;
+    color: var(--text-mute);
   }
 
-  /* MORE POSTS */
+  /* ===== MORE POSTS ===== */
   .more-posts {
-    border-top: 1px solid var(--border);
+    border-top: 3px solid var(--outline);
+    box-shadow: 0 -1px 0 var(--green);
     padding: 64px 48px;
   }
 
   .more-posts-label {
-    font-size: 11px;
-    font-weight: 600;
+    font-family: 'Playfair Display', serif;
+    font-size: 12px;
+    font-style: italic;
     letter-spacing: 0.1em;
     text-transform: uppercase;
-    color: var(--text-dim);
+    color: var(--text-mute);
     margin-bottom: 32px;
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 12px;
   }
 
   .more-posts-label::after {
     content: '';
     flex: 1;
-    height: 1px;
+    height: 2px;
     background: var(--border);
   }
 
   .more-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 0;
   }
 
-  /* FOOTER */
+  /* ===== FOOTER ===== */
   .site-footer {
-    border-top: 1px solid var(--border);
+    border-top: 3px solid var(--outline);
+    box-shadow: 0 -1px 0 var(--gold);
     padding: 28px 48px;
     display: flex;
     align-items: center;
     justify-content: space-between;
+    background: var(--bg2);
   }
 
   .footer-copy {
     font-size: 12px;
-    color: var(--text-dim);
+    font-style: italic;
+    color: var(--text-mute);
   }
 
-  .footer-links {
-    display: flex;
-    gap: 20px;
-  }
+  .footer-links { display: flex; gap: 20px; }
 
   .footer-links a {
     font-size: 12px;
-    color: var(--text-dim);
+    font-style: italic;
+    color: var(--text-mute);
     text-decoration: none;
     transition: color 0.15s;
   }
 
-  .footer-links a:hover { color: var(--text-muted); }
+  .footer-links a:hover { color: var(--gold); }
 
+  /* Decorative divider flower */
+  .bloom-divider {
+    display: flex;
+    justify-content: center;
+    padding: 10px 0;
+    opacity: 0.4;
+  }
 </style>
 </head>
 <body>
 
-<!-- ==================== HEADER ==================== -->
+<!-- ===== HEADER ===== -->
 <header class="site-header">
   <a class="site-logo" onclick="showListing()">
-    <div class="logo-mark">
-      <span></span><span></span><span></span><span></span>
-    </div>
-    <span class="logo-text">Security <em>Blog</em></span>
+    <!-- Van Gogh-style bloom logo mark -->
+    <svg class="logo-bloom" viewBox="0 0 36 36" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="18" cy="18" r="6" fill="#d4a017" stroke="#0a0806" stroke-width="1.5"/>
+      <ellipse cx="18" cy="6" rx="4" ry="7" fill="#f0e8c8" stroke="#0a0806" stroke-width="1.2"/>
+      <ellipse cx="18" cy="30" rx="4" ry="7" fill="#e8ddb0" stroke="#0a0806" stroke-width="1.2"/>
+      <ellipse cx="6" cy="18" rx="7" ry="4" fill="#f0e8c8" stroke="#0a0806" stroke-width="1.2"/>
+      <ellipse cx="30" cy="18" rx="7" ry="4" fill="#e8ddb0" stroke="#0a0806" stroke-width="1.2"/>
+      <ellipse cx="9.5" cy="9.5" rx="4" ry="6" fill="#d4c890" stroke="#0a0806" stroke-width="1" transform="rotate(-45 9.5 9.5)"/>
+      <ellipse cx="26.5" cy="9.5" rx="4" ry="6" fill="#f0e8c8" stroke="#0a0806" stroke-width="1" transform="rotate(45 26.5 9.5)"/>
+      <ellipse cx="9.5" cy="26.5" rx="4" ry="6" fill="#f0e8c8" stroke="#0a0806" stroke-width="1" transform="rotate(45 9.5 26.5)"/>
+      <ellipse cx="26.5" cy="26.5" rx="4" ry="6" fill="#d4c890" stroke="#0a0806" stroke-width="1" transform="rotate(-45 26.5 26.5)"/>
+      <circle cx="18" cy="18" r="5" fill="#e8b820" stroke="#0a0806" stroke-width="1.5"/>
+      <circle cx="18" cy="18" r="2.5" fill="#0a0806"/>
+    </svg>
+    <span class="logo-text">
+      Ysf
+      <em>Field Notes</em>
+    </span>
   </a>
   <div class="header-tags">
     <button class="header-tag active" onclick="filterPosts('all', this)">All</button>
@@ -620,19 +715,19 @@
   </div>
 </header>
 
-<!-- ==================== LISTING PAGE ==================== -->
+<!-- ===== LISTING PAGE ===== -->
 <div id="listing-page" class="page">
 
-  <section class="hero">
+  <section class="hero swirl-bg">
     <div class="hero-left">
       <p class="hero-eyebrow">Security Engineering</p>
-      <h1 class="hero-title">Building <em>trust,</em><br>at scale</h1>
+      <h1 class="hero-title">Building<br><em>trust,</em><br>at scale</h1>
     </div>
     <div class="hero-right">
-      <p class="hero-desc">How our security team protects infrastructure, enforces device trust, and shares what they learn with the world.</p>
+      <p class="hero-desc">Thinking out loud about security, infrastructure, and trust."</p>
       <div class="hero-stat">
         <strong id="post-count">6</strong>
-        Articles published
+        <span>Articles published</span>
       </div>
     </div>
   </section>
@@ -648,7 +743,7 @@
   <div class="blog-grid" id="blog-grid"></div>
 
   <footer class="site-footer">
-    <span class="footer-copy">© 2024 Security Blog</span>
+    <span class="footer-copy">© 2024 Security Field Notes</span>
     <div class="footer-links">
       <a href="#">RSS</a>
       <a href="#">Twitter</a>
@@ -658,47 +753,252 @@
 
 </div>
 
-<!-- ==================== ARTICLE PAGE ==================== -->
+<!-- ===== ARTICLE PAGE ===== -->
 <div id="article-page" style="display:none;"></div>
 
 <script>
+// Van Gogh–style SVG thumbs: thick outlines, swirling strokes, bold color
+const thumbs = [
+  // 1 — Enforcing device trust — envelope/mail theme, dark green + cream + gold
+  `<svg viewBox="0 0 800 450" xmlns="http://www.w3.org/2000/svg">
+    <rect width="800" height="450" fill="#1e3a1a"/>
+    <!-- swirling bg dots pattern -->
+    <circle cx="60" cy="60" r="14" fill="none" stroke="#d4a01730" stroke-width="3"/>
+    <circle cx="60" cy="60" r="26" fill="none" stroke="#d4a01718" stroke-width="2"/>
+    <circle cx="740" cy="60" r="12" fill="none" stroke="#f0e8c830" stroke-width="2.5"/>
+    <circle cx="740" cy="380" r="18" fill="none" stroke="#d4a01725" stroke-width="2.5"/>
+    <circle cx="60" cy="380" r="10" fill="none" stroke="#f0e8c820" stroke-width="2"/>
+    <!-- wavy green bg strokes -->
+    <path d="M0 200 Q100 170 200 200 Q300 230 400 200 Q500 170 600 200 Q700 230 800 200" stroke="#2d5a1b" stroke-width="28" fill="none" opacity="0.4"/>
+    <path d="M0 280 Q100 255 200 280 Q300 305 400 280 Q500 255 600 280 Q700 305 800 280" stroke="#2d5a1b" stroke-width="20" fill="none" opacity="0.3"/>
+    <!-- envelope body -->
+    <rect x="180" y="120" width="440" height="290" rx="6" fill="#f0e8c8" stroke="#0a0806" stroke-width="5"/>
+    <!-- envelope flap lines -->
+    <path d="M180 120 L400 270 L620 120" stroke="#0a0806" stroke-width="4.5" fill="none"/>
+    <path d="M180 410 L400 270 L620 410" stroke="#0a0806" stroke-width="3" fill="none" opacity="0.4"/>
+    <!-- seal dot -->
+    <circle cx="400" cy="275" r="22" fill="#d4a017" stroke="#0a0806" stroke-width="4"/>
+    <circle cx="400" cy="275" r="10" fill="#0a0806"/>
+    <!-- warning dot -->
+    <circle cx="540" cy="145" r="28" fill="#8b1a0a" stroke="#0a0806" stroke-width="4"/>
+    <text x="540" y="152" text-anchor="middle" fill="#f0e8c8" font-size="26" font-weight="900" font-family="Georgia">!</text>
+    <!-- small bloom top-left -->
+    <circle cx="90" cy="90" r="8" fill="#d4a017" stroke="#0a0806" stroke-width="2"/>
+    <ellipse cx="90" cy="72" rx="5" ry="9" fill="#f0e8c8" stroke="#0a0806" stroke-width="1.5"/>
+    <ellipse cx="90" cy="108" rx="5" ry="9" fill="#e8ddb0" stroke="#0a0806" stroke-width="1.5"/>
+    <ellipse cx="72" cy="90" rx="9" ry="5" fill="#f0e8c8" stroke="#0a0806" stroke-width="1.5"/>
+    <ellipse cx="108" cy="90" rx="9" ry="5" fill="#e8ddb0" stroke="#0a0806" stroke-width="1.5"/>
+  </svg>`,
+
+  // 2 — Containers & seccomp — tower/castle in orange warmth
+  `<svg viewBox="0 0 800 450" xmlns="http://www.w3.org/2000/svg">
+    <rect width="800" height="450" fill="#6b2a00"/>
+    <!-- swirling sky -->
+    <path d="M0 0 Q200 40 400 20 Q600 0 800 30 L800 0Z" fill="#8b3a00" opacity="0.7"/>
+    <path d="M0 60 Q150 30 300 55 Q450 80 600 50 Q700 35 800 60" stroke="#c85000" stroke-width="18" fill="none" opacity="0.5"/>
+    <path d="M0 100 Q200 75 400 95 Q600 115 800 90" stroke="#a84000" stroke-width="12" fill="none" opacity="0.4"/>
+    <!-- warm sun/glow -->
+    <circle cx="400" cy="90" r="55" fill="#e88000" stroke="#0a0806" stroke-width="4" opacity="0.9"/>
+    <circle cx="400" cy="90" r="35" fill="#f0a000" stroke="#0a0806" stroke-width="3"/>
+    <circle cx="400" cy="90" r="15" fill="#ffe040" stroke="#0a0806" stroke-width="2"/>
+    <!-- castle tower -->
+    <rect x="300" y="180" width="200" height="240" fill="#1a0a00" stroke="#0a0806" stroke-width="5"/>
+    <!-- tower battlements -->
+    <rect x="290" y="165" width="40" height="35" fill="#1a0a00" stroke="#0a0806" stroke-width="4"/>
+    <rect x="345" y="155" width="40" height="45" fill="#1a0a00" stroke="#0a0806" stroke-width="4"/>
+    <rect x="415" y="165" width="40" height="35" fill="#1a0a00" stroke="#0a0806" stroke-width="4"/>
+    <rect x="460" y="155" width="40" height="45" fill="#1a0a00" stroke="#0a0806" stroke-width="4"/>
+    <!-- arched windows -->
+    <path d="M340 250 Q360 220 380 250 L380 310 L340 310Z" fill="#c85000" stroke="#0a0806" stroke-width="3.5"/>
+    <path d="M420 250 Q440 220 460 250 L460 310 L420 310Z" fill="#c85000" stroke="#0a0806" stroke-width="3.5"/>
+    <!-- central door arch -->
+    <path d="M365 380 Q400 330 435 380 L435 420 L365 420Z" fill="#0a0806" stroke="#0a0806" stroke-width="3"/>
+    <!-- legs / columns -->
+    <rect x="250" y="340" width="50" height="80" rx="4" fill="#c85000" stroke="#0a0806" stroke-width="4"/>
+    <rect x="500" y="340" width="50" height="80" rx="4" fill="#c85000" stroke="#0a0806" stroke-width="4"/>
+    <!-- bottom ground sweep -->
+    <path d="M0 390 Q400 360 800 390 L800 450 L0 450Z" fill="#3a1500" stroke="#0a0806" stroke-width="3"/>
+    <!-- bloom decoration right -->
+    <circle cx="680" cy="200" r="10" fill="#d4a017" stroke="#0a0806" stroke-width="2"/>
+    <ellipse cx="680" cy="180" rx="6" ry="11" fill="#f0e8c8" stroke="#0a0806" stroke-width="1.8"/>
+    <ellipse cx="680" cy="220" rx="6" ry="11" fill="#e8ddb0" stroke="#0a0806" stroke-width="1.8"/>
+    <ellipse cx="660" cy="200" rx="11" ry="6" fill="#f0e8c8" stroke="#0a0806" stroke-width="1.8"/>
+    <ellipse cx="700" cy="200" rx="11" ry="6" fill="#e8ddb0" stroke="#0a0806" stroke-width="1.8"/>
+  </svg>`,
+
+  // 3 — Sandboxing intro — blue/teal cityscape, swirling sky
+  `<svg viewBox="0 0 800 450" xmlns="http://www.w3.org/2000/svg">
+    <rect width="800" height="450" fill="#0d3040"/>
+    <!-- swirling night sky strokes -->
+    <path d="M0 80 Q120 50 240 75 Q360 100 480 70 Q600 40 720 65 Q760 72 800 60" stroke="#1a5070" stroke-width="22" fill="none" opacity="0.7"/>
+    <path d="M0 130 Q150 105 300 128 Q450 151 600 120 Q700 100 800 115" stroke="#155060" stroke-width="16" fill="none" opacity="0.5"/>
+    <path d="M0 50 Q200 20 400 45 Q600 70 800 40" stroke="#0d4060" stroke-width="30" fill="none" opacity="0.4"/>
+    <!-- stars -->
+    <circle cx="100" cy="55" r="3" fill="#f0e8c8" opacity="0.8"/>
+    <circle cx="250" cy="30" r="2" fill="#f0e8c8" opacity="0.7"/>
+    <circle cx="550" cy="45" r="3.5" fill="#f0e8c8" opacity="0.9"/>
+    <circle cx="700" cy="25" r="2.5" fill="#f0e8c8" opacity="0.75"/>
+    <circle cx="420" cy="15" r="2" fill="#f0e8c8" opacity="0.6"/>
+    <!-- teal ground -->
+    <rect x="0" y="340" width="800" height="110" fill="#1e6b5a" stroke="#0a0806" stroke-width="3"/>
+    <!-- buildings silhouette -->
+    <rect x="40" y="200" width="90" height="155" fill="#0d2030" stroke="#0a0806" stroke-width="3.5"/>
+    <rect x="55" y="170" width="60" height="40" fill="#0d2030" stroke="#0a0806" stroke-width="3"/>
+    <rect x="160" y="150" width="110" height="200" fill="#102535" stroke="#0a0806" stroke-width="3.5"/>
+    <rect x="175" y="120" width="80" height="40" fill="#102535" stroke="#0a0806" stroke-width="3"/>
+    <rect x="300" y="120" width="80" height="230" fill="#0d2030" stroke="#0a0806" stroke-width="3.5"/>
+    <rect x="310" y="90" width="60" height="40" fill="#0d2030" stroke="#0a0806" stroke-width="3"/>
+    <rect x="410" y="160" width="100" height="190" fill="#112030" stroke="#0a0806" stroke-width="3.5"/>
+    <rect x="540" y="140" width="120" height="210" fill="#0d2535" stroke="#0a0806" stroke-width="3.5"/>
+    <rect x="555" y="110" width="90" height="40" fill="#0d2535" stroke="#0a0806" stroke-width="3"/>
+    <rect x="690" y="190" width="80" height="160" fill="#102030" stroke="#0a0806" stroke-width="3.5"/>
+    <!-- lit windows -->
+    <rect x="68" y="215" width="14" height="18" rx="2" fill="#d4a017" opacity="0.85"/>
+    <rect x="90" y="235" width="14" height="18" rx="2" fill="#c88000" opacity="0.7"/>
+    <rect x="180" y="170" width="16" height="20" rx="2" fill="#d4a017" opacity="0.8"/>
+    <rect x="210" y="195" width="16" height="20" rx="2" fill="#e8b820" opacity="0.75"/>
+    <rect x="180" y="230" width="16" height="20" rx="2" fill="#c88000" opacity="0.7"/>
+    <rect x="316" y="140" width="14" height="18" rx="2" fill="#d4a017" opacity="0.9"/>
+    <rect x="316" y="175" width="14" height="18" rx="2" fill="#c88000" opacity="0.7"/>
+    <rect x="425" y="185" width="16" height="20" rx="2" fill="#d4a017" opacity="0.8"/>
+    <rect x="555" y="155" width="16" height="20" rx="2" fill="#e8b820" opacity="0.85"/>
+    <rect x="585" y="175" width="16" height="20" rx="2" fill="#d4a017" opacity="0.75"/>
+    <rect x="555" y="210" width="16" height="20" rx="2" fill="#c88000" opacity="0.7"/>
+    <!-- moon -->
+    <circle cx="660" cy="70" r="30" fill="#f0e8c8" stroke="#0a0806" stroke-width="3"/>
+    <circle cx="676" cy="62" r="24" fill="#0d3040"/>
+  </svg>`,
+
+  // 4 — Zero trust — concentric rings, dark blue + gold nodes
+  `<svg viewBox="0 0 800 450" xmlns="http://www.w3.org/2000/svg">
+    <rect width="800" height="450" fill="#0d1a2a"/>
+    <!-- swirling strokes background -->
+    <path d="M0 225 Q100 190 200 225 Q300 260 400 225 Q500 190 600 225 Q700 260 800 225" stroke="#1a3a5a" stroke-width="30" fill="none" opacity="0.5"/>
+    <path d="M0 170 Q150 140 300 168 Q450 196 600 160 Q700 142 800 165" stroke="#152a44" stroke-width="20" fill="none" opacity="0.4"/>
+    <!-- concentric rings -->
+    <circle cx="400" cy="225" r="170" fill="none" stroke="#1e4a7a" stroke-width="38" opacity="0.7"/>
+    <circle cx="400" cy="225" r="110" fill="none" stroke="#1a3a5a" stroke-width="28" opacity="0.6"/>
+    <circle cx="400" cy="225" r="60" fill="#1a3060" stroke="#0a0806" stroke-width="4"/>
+    <circle cx="400" cy="225" r="28" fill="#2a5090" stroke="#0a0806" stroke-width="3.5"/>
+    <circle cx="400" cy="225" r="10" fill="#d4a017" stroke="#0a0806" stroke-width="2.5"/>
+    <!-- spokes + nodes -->
+    <line x1="400" y1="55" x2="400" y2="165" stroke="#3a6aaa" stroke-width="4"/>
+    <line x1="400" y1="285" x2="400" y2="390" stroke="#3a6aaa" stroke-width="4"/>
+    <line x1="230" y1="225" x2="340" y2="225" stroke="#3a6aaa" stroke-width="4"/>
+    <line x1="460" y1="225" x2="570" y2="225" stroke="#3a6aaa" stroke-width="4"/>
+    <line x1="279" y1="104" x2="347" y2="172" stroke="#2a5a90" stroke-width="3"/>
+    <line x1="521" y1="104" x2="453" y2="172" stroke="#2a5a90" stroke-width="3"/>
+    <line x1="279" y1="346" x2="347" y2="278" stroke="#2a5a90" stroke-width="3"/>
+    <line x1="521" y1="346" x2="453" y2="278" stroke="#2a5a90" stroke-width="3"/>
+    <!-- outer nodes -->
+    <circle cx="400" cy="55" r="16" fill="#4a8acc" stroke="#0a0806" stroke-width="3"/>
+    <circle cx="400" cy="395" r="16" fill="#4a8acc" stroke="#0a0806" stroke-width="3"/>
+    <circle cx="230" cy="225" r="16" fill="#4a8acc" stroke="#0a0806" stroke-width="3"/>
+    <circle cx="570" cy="225" r="16" fill="#4a8acc" stroke="#0a0806" stroke-width="3"/>
+    <circle cx="269" cy="94" r="12" fill="#3a7ab0" stroke="#0a0806" stroke-width="2.5"/>
+    <circle cx="531" cy="94" r="12" fill="#3a7ab0" stroke="#0a0806" stroke-width="2.5"/>
+    <circle cx="269" cy="356" r="12" fill="#3a7ab0" stroke="#0a0806" stroke-width="2.5"/>
+    <circle cx="531" cy="356" r="12" fill="#3a7ab0" stroke="#0a0806" stroke-width="2.5"/>
+  </svg>`,
+
+  // 5 — Static analysis — terminal/code, deep green
+  `<svg viewBox="0 0 800 450" xmlns="http://www.w3.org/2000/svg">
+    <rect width="800" height="450" fill="#0f1f0f"/>
+    <!-- swirling background -->
+    <path d="M0 150 Q200 120 400 150 Q600 180 800 150" stroke="#1a3a1a" stroke-width="35" fill="none" opacity="0.5"/>
+    <path d="M0 300 Q200 270 400 300 Q600 330 800 300" stroke="#152a15" stroke-width="25" fill="none" opacity="0.4"/>
+    <!-- terminal window -->
+    <rect x="80" y="80" width="640" height="310" rx="8" fill="#1a3a1a" stroke="#0a0806" stroke-width="5"/>
+    <rect x="80" y="80" width="640" height="48" rx="8" fill="#2a5a2a" stroke="#0a0806" stroke-width="5"/>
+    <!-- traffic lights -->
+    <circle cx="115" cy="104" r="10" fill="#8b1a0a" stroke="#0a0806" stroke-width="2"/>
+    <circle cx="145" cy="104" r="10" fill="#8b6a00" stroke="#0a0806" stroke-width="2"/>
+    <circle cx="175" cy="104" r="10" fill="#1a6b1a" stroke="#0a0806" stroke-width="2"/>
+    <!-- title bar text lines -->
+    <rect x="320" y="98" width="160" height="12" rx="3" fill="#3a7a3a" opacity="0.6"/>
+    <!-- code lines -->
+    <rect x="115" y="155" width="120" height="13" rx="2" fill="#4CAF50" opacity="0.9"/>
+    <rect x="245" y="155" width="200" height="13" rx="2" fill="#2d6a2d" opacity="0.7"/>
+    <rect x="135" y="180" width="80" height="11" rx="2" fill="#2d6a2d" opacity="0.6"/>
+    <rect x="225" y="180" width="160" height="11" rx="2" fill="#3a8a3a" opacity="0.65"/>
+    <rect x="395" y="180" width="100" height="11" rx="2" fill="#2d5a2d" opacity="0.5"/>
+    <rect x="135" y="203" width="220" height="11" rx="2" fill="#3a7a3a" opacity="0.7"/>
+    <rect x="365" y="203" width="80" height="11" rx="2" fill="#2d6a2d" opacity="0.55"/>
+    <rect x="135" y="226" width="140" height="11" rx="2" fill="#2d5a2d" opacity="0.6"/>
+    <rect x="285" y="226" width="180" height="11" rx="2" fill="#3a8a3a" opacity="0.65"/>
+    <rect x="115" y="258" width="90" height="11" rx="2" fill="#d4a017" opacity="0.8"/>
+    <rect x="215" y="258" width="140" height="11" rx="2" fill="#c88000" opacity="0.7"/>
+    <rect x="365" y="258" width="200" height="11" rx="2" fill="#a86000" opacity="0.6"/>
+    <rect x="135" y="281" width="260" height="11" rx="2" fill="#2d6a2d" opacity="0.6"/>
+    <rect x="135" y="304" width="180" height="11" rx="2" fill="#3a7a3a" opacity="0.65"/>
+    <rect x="325" y="304" width="100" height="11" rx="2" fill="#2d5a2d" opacity="0.5"/>
+    <!-- checkmark badge -->
+    <circle cx="630" cy="220" r="46" fill="#1a4a1a" stroke="#0a0806" stroke-width="4"/>
+    <circle cx="630" cy="220" r="34" fill="#2a6a2a" stroke="#0a0806" stroke-width="3"/>
+    <path d="M610 218 L624 234 L655 202" stroke="#4CAF50" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+    <!-- bloom bottom right -->
+    <circle cx="715" cy="385" r="9" fill="#d4a017" stroke="#0a0806" stroke-width="2"/>
+    <ellipse cx="715" cy="368" rx="5" ry="9" fill="#f0e8c8" stroke="#0a0806" stroke-width="1.5"/>
+    <ellipse cx="715" cy="402" rx="5" ry="9" fill="#e8ddb0" stroke="#0a0806" stroke-width="1.5"/>
+    <ellipse cx="698" cy="385" rx="9" ry="5" fill="#f0e8c8" stroke="#0a0806" stroke-width="1.5"/>
+    <ellipse cx="732" cy="385" rx="9" ry="5" fill="#e8ddb0" stroke="#0a0806" stroke-width="1.5"/>
+  </svg>`,
+
+  // 6 — Bug bounty — warm purple/violet, trophy/magnifier
+  `<svg viewBox="0 0 800 450" xmlns="http://www.w3.org/2000/svg">
+    <rect width="800" height="450" fill="#1e0a2a"/>
+    <!-- swirling violet sky -->
+    <path d="M0 180 Q200 140 400 175 Q600 210 800 170" stroke="#3a1a5a" stroke-width="32" fill="none" opacity="0.6"/>
+    <path d="M0 260 Q200 230 400 258 Q600 286 800 250" stroke="#2a1040" stroke-width="22" fill="none" opacity="0.5"/>
+    <path d="M0 100 Q300 70 600 95 Q700 103 800 90" stroke="#2a0a3a" stroke-width="40" fill="none" opacity="0.4"/>
+    <!-- clouds/blooms bg -->
+    <circle cx="130" cy="150" r="55" fill="#3a1a5a" opacity="0.45"/>
+    <circle cx="400" cy="120" r="75" fill="#4a2a6a" opacity="0.4"/>
+    <circle cx="660" cy="145" r="60" fill="#3a1a5a" opacity="0.45"/>
+    <!-- trophy cup -->
+    <rect x="340" y="230" width="120" height="30" rx="4" fill="#8a4ab0" stroke="#0a0806" stroke-width="4"/>
+    <rect x="370" y="260" width="60" height="55" rx="3" fill="#6a2a90" stroke="#0a0806" stroke-width="4"/>
+    <rect x="330" y="315" width="140" height="20" rx="4" fill="#7a3aa0" stroke="#0a0806" stroke-width="4"/>
+    <path d="M340 230 Q280 210 280 170 Q280 140 340 135" stroke="#8a4ab0" stroke-width="12" fill="none" stroke-linecap="round"/>
+    <path d="M460 230 Q520 210 520 170 Q520 140 460 135" stroke="#8a4ab0" stroke-width="12" fill="none" stroke-linecap="round"/>
+    <rect x="310" y="120" width="180" height="120" rx="20" fill="#7a3aa0" stroke="#0a0806" stroke-width="5"/>
+    <!-- star on trophy -->
+    <polygon points="400,140 410,165 437,165 416,180 424,207 400,191 376,207 384,180 363,165 390,165" fill="#d4a017" stroke="#0a0806" stroke-width="2.5"/>
+    <!-- magnifier -->
+    <circle cx="590" cy="310" r="55" fill="none" stroke="#9a5ac8" stroke-width="8"/>
+    <circle cx="590" cy="310" r="42" fill="none" stroke="#7a3aa0" stroke-width="4" opacity="0.5"/>
+    <line x1="630" y1="350" x2="668" y2="395" stroke="#9a5ac8" stroke-width="12" stroke-linecap="round"/>
+    <line x1="630" y1="350" x2="662" y2="388" stroke="#0a0806" stroke-width="7" stroke-linecap="round"/>
+    <!-- small bug inside magnifier -->
+    <ellipse cx="590" cy="308" rx="14" ry="10" fill="#8b1a0a" stroke="#0a0806" stroke-width="2"/>
+    <circle cx="590" cy="296" r="8" fill="#8b1a0a" stroke="#0a0806" stroke-width="2"/>
+    <line x1="580" y1="300" x2="568" y2="292" stroke="#0a0806" stroke-width="2"/>
+    <line x1="600" y1="300" x2="612" y2="292" stroke="#0a0806" stroke-width="2"/>
+    <!-- bloom top-left -->
+    <circle cx="120" cy="380" r="11" fill="#d4a017" stroke="#0a0806" stroke-width="2.5"/>
+    <ellipse cx="120" cy="360" rx="6" ry="11" fill="#f0e8c8" stroke="#0a0806" stroke-width="1.8"/>
+    <ellipse cx="120" cy="400" rx="6" ry="11" fill="#e8ddb0" stroke="#0a0806" stroke-width="1.8"/>
+    <ellipse cx="100" cy="380" rx="11" ry="6" fill="#f0e8c8" stroke="#0a0806" stroke-width="1.8"/>
+    <ellipse cx="140" cy="380" rx="11" ry="6" fill="#e8ddb0" stroke="#0a0806" stroke-width="1.8"/>
+  </svg>`
+];
+
 const posts = [
   {
     id: 1,
     title: "Enforcing device trust on code changes",
     date: "December 8, 2023",
-    author: "Yusuf Munir",
-    authorInitials: "GC",
+    author: "Yusuf M",
+    authorInitials: "YM",
     authorRole: "Security Engineer",
     tags: ["inside", "engineering", "security"],
     tagLabels: ["Inside", "Engineering", "Security"],
     excerpt: "Here's how the security engineering team leveraged commit signatures and Okta Device Trust certificates to protect GitHub release branches from unauthorized changes.",
     readTime: "8 min read",
     featured: false,
-    thumb: `<svg viewBox="0 0 800 450" xmlns="http://www.w3.org/2000/svg">
-      <rect width="800" height="450" fill="#7B4FE0"/>
-      <rect x="0" y="0" width="220" height="450" fill="#5B3AB0"/>
-      <rect x="580" y="0" width="220" height="450" fill="#5B3AB0"/>
-      <rect x="80" y="60" width="120" height="180" rx="6" fill="#9A70F8"/>
-      <rect x="95" y="75" width="90" height="130" rx="3" fill="#B89FFF"/>
-      <circle cx="140" cy="140" r="28" fill="#7B4FE0"/>
-      <rect x="118" y="133" width="44" height="14" rx="3" fill="#9A70F8"/>
-      <rect x="600" y="70" width="120" height="160" rx="6" fill="#9A70F8"/>
-      <rect x="615" y="85" width="90" height="115" rx="3" fill="#B89FFF"/>
-      <circle cx="660" cy="150" r="24" fill="#7B4FE0"/>
-      <rect x="240" y="100" width="320" height="220" rx="10" fill="#fff"/>
-      <rect x="265" y="130" width="160" height="14" rx="3" fill="#E8E0F5"/>
-      <rect x="265" y="155" width="120" height="10" rx="2" fill="#E8E0F5"/>
-      <rect x="265" y="173" width="145" height="10" rx="2" fill="#E8E0F5"/>
-      <rect x="265" y="191" width="100" height="10" rx="2" fill="#E8E0F5"/>
-      <circle cx="400" cy="270" r="20" fill="#FF6B6B"/>
-      <line x1="388" y1="270" x2="412" y2="270" stroke="#fff" stroke-width="3"/>
-      <line x1="148" y1="205" x2="240" y2="185" stroke="#C4A0FF" stroke-width="2"/>
-      <line x1="660" y1="195" x2="558" y2="185" stroke="#C4A0FF" stroke-width="2"/>
-    </svg>`,
+    thumb: thumbs[0],
     content: `
       <p>At our company, every code change that lands on a release branch must be trustworthy — not just from a code quality perspective, but from a device and identity perspective too. This post walks through how we built a system to enforce that trust at the commit level.</p>
-
       <h2>The problem with unsigned commits</h2>
       <p>By default, Git doesn't verify who actually authored a commit. Anyone with push access to a repository can set their git config to any name and email they want — including yours. For most development workflows, this isn't a concern. But on high-value branches like <code>main</code> and <code>release/*</code>, we need stronger guarantees.</p>
       <p>We wanted to ensure that every commit on a protected branch was:</p>
@@ -707,118 +1007,65 @@ const posts = [
         <li>Signed from a managed, trusted device</li>
         <li>Tamper-evident after the fact</li>
       </ul>
-
       <h2>Commit signatures with GPG</h2>
       <p>Git supports commit signing with GPG keys out of the box. When you run <code>git commit -S</code>, Git will sign the commit with your configured GPG key. GitHub renders a "Verified" badge on signed commits when the key is associated with your account.</p>
-      <p>This gives us tamper-evidence, but it doesn't directly tie the commit to a managed device. A developer could sign a commit from their personal laptop. We needed to go a step further.</p>
-
       <h2>Okta Device Trust as a signing root</h2>
-      <p>The key insight was using Okta Device Trust certificates as the root of trust for commit signing. When a device enrolls in our MDM, Okta issues a device certificate. We wrote a small helper that:</p>
-      <ol>
-        <li>Verifies the Okta device certificate is present and valid</li>
-        <li>Derives a per-developer GPG key, cosigned by the device cert</li>
-        <li>Registers that key with GitHub automatically</li>
-      </ol>
-
-      <pre><code># Check device cert presence before allowing commit
-#!/bin/bash
-security find-certificate -c "Okta Device Trust" \
+      <p>The key insight was using Okta Device Trust certificates as the root of trust for commit signing. When a device enrolls in our MDM, Okta issues a device certificate. We wrote a small helper that verifies the cert, derives a per-developer GPG key cosigned by the device cert, and registers that key with GitHub automatically.</p>
+      <pre><code>#!/bin/bash
+security find-certificate -c "Okta Device Trust" \\
   -a /Library/Keychains/System.keychain > /dev/null 2>&1
 if [ $? -ne 0 ]; then
   echo "ERROR: No valid device trust certificate found."
-  echo "Please enroll your device before committing."
   exit 1
 fi</code></pre>
-
       <h2>GitHub branch protection rules</h2>
       <p>With signing in place, we enabled branch protection rules on all release branches to require signed commits. GitHub will reject any push that contains unsigned commits, giving us a hard enforcement point even if a developer's local hooks are bypassed.</p>
-
       <blockquote>Enforce at the boundary, not just at the source. Local hooks can be skipped. Server-side rules cannot.</blockquote>
-
-      <h2>The developer experience</h2>
-      <p>The biggest risk with security controls is that they slow developers down and get bypassed. We put significant effort into making this seamless: onboarding is fully automated, re-enrollment triggers automatically on device changes, and the error messages are specific enough that developers can self-serve most issues.</p>
-      <p>After six months of running this in production, we've had zero bypass incidents and the p99 overhead for a commit operation is under 80ms. We consider that a success.</p>
-
       <h2>What's next</h2>
-      <p>We're currently exploring extending this to CI/CD pipeline steps, so that not just human commits but also automated commits from our release tooling carry the same device trust guarantees. Watch this space.</p>
+      <p>We're currently exploring extending this to CI/CD pipeline steps, so that not just human commits but also automated commits from our release tooling carry the same device trust guarantees.</p>
     `
   },
   {
     id: 2,
     title: "Server-side sandboxing: Containers and seccomp",
     date: "October 24, 2023",
-    author: "Hongyi Hu, Max Serrano",
-    authorInitials: "HH",
+    author: "Yusuf M",
+    authorInitials: "YM",
     authorRole: "Security Engineering",
     tags: ["inside", "security", "engineering"],
     tagLabels: ["Inside", "Security", "Engineering"],
     excerpt: "Containers and secure computing mode (seccomp) are sandboxing primitives that offer a lighter weight alternative to virtual machines for isolating untrusted workloads.",
     readTime: "11 min read",
     featured: true,
-    thumb: `<svg viewBox="0 0 800 450" xmlns="http://www.w3.org/2000/svg">
-      <rect width="800" height="450" fill="#F05A00"/>
-      <ellipse cx="400" cy="170" rx="230" ry="150" fill="#FF8C00"/>
-      <rect x="260" y="155" width="280" height="240" rx="8" fill="#1a0a00"/>
-      <rect x="285" y="175" width="80" height="120" rx="38" fill="#2a1500"/>
-      <rect x="435" y="175" width="80" height="120" rx="38" fill="#2a1500"/>
-      <circle cx="325" cy="195" r="22" fill="#FFB347"/>
-      <circle cx="475" cy="195" r="22" fill="#FFB347"/>
-      <rect x="350" y="250" width="100" height="65" rx="8" fill="#FF6B00"/>
-      <path d="M310 355 Q400 385 490 355" stroke="#FF8C00" stroke-width="4" fill="none"/>
-      <rect x="190" y="295" width="420" height="8" fill="#1a0a00" opacity="0.4"/>
-      <path d="M245 295 L215 395" stroke="#FF6B00" stroke-width="16" stroke-linecap="round"/>
-      <path d="M555 295 L585 395" stroke="#FF6B00" stroke-width="16" stroke-linecap="round"/>
-      <path d="M300 295 L282 375" stroke="#CC4400" stroke-width="10" stroke-linecap="round"/>
-      <path d="M500 295 L518 375" stroke="#CC4400" stroke-width="10" stroke-linecap="round"/>
-      <circle cx="400" cy="80" r="22" fill="#FFD700"/>
-      <rect x="390" y="102" width="20" height="55" fill="#FF8C00"/>
-    </svg>`,
+    thumb: thumbs[1],
     content: `
-      <p>When you run untrusted code — whether it's user-submitted plugins, third-party integrations, or even your own services that handle hostile inputs — you need to think carefully about what that code can actually <em>do</em> on your system. Containers and seccomp are two primitives that, when combined, give you meaningful isolation without the overhead of full virtual machines.</p>
-
+      <p>When you run untrusted code — whether it's user-submitted plugins, third-party integrations, or even your own services that handle hostile inputs — you need to think carefully about what that code can actually <em>do</em> on your system.</p>
       <h2>Why not just use VMs?</h2>
-      <p>Virtual machines give you strong isolation by emulating separate hardware, but they come with real costs: slow startup times (seconds, not milliseconds), significant memory overhead per instance, and operational complexity around image management and orchestration.</p>
-      <p>For many workloads — particularly those that need to spin up and tear down rapidly — these costs are prohibitive. Containers and seccomp let you get most of the security benefit at a fraction of the cost.</p>
-
+      <p>Virtual machines give you strong isolation but come with real costs: slow startup times, significant memory overhead, and operational complexity. For workloads that need to spin up and tear down rapidly, these costs are prohibitive.</p>
       <h2>Container isolation fundamentals</h2>
-      <p>Linux containers aren't a single thing — they're a combination of kernel features working together:</p>
-      <ul>
-        <li><strong>Namespaces</strong> isolate the container's view of system resources (PID space, network, filesystem mounts, etc.)</li>
-        <li><strong>cgroups</strong> limit resource consumption (CPU, memory, I/O)</li>
-        <li><strong>Capabilities</strong> restrict what privileged operations the container can perform</li>
-      </ul>
-      <p>By default, containers still share the host kernel. This is both what makes them fast and what makes them less isolated than VMs.</p>
-
+      <p>Linux containers combine kernel features working together: <strong>namespaces</strong> isolate the container's view of system resources, <strong>cgroups</strong> limit resource consumption, and <strong>capabilities</strong> restrict privileged operations.</p>
       <h2>Enter seccomp</h2>
-      <p>Seccomp (secure computing mode) is a Linux kernel feature that lets you restrict which system calls a process can make. A seccomp profile is essentially a filter that says: "this process is allowed to call <code>read</code>, <code>write</code>, <code>open</code>… but not <code>ptrace</code>, <code>mount</code>, or <code>kexec_load</code>."</p>
-
+      <p>Seccomp (secure computing mode) is a Linux kernel feature that lets you restrict which system calls a process can make.</p>
       <blockquote>Seccomp doesn't just reduce the attack surface — it redefines it. Instead of defending against exploitation of any syscall, you only need to worry about the small set you've explicitly permitted.</blockquote>
-
       <pre><code>{
   "defaultAction": "SCMP_ACT_ERRNO",
   "syscalls": [
     {
       "names": ["read", "write", "open", "close",
-                "stat", "fstat", "mmap", "mprotect",
-                "exit_group", "futex", "brk"],
+                "stat", "fstat", "mmap", "exit_group"],
       "action": "SCMP_ACT_ALLOW"
     }
   ]
 }</code></pre>
-
-      <h2>Building a minimal allowlist</h2>
-      <p>The hardest part of seccomp is figuring out which syscalls your application actually needs. We use <code>strace</code> in audit mode to record every syscall made during integration tests, then build an allowlist from that. This process surfaced some surprising dependencies — glibc's <code>malloc</code> implementation, for instance, occasionally calls <code>madvise</code>, which you'd never know to include without tracing.</p>
-
       <h2>Defense in depth</h2>
-      <p>Neither containers nor seccomp are silver bullets. A misconfigured container with excessive capabilities can still be dangerous. A seccomp profile that's too permissive provides little protection. The value comes from layering these controls: namespace isolation limits blast radius, capability dropping removes common privilege escalation vectors, and seccomp blocks kernel attack surface.</p>
-      <p>In part three of this series, we'll look at gVisor and how it pushes this isolation further by intercepting system calls entirely.</p>
+      <p>Neither containers nor seccomp are silver bullets. The value comes from layering these controls: namespace isolation limits blast radius, capability dropping removes common privilege escalation vectors, and seccomp blocks kernel attack surface.</p>
     `
   },
   {
     id: 3,
     title: "Server-side sandboxing: An introduction",
     date: "October 24, 2023",
-    author: "Yusuf Munir",
+    author: "Yusuf M",
     authorInitials: "YM",
     authorRole: "Security Engineering",
     tags: ["inside", "security", "engineering"],
@@ -826,58 +1073,23 @@ fi</code></pre>
     excerpt: "In this three-part series, our security engineering team shares practical tips for deploying and operating application sandboxing techniques at scale.",
     readTime: "6 min read",
     featured: false,
-    thumb: `<svg viewBox="0 0 800 450" xmlns="http://www.w3.org/2000/svg">
-      <rect width="800" height="450" fill="#B8D4E8"/>
-      <rect x="0" y="200" width="800" height="250" fill="#8BB8D4"/>
-      <rect x="70" y="110" width="200" height="300" rx="10" fill="#D4E8F5" stroke="#7AAAC8" stroke-width="1.5"/>
-      <rect x="300" y="50" width="200" height="360" rx="10" fill="#D4E8F5" stroke="#7AAAC8" stroke-width="1.5"/>
-      <rect x="530" y="80" width="200" height="330" rx="10" fill="#D4E8F5" stroke="#7AAAC8" stroke-width="1.5"/>
-      <circle cx="170" cy="100" r="26" fill="#FFD700"/>
-      <rect x="150" y="128" width="40" height="10" rx="2" fill="#F5C518"/>
-      <circle cx="400" cy="38" rx="26" r="26" fill="#FFD700"/>
-      <rect x="380" y="66" width="40" height="10" rx="2" fill="#F5C518"/>
-      <circle cx="630" cy="66" r="26" fill="#FFD700"/>
-      <rect x="610" y="94" width="40" height="10" rx="2" fill="#F5C518"/>
-      <path d="M100 310 Q115 280 130 310 Q145 340 160 310 Q175 280 190 310 Q205 340 220 310" stroke="#FF8C00" stroke-width="3" fill="none"/>
-      <path d="M330 260 Q345 230 360 260 Q375 290 390 260 Q405 230 420 260 Q435 290 450 260" stroke="#FF8C00" stroke-width="3" fill="none"/>
-      <path d="M560 290 Q575 260 590 290 Q605 320 620 290 Q635 260 650 290 Q665 320 680 290" stroke="#FF8C00" stroke-width="3" fill="none"/>
-    </svg>`,
+    thumb: thumbs[2],
     content: `
-      <p>Sandboxing is one of those security techniques that sounds simple in theory — put untrusted code in a box — but turns out to be surprisingly nuanced in practice. This three-part series documents what we learned deploying sandboxing for server-side workloads at scale.</p>
-
+      <p>Sandboxing is one of those security techniques that sounds simple in theory — put untrusted code in a box — but turns out to be surprisingly nuanced in practice.</p>
       <h2>What are we protecting against?</h2>
-      <p>Before choosing a sandboxing approach, it's worth being precise about your threat model. For us, the primary concerns were:</p>
-      <ul>
-        <li><strong>Confused deputy attacks</strong> — a compromised service making requests it shouldn't be able to make</li>
-        <li><strong>Lateral movement</strong> — an attacker who compromises one service moving to others on the same host</li>
-        <li><strong>Data exfiltration</strong> — a compromised process reading secrets it wasn't intended to access</li>
-      </ul>
-      <p>We were less concerned about local privilege escalation (our hosts are ephemeral and single-tenant) or denial of service (we have separate resource limits for that).</p>
-
+      <p>Before choosing a sandboxing approach, it's worth being precise about your threat model. For us, the primary concerns were confused deputy attacks, lateral movement, and data exfiltration.</p>
       <h2>The sandboxing landscape</h2>
-      <p>There's a spectrum of sandboxing approaches, roughly ordered by isolation strength and performance cost:</p>
-      <ul>
-        <li><strong>seccomp + capabilities</strong> — lightweight, kernel-enforced syscall filtering</li>
-        <li><strong>Linux namespaces</strong> — process, network, and filesystem isolation</li>
-        <li><strong>gVisor</strong> — user-space kernel that intercepts syscalls entirely</li>
-        <li><strong>Firecracker/VMs</strong> — full hardware virtualization</li>
-      </ul>
-      <p>We ended up using different points on this spectrum for different workloads, based on their performance sensitivity and risk profile.</p>
-
+      <p>There's a spectrum of sandboxing approaches: seccomp + capabilities, Linux namespaces, gVisor, and Firecracker/VMs — roughly ordered by isolation strength and performance cost. We ended up using different points on this spectrum for different workloads.</p>
       <h2>Why this matters more than ever</h2>
-      <p>Modern applications are increasingly polyglot and plugin-based. Whether it's a Figma plugin running in a sandboxed iframe, a CI system executing user-submitted scripts, or an AI model executing generated code — the pattern of running untrusted code is everywhere.</p>
-      <p>Getting sandboxing right isn't optional anymore. The question is just how much isolation you need and how much you're willing to pay for it.</p>
-
+      <p>Modern applications are increasingly polyglot and plugin-based. Whether it's a plugin running in a sandboxed iframe, a CI system executing user-submitted scripts, or an AI model executing generated code — the pattern of running untrusted code is everywhere.</p>
       <blockquote>The best sandbox is one you forget is there — invisible to developers until the day it actually matters.</blockquote>
-
-      <p>In part two, we'll dive deep into containers and seccomp, including the specific profiles we use and the tooling we built to generate and maintain them. In part three, we'll cover gVisor and when the additional isolation overhead is worth it.</p>
     `
   },
   {
     id: 4,
     title: "Zero-trust network access at scale",
     date: "September 12, 2023",
-    author: "Yusuf Munir",
+    author: "Yusuf M",
     authorInitials: "YM",
     authorRole: "Infrastructure Security",
     tags: ["security", "engineering"],
@@ -885,54 +1097,25 @@ fi</code></pre>
     excerpt: "A deep-dive into the architecture decisions behind our move to a zero-trust network model, including the tooling we built and the lessons learned along the way.",
     readTime: "13 min read",
     featured: false,
-    thumb: `<svg viewBox="0 0 800 450" xmlns="http://www.w3.org/2000/svg">
-      <rect width="800" height="450" fill="#0D2137"/>
-      <circle cx="400" cy="225" r="140" fill="none" stroke="#1A4A7A" stroke-width="70"/>
-      <circle cx="400" cy="225" r="75" fill="#1A3A5C"/>
-      <circle cx="400" cy="225" r="35" fill="#2A5A8C"/>
-      <rect x="393" y="85" width="14" height="50" rx="7" fill="#4A8AC4"/>
-      <rect x="393" y="315" width="14" height="50" rx="7" fill="#4A8AC4"/>
-      <rect x="245" y="218" width="50" height="14" rx="7" fill="#4A8AC4"/>
-      <rect x="505" y="218" width="50" height="14" rx="7" fill="#4A8AC4"/>
-      <circle cx="400" cy="85" r="10" fill="#64B4FF"/>
-      <circle cx="400" cy="365" r="10" fill="#64B4FF"/>
-      <circle cx="245" cy="225" r="10" fill="#64B4FF"/>
-      <circle cx="555" cy="225" r="10" fill="#64B4FF"/>
-      <circle cx="290" cy="120" r="7" fill="#3A7AB0"/>
-      <circle cx="510" cy="120" r="7" fill="#3A7AB0"/>
-      <circle cx="290" cy="330" r="7" fill="#3A7AB0"/>
-      <circle cx="510" cy="330" r="7" fill="#3A7AB0"/>
-      <circle cx="400" cy="225" r="14" fill="#90D0FF"/>
-    </svg>`,
+    thumb: thumbs[3],
     content: `
-      <p>Traditional network security assumed a hard perimeter: everything inside the network was trusted, everything outside was not. Zero-trust flips this model on its head — no implicit trust based on network location, every request must be authenticated and authorized regardless of where it originates.</p>
-
+      <p>Traditional network security assumed a hard perimeter: everything inside the network was trusted, everything outside was not. Zero-trust flips this model on its head.</p>
       <h2>Why we needed to change</h2>
-      <p>Our old VPN-based model was showing its age. Developers complained about performance. The blast radius from a single compromised credential was enormous. And as we moved more workloads to cloud environments, the concept of a "corporate network" had become increasingly theoretical.</p>
-
+      <p>Our old VPN-based model was showing its age. Developers complained about performance. The blast radius from a single compromised credential was enormous. As we moved more workloads to cloud environments, the concept of a "corporate network" had become increasingly theoretical.</p>
       <h2>The architecture we landed on</h2>
-      <p>Our zero-trust implementation has three core pillars:</p>
-      <ul>
-        <li><strong>Identity-aware proxies</strong> — every internal service sits behind a proxy that enforces authentication</li>
-        <li><strong>Short-lived credentials</strong> — no long-lived service account keys, everything uses SPIFFE/SPIRE workload identity</li>
-        <li><strong>Continuous verification</strong> — device posture is checked on every request, not just at VPN connect time</li>
-      </ul>
-
+      <p>Our zero-trust implementation has three core pillars: identity-aware proxies, short-lived credentials via SPIFFE/SPIRE, and continuous device posture verification on every request.</p>
       <blockquote>Assume breach. Then build systems where a breach of one component doesn't automatically become a breach of everything.</blockquote>
-
       <h2>The hardest part: legacy services</h2>
-      <p>New services were easy — we wrote the identity-aware proxy support into our standard service template and it came for free. The hard part was the long tail of legacy services that assumed they could talk to anything on the internal network without authentication.</p>
-      <p>We built a compatibility shim that translated mTLS workload identity into the Basic Auth credentials those services expected, giving us a migration path that didn't require simultaneous rewrites of everything.</p>
-
+      <p>New services were easy. The hard part was the long tail of legacy services that assumed they could talk to anything on the internal network without authentication. We built a compatibility shim that translated mTLS workload identity into Basic Auth credentials those services expected.</p>
       <h2>Measuring success</h2>
-      <p>One year in, our mean time to detect lateral movement attempts has dropped from days to minutes. Developer experience has actually improved — the identity-aware proxy handles SSO transparently, so developers no longer have to think about which internal tool requires which VPN split tunnel.</p>
+      <p>One year in, our mean time to detect lateral movement attempts dropped from days to minutes. Developer experience actually improved — the identity-aware proxy handles SSO transparently.</p>
     `
   },
   {
     id: 5,
     title: "Scaling security review with static analysis",
     date: "August 3, 2023",
-    author: "Yusuf Munir",
+    author: "Yusuf M",
     authorInitials: "YM",
     authorRole: "Application Security",
     tags: ["security", "engineering", "inside"],
@@ -940,66 +1123,30 @@ fi</code></pre>
     excerpt: "How we scaled security review across hundreds of engineers by building automated tooling that catches common vulnerability classes before they ever reach a human reviewer.",
     readTime: "9 min read",
     featured: false,
-    thumb: `<svg viewBox="0 0 800 450" xmlns="http://www.w3.org/2000/svg">
-      <rect width="800" height="450" fill="#1C3A1C"/>
-      <rect x="100" y="80" width="600" height="290" rx="12" fill="#2A5A2A"/>
-      <rect x="130" y="110" width="540" height="230" rx="6" fill="#0f1f0f"/>
-      <rect x="155" y="140" width="160" height="14" rx="3" fill="#4CAF50"/>
-      <rect x="155" y="165" width="240" height="10" rx="2" fill="#2E7D32"/>
-      <rect x="155" y="183" width="200" height="10" rx="2" fill="#2E7D32"/>
-      <rect x="155" y="201" width="280" height="10" rx="2" fill="#2E7D32"/>
-      <rect x="155" y="219" width="180" height="10" rx="2" fill="#2E7D32"/>
-      <rect x="155" y="237" width="220" height="10" rx="2" fill="#2E7D32"/>
-      <rect x="155" y="255" width="150" height="10" rx="2" fill="#2E7D32"/>
-      <rect x="460" y="140" width="180" height="140" rx="6" fill="#0a150a"/>
-      <circle cx="550" cy="195" r="36" fill="none" stroke="#4CAF50" stroke-width="3"/>
-      <path d="M536 195 L546 207 L568 183" stroke="#4CAF50" stroke-width="3.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
-      <rect x="460" y="255" width="80" height="10" rx="2" fill="#4CAF50" opacity="0.5"/>
-      <rect x="550" y="255" width="90" height="10" rx="2" fill="#4CAF50" opacity="0.3"/>
-    </svg>`,
+    thumb: thumbs[4],
     content: `
-      <p>When your engineering org is small, having a security person review every pull request is feasible. When you're at hundreds of engineers shipping code daily, it isn't. This post describes how we built automated static analysis tooling to scale our security review capacity without scaling our security team linearly.</p>
-
+      <p>When your engineering org is small, having a security person review every pull request is feasible. When you're at hundreds of engineers shipping code daily, it isn't.</p>
       <h2>The problem with manual review</h2>
-      <p>Manual security review is slow, inconsistent, and doesn't scale. More importantly, it creates a bottleneck that incentivizes engineers to work around the process. We wanted security to be something that happened automatically and invisibly, not a gate that engineers dreaded.</p>
-
+      <p>Manual security review is slow, inconsistent, and doesn't scale. More importantly, it creates a bottleneck that incentivizes engineers to work around the process.</p>
       <h2>Choosing what to automate</h2>
-      <p>Not all security issues are amenable to static analysis. SQL injection, for example, requires understanding your data flow from user input to database query. XSS requires understanding how user-controlled strings reach the DOM. These are tractable for static analysis. But business logic vulnerabilities — "this user shouldn't be able to see another user's data" — require domain knowledge that's very hard to encode in a tool.</p>
-      <p>We focused first on the vulnerability classes with high precision (low false positive rate) and high prevalence:</p>
-      <ul>
-        <li>Hardcoded credentials and secret material in code</li>
-        <li>Unsafe deserialization patterns</li>
-        <li>Known-vulnerable dependency versions</li>
-        <li>Common cryptographic misuse patterns</li>
-      </ul>
-
-      <h2>The toolchain</h2>
-      <p>We built on top of Semgrep for pattern-based analysis and added custom rules for our internal frameworks. The critical design decision was integrating directly into the CI pipeline with a fail-open stance: if the analyzer crashes or takes too long, the build continues. We never want security tooling to be a reliability risk for shipping.</p>
-
-      <pre><code># .semgrep.yml — example custom rule
-rules:
+      <p>We focused first on vulnerability classes with high precision and high prevalence: hardcoded credentials, unsafe deserialization patterns, known-vulnerable dependencies, and common cryptographic misuse.</p>
+      <pre><code>rules:
   - id: no-raw-sql-interpolation
     patterns:
       - pattern: db.query("..." % ...)
       - pattern: db.query("..." + ...)
-    message: "SQL query built with string interpolation. Use parameterized queries."
-    severity: ERROR
-    languages: [python]</code></pre>
-
-      <h2>Fighting alert fatigue</h2>
-      <p>The biggest failure mode for static analysis is too many false positives — developers start ignoring all alerts, including real ones. We invested heavily in tuning our rules to achieve greater than 90% precision before rolling them out. A rule that fires on 10 real issues and 100 false positives is worse than no rule at all.</p>
-
+    message: "Use parameterized queries."
+    severity: ERROR</code></pre>
       <blockquote>A security tool that developers learn to ignore is a liability, not an asset. Precision matters more than recall.</blockquote>
-
       <h2>Results</h2>
-      <p>After 12 months, our automated tooling catches around 60% of the security issues that would have previously required manual review. Our security team now focuses human attention on the harder, context-dependent issues that can't be automated — which, it turns out, is a much more interesting use of their time.</p>
+      <p>After 12 months, our automated tooling catches around 60% of the security issues that would have previously required manual review. Our security team now focuses on the harder, context-dependent issues that can't be automated.</p>
     `
   },
   {
     id: 6,
     title: "Bug bounty: Year one in review",
     date: "June 20, 2023",
-    author: "Yusuf Munir",
+    author: "Yusuf M",
     authorInitials: "YM",
     authorRole: "Security",
     tags: ["security", "inside"],
@@ -1007,53 +1154,21 @@ rules:
     excerpt: "What we learned from our first year running a public bug bounty program — the good, the surprising, and the infrastructure we had to build to handle it.",
     readTime: "7 min read",
     featured: false,
-    thumb: `<svg viewBox="0 0 800 450" xmlns="http://www.w3.org/2000/svg">
-      <rect width="800" height="450" fill="#3A1A4A"/>
-      <path d="M0 280 Q200 160 400 240 Q600 320 800 200 L800 450 L0 450Z" fill="#2A0A3A"/>
-      <circle cx="160" cy="175" r="60" fill="#6A2A8A" opacity="0.55"/>
-      <circle cx="400" cy="140" rx="80" r="80" fill="#7A3A9A" opacity="0.45"/>
-      <circle cx="640" cy="165" r="65" fill="#6A2A8A" opacity="0.55"/>
-      <rect x="340" y="88" width="120" height="105" rx="10" fill="#9A5AC8"/>
-      <rect x="356" y="104" width="88" height="60" rx="6" fill="#B87EE0"/>
-      <path d="M340 193 L320 230 L480 230 L460 193Z" fill="#9A5AC8"/>
-      <circle cx="400" cy="148" r="18" fill="#D4A8F0"/>
-      <line x1="400" y1="166" x2="400" y2="193" stroke="#C090E8" stroke-width="3"/>
-      <rect x="315" y="230" width="170" height="45" rx="6" fill="#5A1A7A"/>
-      <rect x="220" y="310" width="360" height="14" rx="3" fill="#5A1A7A" opacity="0.5"/>
-      <rect x="260" y="332" width="280" height="10" rx="3" fill="#5A1A7A" opacity="0.35"/>
-    </svg>`,
+    thumb: thumbs[5],
     content: `
-      <p>One year ago, we launched our public bug bounty program. We weren't sure what to expect — would we be flooded with noise? Would researchers find things we'd missed? Would our triage capacity hold up?</p>
-      <p>The short answer: yes to all three, in different proportions than we anticipated.</p>
-
-      <h2>The numbers</h2>
-      <p>In our first year we received 847 reports. Of those:</p>
-      <ul>
-        <li>312 were valid, in-scope vulnerability reports</li>
-        <li>278 were informational or out-of-scope</li>
-        <li>257 were duplicates or NA (not applicable)</li>
-      </ul>
-      <p>We paid out $580,000 in bounties across 312 valid reports, with an average payout of $1,859 and a maximum single payout of $45,000 for a critical authentication bypass.</p>
-
+      <p>One year ago, we launched our public bug bounty program. In our first year we received 847 reports. Of those, 312 were valid in-scope vulnerability reports, and we paid out $580,000 in bounties.</p>
       <h2>What surprised us</h2>
-      <p>We expected most reports to be low-severity. We were wrong — a meaningful fraction of reports were high or critical severity, finding real vulnerabilities in production systems that our internal security reviews had missed. This was humbling, and validating at the same time.</p>
-      <p>The quality distribution was highly skewed. Our top 10 researchers submitted over 40% of valid reports. Building relationships with those researchers turned out to be as valuable as the program itself.</p>
-
-      <blockquote>Bug bounty isn't just about finding vulnerabilities. It's about building a relationship with the security community. The researchers who trust you enough to responsibly disclose are an asset.</blockquote>
-
+      <p>We expected most reports to be low-severity. We were wrong — a meaningful fraction were high or critical severity, finding real vulnerabilities our internal reviews had missed.</p>
+      <blockquote>Bug bounty isn't just about finding vulnerabilities. It's about building a relationship with the security community.</blockquote>
       <h2>Triage at scale</h2>
-      <p>The operational challenge we underestimated was triage. Processing 847 reports a year — about 70 per month — requires a dedicated workflow. We built internal tooling to route reports by product area, deduplicate against our existing backlog, and track SLA compliance for initial response (we target 24 hours).</p>
-
+      <p>Processing 847 reports a year requires a dedicated workflow. We built internal tooling to route reports by product area, deduplicate against our backlog, and track SLA compliance for initial response.</p>
       <h2>What we'd do differently</h2>
-      <p>We'd define scope more precisely from day one. Vague scope language leads to arguments with researchers about whether something is in scope, which creates bad experiences on both sides. We'd also invest in the researcher relationship earlier — proactively reaching out to top reporters, offering retesting access, and publishing more about what we fixed.</p>
-
+      <p>We'd define scope more precisely from day one. Vague scope language leads to arguments about whether something is in scope, which creates bad experiences on both sides.</p>
       <h2>Year two plans</h2>
-      <p>We're expanding scope to include some internal tooling, increasing maximum payouts for critical vulnerabilities, and launching a live hacking event with our top researchers. The program has more than paid for itself — not just in vulnerabilities found, but in the security culture shift of treating external researchers as collaborators rather than adversaries.</p>
+      <p>We're expanding scope to internal tooling, increasing maximum payouts for critical vulnerabilities, and launching a live hacking event with our top researchers.</p>
     `
   }
 ];
-
-let currentFilter = 'all';
 
 function renderCards(postsToRender) {
   const grid = document.getElementById('blog-grid');
@@ -1061,7 +1176,7 @@ function renderCards(postsToRender) {
   postsToRender.forEach((post, i) => {
     const card = document.createElement('div');
     card.className = 'blog-card' + (post.featured ? ' featured' : '');
-    card.style.animationDelay = (i * 0.05) + 's';
+    card.style.animationDelay = (i * 0.06) + 's';
     card.innerHTML = `
       <div class="card-thumb">${post.thumb}</div>
       <div class="card-body">
@@ -1081,15 +1196,11 @@ function renderCards(postsToRender) {
 }
 
 function filterPosts(filter, btn) {
-  currentFilter = filter;
-
-  // Update all filter buttons (both header and filter bar)
   document.querySelectorAll('.filter-btn, .header-tag').forEach(b => b.classList.remove('active'));
   document.querySelectorAll('.filter-btn, .header-tag').forEach(b => {
-    const btnFilter = b.getAttribute('onclick')?.match(/filterPosts\('(\w+)'/)?.[1];
-    if (btnFilter === filter) b.classList.add('active');
+    const f = b.getAttribute('onclick')?.match(/filterPosts\('(\w+)'/)?.[1];
+    if (f === filter) b.classList.add('active');
   });
-
   const filtered = filter === 'all' ? posts : posts.filter(p => p.tags.includes(filter));
   renderCards(filtered);
 }
@@ -1098,8 +1209,6 @@ function showArticle(post) {
   document.getElementById('listing-page').style.display = 'none';
   const ap = document.getElementById('article-page');
   ap.style.display = 'block';
-
-  // Get 2 other posts for "more posts"
   const others = posts.filter(p => p.id !== post.id).slice(0, 3);
 
   ap.innerHTML = `
@@ -1140,7 +1249,6 @@ function showArticle(post) {
         </div>
 
         <div class="article-hero-thumb">${post.thumb}</div>
-
         <div class="article-body">${post.content}</div>
       </article>
 
@@ -1165,7 +1273,7 @@ function showArticle(post) {
       </section>
 
       <footer class="site-footer">
-        <span class="footer-copy">© 2024 Security Blog</span>
+        <span class="footer-copy">© 2024 Security Field Notes</span>
         <div class="footer-links">
           <a href="#">RSS</a>
           <a href="#">Twitter</a>
@@ -1174,7 +1282,6 @@ function showArticle(post) {
       </footer>
     </div>
   `;
-
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
@@ -1193,7 +1300,6 @@ function showListing() {
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
-// Init
 renderCards(posts);
 </script>
 </body>
