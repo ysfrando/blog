@@ -3,13 +3,13 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Security Blog</title>
+<title>ysf.root</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,700;0,9..40,800;1,9..40,400&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
- 
+
   :root {
     --bg: #0c0c0c;
     --bg-card: #111111;
@@ -24,9 +24,9 @@
     --tag-border: #2a2a2a;
     --tag-text: #777;
   }
- 
+
   html { scroll-behavior: smooth; }
- 
+
   body {
     background: var(--bg);
     color: var(--text);
@@ -36,7 +36,7 @@
     min-height: 100vh;
     -webkit-font-smoothing: antialiased;
   }
- 
+
   /* PAGE TRANSITIONS */
   .page {
     animation: fadeUp 0.35s ease both;
@@ -45,7 +45,7 @@
     from { opacity: 0; transform: translateY(14px); }
     to { opacity: 1; transform: translateY(0); }
   }
- 
+
   /* HEADER */
   .site-header {
     display: flex;
@@ -59,7 +59,7 @@
     backdrop-filter: blur(12px);
     z-index: 100;
   }
- 
+
   .site-logo {
     display: flex;
     align-items: center;
@@ -68,7 +68,7 @@
     text-decoration: none;
     color: var(--text);
   }
- 
+
   .logo-mark {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -76,7 +76,7 @@
     width: 24px;
     height: 24px;
   }
- 
+
   .logo-mark span {
     border-radius: 2px;
     display: block;
@@ -85,7 +85,7 @@
   .logo-mark span:nth-child(2) { background: #A259FF; border-radius: 50%; }
   .logo-mark span:nth-child(3) { background: #0ACF83; border-radius: 50%; }
   .logo-mark span:nth-child(4) { background: #1ABCFE; border-radius: 3px; }
- 
+
   .logo-text {
     font-size: 14px;
     font-weight: 700;
@@ -97,12 +97,12 @@
     font-weight: 400;
     margin-left: 4px;
   }
- 
+
   .header-tags {
     display: flex;
     gap: 6px;
   }
- 
+
   .header-tag {
     font-size: 11px;
     font-weight: 600;
@@ -117,12 +117,12 @@
     background: none;
     font-family: inherit;
   }
- 
+
   .header-tag:hover, .header-tag.active {
     color: var(--text);
     border-color: #444;
   }
- 
+
   /* HERO SECTION */
   .hero {
     padding: 72px 48px 56px;
@@ -132,9 +132,9 @@
     justify-content: space-between;
     gap: 48px;
   }
- 
+
   .hero-left {}
- 
+
   .hero-eyebrow {
     font-size: 11px;
     font-weight: 600;
@@ -146,7 +146,7 @@
     align-items: center;
     gap: 10px;
   }
- 
+
   .hero-eyebrow::before {
     content: '';
     display: block;
@@ -154,7 +154,7 @@
     height: 1px;
     background: var(--text-muted);
   }
- 
+
   .hero-title {
     font-family: 'DM Serif Display', serif;
     font-size: 62px;
@@ -164,24 +164,24 @@
     max-width: 520px;
     color: var(--text);
   }
- 
+
   .hero-title em {
     font-style: italic;
     color: var(--accent);
   }
- 
+
   .hero-right {
     max-width: 280px;
     flex-shrink: 0;
   }
- 
+
   .hero-desc {
     font-size: 14px;
     color: var(--text-muted);
     line-height: 1.7;
     margin-bottom: 20px;
   }
- 
+
   .hero-stat {
     font-size: 11px;
     font-weight: 600;
@@ -189,7 +189,7 @@
     text-transform: uppercase;
     color: var(--text-dim);
   }
- 
+
   .hero-stat strong {
     color: var(--text);
     font-size: 22px;
@@ -198,7 +198,7 @@
     letter-spacing: -0.02em;
     margin-bottom: 2px;
   }
- 
+
   /* FILTER BAR */
   .filter-bar {
     display: flex;
@@ -208,7 +208,7 @@
     border-bottom: 1px solid var(--border);
     overflow-x: auto;
   }
- 
+
   .filter-label {
     font-size: 11px;
     font-weight: 600;
@@ -218,7 +218,7 @@
     margin-right: 6px;
     white-space: nowrap;
   }
- 
+
   .filter-btn {
     font-size: 11px;
     font-weight: 600;
@@ -234,16 +234,16 @@
     font-family: inherit;
     white-space: nowrap;
   }
- 
+
   .filter-btn:hover { color: var(--text); border-color: #444; }
   .filter-btn.active { color: var(--bg); background: var(--text); border-color: var(--text); }
- 
+
   /* BLOG GRID */
   .blog-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
   }
- 
+
   .blog-card {
     border-right: 1px solid var(--border);
     border-bottom: 1px solid var(--border);
@@ -251,11 +251,11 @@
     transition: background 0.2s;
     position: relative;
   }
- 
+
   .blog-card:nth-child(3n) { border-right: none; }
- 
+
   .blog-card:hover { background: var(--bg-hover); }
- 
+
   .blog-card.featured::after {
     content: '';
     position: absolute;
@@ -263,35 +263,35 @@
     border: 2px solid var(--accent);
     pointer-events: none;
   }
- 
+
   .card-thumb {
     width: 100%;
     aspect-ratio: 16/9;
     overflow: hidden;
   }
- 
+
   .card-thumb svg {
     width: 100%;
     height: 100%;
     display: block;
     transition: transform 0.4s ease;
   }
- 
+
   .blog-card:hover .card-thumb svg {
     transform: scale(1.03);
   }
- 
+
   .card-body {
     padding: 22px 26px 26px;
   }
- 
+
   .card-date {
     font-size: 12px;
     color: var(--text-dim);
     font-weight: 500;
     margin-bottom: 10px;
   }
- 
+
   .card-title {
     font-family: 'DM Sans', sans-serif;
     font-size: 19px;
@@ -301,14 +301,14 @@
     color: var(--text);
     margin-bottom: 10px;
   }
- 
+
   .card-author {
     font-size: 13px;
     font-weight: 700;
     color: var(--text);
     margin-bottom: 11px;
   }
- 
+
   .card-excerpt {
     font-size: 13px;
     color: var(--text-muted);
@@ -319,14 +319,14 @@
     -webkit-box-orient: vertical;
     overflow: hidden;
   }
- 
+
   .card-tags {
     display: flex;
     gap: 6px;
     flex-wrap: wrap;
     align-items: center;
   }
- 
+
   .tag {
     font-size: 10px;
     font-weight: 600;
@@ -337,14 +337,14 @@
     padding: 4px 10px;
     border-radius: 100px;
   }
- 
+
   /* ARTICLE PAGE */
   .article-page {
     max-width: 720px;
     margin: 0 auto;
     padding: 64px 48px 120px;
   }
- 
+
   .back-btn {
     display: inline-flex;
     align-items: center;
@@ -362,24 +362,24 @@
     font-family: inherit;
     padding: 0;
   }
- 
+
   .back-btn:hover { color: var(--text); }
- 
+
   .back-btn svg {
     width: 16px;
     height: 16px;
     transition: transform 0.15s;
   }
- 
+
   .back-btn:hover svg { transform: translateX(-3px); }
- 
+
   .article-eyebrow {
     display: flex;
     align-items: center;
     gap: 8px;
     margin-bottom: 24px;
   }
- 
+
   .article-hero-thumb {
     width: 100%;
     border-radius: 4px;
@@ -387,13 +387,13 @@
     margin-bottom: 48px;
     aspect-ratio: 16/8;
   }
- 
+
   .article-hero-thumb svg {
     width: 100%;
     height: 100%;
     display: block;
   }
- 
+
   .article-title {
     font-family: 'DM Serif Display', serif;
     font-size: 46px;
@@ -403,7 +403,7 @@
     color: var(--text);
     margin-bottom: 24px;
   }
- 
+
   .article-meta {
     display: flex;
     align-items: center;
@@ -413,13 +413,13 @@
     border-bottom: 1px solid var(--border);
     margin-bottom: 48px;
   }
- 
+
   .meta-author {
     display: flex;
     align-items: center;
     gap: 10px;
   }
- 
+
   .author-avatar {
     width: 36px;
     height: 36px;
@@ -433,40 +433,40 @@
     color: var(--text-muted);
     flex-shrink: 0;
   }
- 
+
   .author-name {
     font-size: 13px;
     font-weight: 700;
     color: var(--text);
   }
- 
+
   .author-role {
     font-size: 12px;
     color: var(--text-muted);
   }
- 
+
   .meta-sep {
     width: 1px;
     height: 32px;
     background: var(--border);
   }
- 
+
   .meta-info {
     font-size: 12px;
     color: var(--text-muted);
   }
- 
+
   .meta-info strong {
     display: block;
     color: var(--text);
     font-size: 13px;
   }
- 
+
   /* Article body */
   .article-body { color: #c8c4be; font-size: 16px; line-height: 1.8; }
- 
+
   .article-body p { margin-bottom: 1.5em; }
- 
+
   .article-body h2 {
     font-family: 'DM Sans', sans-serif;
     font-size: 22px;
@@ -476,7 +476,7 @@
     margin: 2.5em 0 0.8em;
     line-height: 1.3;
   }
- 
+
   .article-body h3 {
     font-family: 'DM Sans', sans-serif;
     font-size: 17px;
@@ -484,7 +484,7 @@
     color: var(--text);
     margin: 2em 0 0.6em;
   }
- 
+
   .article-body code {
     font-family: 'Courier New', monospace;
     font-size: 13px;
@@ -494,7 +494,7 @@
     border-radius: 4px;
     color: #a8c4a0;
   }
- 
+
   .article-body pre {
     background: #0f0f0f;
     border: 1px solid var(--border);
@@ -503,7 +503,7 @@
     overflow-x: auto;
     margin: 1.5em 0;
   }
- 
+
   .article-body pre code {
     background: none;
     border: none;
@@ -512,7 +512,7 @@
     line-height: 1.7;
     color: #c8c4be;
   }
- 
+
   .article-body blockquote {
     border-left: 2px solid var(--accent);
     padding-left: 20px;
@@ -521,17 +521,17 @@
     font-style: italic;
     font-size: 18px;
   }
- 
+
   .article-body ul, .article-body ol {
     padding-left: 1.5em;
     margin-bottom: 1.5em;
   }
- 
+
   .article-body li { margin-bottom: 0.5em; }
- 
+
   .article-body a { color: var(--accent); text-decoration: none; }
   .article-body a:hover { text-decoration: underline; }
- 
+
   .reading-time {
     display: inline-block;
     font-size: 11px;
@@ -540,13 +540,13 @@
     text-transform: uppercase;
     color: var(--text-dim);
   }
- 
+
   /* MORE POSTS */
   .more-posts {
     border-top: 1px solid var(--border);
     padding: 64px 48px;
   }
- 
+
   .more-posts-label {
     font-size: 11px;
     font-weight: 600;
@@ -558,20 +558,20 @@
     align-items: center;
     gap: 10px;
   }
- 
+
   .more-posts-label::after {
     content: '';
     flex: 1;
     height: 1px;
     background: var(--border);
   }
- 
+
   .more-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 0;
   }
- 
+
   /* FOOTER */
   .site-footer {
     border-top: 1px solid var(--border);
@@ -580,36 +580,37 @@
     align-items: center;
     justify-content: space-between;
   }
- 
+
   .footer-copy {
     font-size: 12px;
     color: var(--text-dim);
   }
- 
+
   .footer-links {
     display: flex;
     gap: 20px;
   }
- 
+
   .footer-links a {
     font-size: 12px;
     color: var(--text-dim);
     text-decoration: none;
     transition: color 0.15s;
   }
- 
+
   .footer-links a:hover { color: var(--text-muted); }
- 
+
 </style>
 </head>
 <body>
- 
+
 <!-- ==================== HEADER ==================== -->
 <header class="site-header">
   <a class="site-logo" onclick="showListing()">
-    <div class="logo-mark">
-      <span></span><span></span><span></span><span></span>
-    </div>
+    <svg width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <rect width="28" height="28" rx="5" fill="#1a1a1a"/>
+      <text x="14" y="20" text-anchor="middle" font-family="'DM Sans', monospace" font-size="17" font-weight="800" fill="#e8541a">$</text>
+    </svg>
     <span class="logo-text">ysf.root</span>
   </a>
   <div class="header-tags">
@@ -619,24 +620,24 @@
     <button class="header-tag" onclick="filterPosts('inside', this)">Inside</button>
   </div>
 </header>
- 
+
 <!-- ==================== LISTING PAGE ==================== -->
 <div id="listing-page" class="page">
- 
+
   <section class="hero">
     <div class="hero-left">
-      <p class="hero-eyebrow">Security Engineering</p>
-      <h1 class="hero-title">Building <em>trust,</em><br>at scale</h1>
+      <p class="hero-eyebrow">ysf.root</p>
+      <h1 class="hero-title">Breaking,<br><em>building,</em><br>securing.</h1>
     </div>
     <div class="hero-right">
-      <p class="hero-desc">Thinking out loud about security, infrastructure, and trust."</p>
+      <p class="hero-desc">My notes on breaking, building, and securing systems.</p>
       <div class="hero-stat">
         <strong id="post-count">6</strong>
         Articles published
       </div>
     </div>
   </section>
- 
+
   <div class="filter-bar">
     <span class="filter-label">Filter</span>
     <button class="filter-btn active" onclick="filterPosts('all', this)">All posts</button>
@@ -644,29 +645,29 @@
     <button class="filter-btn" onclick="filterPosts('engineering', this)">Engineering</button>
     <button class="filter-btn" onclick="filterPosts('inside', this)">Inside</button>
   </div>
- 
+
   <div class="blog-grid" id="blog-grid"></div>
- 
+
   <footer class="site-footer">
-    <span class="footer-copy">© 2024 Security Blog</span>
+    <span class="footer-copy">© 2024 ysf.root</span>
     <div class="footer-links">
       <a href="#">RSS</a>
       <a href="#">Twitter</a>
       <a href="#">GitHub</a>
     </div>
   </footer>
- 
+
 </div>
- 
+
 <!-- ==================== ARTICLE PAGE ==================== -->
 <div id="article-page" style="display:none;"></div>
- 
+
 <script>
 const posts = [
   {
     id: 1,
     title: "Enforcing device trust on code changes",
-    date: "December 8, 2023",
+    date: "December 8, 2025",
     author: "Yusuf M",
     authorInitials: "YM",
     authorRole: "Security Engineer",
@@ -698,7 +699,7 @@ const posts = [
     </svg>`,
     content: `
       <p>At our company, every code change that lands on a release branch must be trustworthy — not just from a code quality perspective, but from a device and identity perspective too. This post walks through how we built a system to enforce that trust at the commit level.</p>
- 
+
       <h2>The problem with unsigned commits</h2>
       <p>By default, Git doesn't verify who actually authored a commit. Anyone with push access to a repository can set their git config to any name and email they want — including yours. For most development workflows, this isn't a concern. But on high-value branches like <code>main</code> and <code>release/*</code>, we need stronger guarantees.</p>
       <p>We wanted to ensure that every commit on a protected branch was:</p>
@@ -707,11 +708,11 @@ const posts = [
         <li>Signed from a managed, trusted device</li>
         <li>Tamper-evident after the fact</li>
       </ul>
- 
+
       <h2>Commit signatures with GPG</h2>
       <p>Git supports commit signing with GPG keys out of the box. When you run <code>git commit -S</code>, Git will sign the commit with your configured GPG key. GitHub renders a "Verified" badge on signed commits when the key is associated with your account.</p>
       <p>This gives us tamper-evidence, but it doesn't directly tie the commit to a managed device. A developer could sign a commit from their personal laptop. We needed to go a step further.</p>
- 
+
       <h2>Okta Device Trust as a signing root</h2>
       <p>The key insight was using Okta Device Trust certificates as the root of trust for commit signing. When a device enrolls in our MDM, Okta issues a device certificate. We wrote a small helper that:</p>
       <ol>
@@ -719,7 +720,7 @@ const posts = [
         <li>Derives a per-developer GPG key, cosigned by the device cert</li>
         <li>Registers that key with GitHub automatically</li>
       </ol>
- 
+
       <pre><code># Check device cert presence before allowing commit
 #!/bin/bash
 security find-certificate -c "Okta Device Trust" \
@@ -729,16 +730,16 @@ if [ $? -ne 0 ]; then
   echo "Please enroll your device before committing."
   exit 1
 fi</code></pre>
- 
+
       <h2>GitHub branch protection rules</h2>
       <p>With signing in place, we enabled branch protection rules on all release branches to require signed commits. GitHub will reject any push that contains unsigned commits, giving us a hard enforcement point even if a developer's local hooks are bypassed.</p>
- 
+
       <blockquote>Enforce at the boundary, not just at the source. Local hooks can be skipped. Server-side rules cannot.</blockquote>
- 
+
       <h2>The developer experience</h2>
       <p>The biggest risk with security controls is that they slow developers down and get bypassed. We put significant effort into making this seamless: onboarding is fully automated, re-enrollment triggers automatically on device changes, and the error messages are specific enough that developers can self-serve most issues.</p>
       <p>After six months of running this in production, we've had zero bypass incidents and the p99 overhead for a commit operation is under 80ms. We consider that a success.</p>
- 
+
       <h2>What's next</h2>
       <p>We're currently exploring extending this to CI/CD pipeline steps, so that not just human commits but also automated commits from our release tooling carry the same device trust guarantees. Watch this space.</p>
     `
@@ -746,7 +747,7 @@ fi</code></pre>
   {
     id: 2,
     title: "Server-side sandboxing: Containers and seccomp",
-    date: "October 24, 2025",
+    date: "December 26, 2025",
     author: "Yusuf M",
     authorInitials: "YM",
     authorRole: "Security Engineering",
@@ -775,11 +776,11 @@ fi</code></pre>
     </svg>`,
     content: `
       <p>When you run untrusted code — whether it's user-submitted plugins, third-party integrations, or even your own services that handle hostile inputs — you need to think carefully about what that code can actually <em>do</em> on your system. Containers and seccomp are two primitives that, when combined, give you meaningful isolation without the overhead of full virtual machines.</p>
- 
+
       <h2>Why not just use VMs?</h2>
       <p>Virtual machines give you strong isolation by emulating separate hardware, but they come with real costs: slow startup times (seconds, not milliseconds), significant memory overhead per instance, and operational complexity around image management and orchestration.</p>
       <p>For many workloads — particularly those that need to spin up and tear down rapidly — these costs are prohibitive. Containers and seccomp let you get most of the security benefit at a fraction of the cost.</p>
- 
+
       <h2>Container isolation fundamentals</h2>
       <p>Linux containers aren't a single thing — they're a combination of kernel features working together:</p>
       <ul>
@@ -788,12 +789,12 @@ fi</code></pre>
         <li><strong>Capabilities</strong> restrict what privileged operations the container can perform</li>
       </ul>
       <p>By default, containers still share the host kernel. This is both what makes them fast and what makes them less isolated than VMs.</p>
- 
+
       <h2>Enter seccomp</h2>
       <p>Seccomp (secure computing mode) is a Linux kernel feature that lets you restrict which system calls a process can make. A seccomp profile is essentially a filter that says: "this process is allowed to call <code>read</code>, <code>write</code>, <code>open</code>… but not <code>ptrace</code>, <code>mount</code>, or <code>kexec_load</code>."</p>
- 
+
       <blockquote>Seccomp doesn't just reduce the attack surface — it redefines it. Instead of defending against exploitation of any syscall, you only need to worry about the small set you've explicitly permitted.</blockquote>
- 
+
       <pre><code>{
   "defaultAction": "SCMP_ACT_ERRNO",
   "syscalls": [
@@ -805,10 +806,10 @@ fi</code></pre>
     }
   ]
 }</code></pre>
- 
+
       <h2>Building a minimal allowlist</h2>
       <p>The hardest part of seccomp is figuring out which syscalls your application actually needs. We use <code>strace</code> in audit mode to record every syscall made during integration tests, then build an allowlist from that. This process surfaced some surprising dependencies — glibc's <code>malloc</code> implementation, for instance, occasionally calls <code>madvise</code>, which you'd never know to include without tracing.</p>
- 
+
       <h2>Defense in depth</h2>
       <p>Neither containers nor seccomp are silver bullets. A misconfigured container with excessive capabilities can still be dangerous. A seccomp profile that's too permissive provides little protection. The value comes from layering these controls: namespace isolation limits blast radius, capability dropping removes common privilege escalation vectors, and seccomp blocks kernel attack surface.</p>
       <p>In part three of this series, we'll look at gVisor and how it pushes this isolation further by intercepting system calls entirely.</p>
@@ -817,7 +818,7 @@ fi</code></pre>
   {
     id: 3,
     title: "Server-side sandboxing: An introduction",
-    date: "December 12, 2025",
+    date: "January 4, 2026",
     author: "Yusuf M",
     authorInitials: "YM",
     authorRole: "Security Engineering",
@@ -844,7 +845,7 @@ fi</code></pre>
     </svg>`,
     content: `
       <p>Sandboxing is one of those security techniques that sounds simple in theory — put untrusted code in a box — but turns out to be surprisingly nuanced in practice. This three-part series documents what we learned deploying sandboxing for server-side workloads at scale.</p>
- 
+
       <h2>What are we protecting against?</h2>
       <p>Before choosing a sandboxing approach, it's worth being precise about your threat model. For us, the primary concerns were:</p>
       <ul>
@@ -853,7 +854,7 @@ fi</code></pre>
         <li><strong>Data exfiltration</strong> — a compromised process reading secrets it wasn't intended to access</li>
       </ul>
       <p>We were less concerned about local privilege escalation (our hosts are ephemeral and single-tenant) or denial of service (we have separate resource limits for that).</p>
- 
+
       <h2>The sandboxing landscape</h2>
       <p>There's a spectrum of sandboxing approaches, roughly ordered by isolation strength and performance cost:</p>
       <ul>
@@ -863,20 +864,20 @@ fi</code></pre>
         <li><strong>Firecracker/VMs</strong> — full hardware virtualization</li>
       </ul>
       <p>We ended up using different points on this spectrum for different workloads, based on their performance sensitivity and risk profile.</p>
- 
+
       <h2>Why this matters more than ever</h2>
       <p>Modern applications are increasingly polyglot and plugin-based. Whether it's a Figma plugin running in a sandboxed iframe, a CI system executing user-submitted scripts, or an AI model executing generated code — the pattern of running untrusted code is everywhere.</p>
       <p>Getting sandboxing right isn't optional anymore. The question is just how much isolation you need and how much you're willing to pay for it.</p>
- 
+
       <blockquote>The best sandbox is one you forget is there — invisible to developers until the day it actually matters.</blockquote>
- 
+
       <p>In part two, we'll dive deep into containers and seccomp, including the specific profiles we use and the tooling we built to generate and maintain them. In part three, we'll cover gVisor and when the additional isolation overhead is worth it.</p>
     `
   },
   {
     id: 4,
     title: "Zero-trust network access at scale",
-    date: "December 21, 2025",
+    date: "January 21, 2026",
     author: "Yusuf M",
     authorInitials: "YM",
     authorRole: "Infrastructure Security",
@@ -906,10 +907,10 @@ fi</code></pre>
     </svg>`,
     content: `
       <p>Traditional network security assumed a hard perimeter: everything inside the network was trusted, everything outside was not. Zero-trust flips this model on its head — no implicit trust based on network location, every request must be authenticated and authorized regardless of where it originates.</p>
- 
+
       <h2>Why we needed to change</h2>
       <p>Our old VPN-based model was showing its age. Developers complained about performance. The blast radius from a single compromised credential was enormous. And as we moved more workloads to cloud environments, the concept of a "corporate network" had become increasingly theoretical.</p>
- 
+
       <h2>The architecture we landed on</h2>
       <p>Our zero-trust implementation has three core pillars:</p>
       <ul>
@@ -917,13 +918,13 @@ fi</code></pre>
         <li><strong>Short-lived credentials</strong> — no long-lived service account keys, everything uses SPIFFE/SPIRE workload identity</li>
         <li><strong>Continuous verification</strong> — device posture is checked on every request, not just at VPN connect time</li>
       </ul>
- 
+
       <blockquote>Assume breach. Then build systems where a breach of one component doesn't automatically become a breach of everything.</blockquote>
- 
+
       <h2>The hardest part: legacy services</h2>
       <p>New services were easy — we wrote the identity-aware proxy support into our standard service template and it came for free. The hard part was the long tail of legacy services that assumed they could talk to anything on the internal network without authentication.</p>
       <p>We built a compatibility shim that translated mTLS workload identity into the Basic Auth credentials those services expected, giving us a migration path that didn't require simultaneous rewrites of everything.</p>
- 
+
       <h2>Measuring success</h2>
       <p>One year in, our mean time to detect lateral movement attempts has dropped from days to minutes. Developer experience has actually improved — the identity-aware proxy handles SSO transparently, so developers no longer have to think about which internal tool requires which VPN split tunnel.</p>
     `
@@ -931,7 +932,7 @@ fi</code></pre>
   {
     id: 5,
     title: "Scaling security review with static analysis",
-    date: "January 6, 2026",
+    date: "February 5, 2026",
     author: "Yusuf M",
     authorInitials: "YM",
     authorRole: "Application Security",
@@ -959,10 +960,10 @@ fi</code></pre>
     </svg>`,
     content: `
       <p>When your engineering org is small, having a security person review every pull request is feasible. When you're at hundreds of engineers shipping code daily, it isn't. This post describes how we built automated static analysis tooling to scale our security review capacity without scaling our security team linearly.</p>
- 
+
       <h2>The problem with manual review</h2>
       <p>Manual security review is slow, inconsistent, and doesn't scale. More importantly, it creates a bottleneck that incentivizes engineers to work around the process. We wanted security to be something that happened automatically and invisibly, not a gate that engineers dreaded.</p>
- 
+
       <h2>Choosing what to automate</h2>
       <p>Not all security issues are amenable to static analysis. SQL injection, for example, requires understanding your data flow from user input to database query. XSS requires understanding how user-controlled strings reach the DOM. These are tractable for static analysis. But business logic vulnerabilities — "this user shouldn't be able to see another user's data" — require domain knowledge that's very hard to encode in a tool.</p>
       <p>We focused first on the vulnerability classes with high precision (low false positive rate) and high prevalence:</p>
@@ -972,10 +973,10 @@ fi</code></pre>
         <li>Known-vulnerable dependency versions</li>
         <li>Common cryptographic misuse patterns</li>
       </ul>
- 
+
       <h2>The toolchain</h2>
       <p>We built on top of Semgrep for pattern-based analysis and added custom rules for our internal frameworks. The critical design decision was integrating directly into the CI pipeline with a fail-open stance: if the analyzer crashes or takes too long, the build continues. We never want security tooling to be a reliability risk for shipping.</p>
- 
+
       <pre><code># .semgrep.yml — example custom rule
 rules:
   - id: no-raw-sql-interpolation
@@ -985,12 +986,12 @@ rules:
     message: "SQL query built with string interpolation. Use parameterized queries."
     severity: ERROR
     languages: [python]</code></pre>
- 
+
       <h2>Fighting alert fatigue</h2>
       <p>The biggest failure mode for static analysis is too many false positives — developers start ignoring all alerts, including real ones. We invested heavily in tuning our rules to achieve greater than 90% precision before rolling them out. A rule that fires on 10 real issues and 100 false positives is worse than no rule at all.</p>
- 
+
       <blockquote>A security tool that developers learn to ignore is a liability, not an asset. Precision matters more than recall.</blockquote>
- 
+
       <h2>Results</h2>
       <p>After 12 months, our automated tooling catches around 60% of the security issues that would have previously required manual review. Our security team now focuses human attention on the harder, context-dependent issues that can't be automated — which, it turns out, is a much more interesting use of their time.</p>
     `
@@ -998,7 +999,7 @@ rules:
   {
     id: 6,
     title: "Bug bounty: Year one in review",
-    date: "February 14, 2026",
+    date: "March 18, 2026",
     author: "Yusuf M",
     authorInitials: "YM",
     authorRole: "Security",
@@ -1025,7 +1026,7 @@ rules:
     content: `
       <p>One year ago, we launched our public bug bounty program. We weren't sure what to expect — would we be flooded with noise? Would researchers find things we'd missed? Would our triage capacity hold up?</p>
       <p>The short answer: yes to all three, in different proportions than we anticipated.</p>
- 
+
       <h2>The numbers</h2>
       <p>In our first year we received 847 reports. Of those:</p>
       <ul>
@@ -1034,27 +1035,27 @@ rules:
         <li>257 were duplicates or NA (not applicable)</li>
       </ul>
       <p>We paid out $580,000 in bounties across 312 valid reports, with an average payout of $1,859 and a maximum single payout of $45,000 for a critical authentication bypass.</p>
- 
+
       <h2>What surprised us</h2>
       <p>We expected most reports to be low-severity. We were wrong — a meaningful fraction of reports were high or critical severity, finding real vulnerabilities in production systems that our internal security reviews had missed. This was humbling, and validating at the same time.</p>
       <p>The quality distribution was highly skewed. Our top 10 researchers submitted over 40% of valid reports. Building relationships with those researchers turned out to be as valuable as the program itself.</p>
- 
+
       <blockquote>Bug bounty isn't just about finding vulnerabilities. It's about building a relationship with the security community. The researchers who trust you enough to responsibly disclose are an asset.</blockquote>
- 
+
       <h2>Triage at scale</h2>
       <p>The operational challenge we underestimated was triage. Processing 847 reports a year — about 70 per month — requires a dedicated workflow. We built internal tooling to route reports by product area, deduplicate against our existing backlog, and track SLA compliance for initial response (we target 24 hours).</p>
- 
+
       <h2>What we'd do differently</h2>
       <p>We'd define scope more precisely from day one. Vague scope language leads to arguments with researchers about whether something is in scope, which creates bad experiences on both sides. We'd also invest in the researcher relationship earlier — proactively reaching out to top reporters, offering retesting access, and publishing more about what we fixed.</p>
- 
+
       <h2>Year two plans</h2>
       <p>We're expanding scope to include some internal tooling, increasing maximum payouts for critical vulnerabilities, and launching a live hacking event with our top researchers. The program has more than paid for itself — not just in vulnerabilities found, but in the security culture shift of treating external researchers as collaborators rather than adversaries.</p>
     `
   }
 ];
- 
+
 let currentFilter = 'all';
- 
+
 function renderCards(postsToRender) {
   const grid = document.getElementById('blog-grid');
   grid.innerHTML = '';
@@ -1079,29 +1080,29 @@ function renderCards(postsToRender) {
   });
   document.getElementById('post-count').textContent = postsToRender.length;
 }
- 
+
 function filterPosts(filter, btn) {
   currentFilter = filter;
- 
+
   // Update all filter buttons (both header and filter bar)
   document.querySelectorAll('.filter-btn, .header-tag').forEach(b => b.classList.remove('active'));
   document.querySelectorAll('.filter-btn, .header-tag').forEach(b => {
     const btnFilter = b.getAttribute('onclick')?.match(/filterPosts\('(\w+)'/)?.[1];
     if (btnFilter === filter) b.classList.add('active');
   });
- 
+
   const filtered = filter === 'all' ? posts : posts.filter(p => p.tags.includes(filter));
   renderCards(filtered);
 }
- 
+
 function showArticle(post) {
   document.getElementById('listing-page').style.display = 'none';
   const ap = document.getElementById('article-page');
   ap.style.display = 'block';
- 
+
   // Get 2 other posts for "more posts"
   const others = posts.filter(p => p.id !== post.id).slice(0, 3);
- 
+
   ap.innerHTML = `
     <div class="page">
       <article class="article-page">
@@ -1111,14 +1112,14 @@ function showArticle(post) {
           </svg>
           All posts
         </button>
- 
+
         <div class="article-eyebrow">
           ${post.tagLabels.map(t => `<span class="tag">${t}</span>`).join('')}
           <span class="reading-time">${post.readTime}</span>
         </div>
- 
+
         <h1 class="article-title">${post.title}</h1>
- 
+
         <div class="article-meta">
           <div class="meta-author">
             <div class="author-avatar">${post.authorInitials}</div>
@@ -1138,12 +1139,12 @@ function showArticle(post) {
             Reading time
           </div>
         </div>
- 
+
         <div class="article-hero-thumb">${post.thumb}</div>
- 
+
         <div class="article-body">${post.content}</div>
       </article>
- 
+
       <section class="more-posts">
         <p class="more-posts-label">More posts</p>
         <div class="blog-grid more-grid">
@@ -1163,9 +1164,9 @@ function showArticle(post) {
           `).join('')}
         </div>
       </section>
- 
+
       <footer class="site-footer">
-        <span class="footer-copy">© 2024 Security Blog</span>
+        <span class="footer-copy">© 2024 ysf.root</span>
         <div class="footer-links">
           <a href="#">RSS</a>
           <a href="#">Twitter</a>
@@ -1174,15 +1175,15 @@ function showArticle(post) {
       </footer>
     </div>
   `;
- 
+
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
- 
+
 function showArticleById(id) {
   const post = posts.find(p => p.id === id);
   if (post) showArticle(post);
 }
- 
+
 function showListing() {
   document.getElementById('article-page').style.display = 'none';
   const lp = document.getElementById('listing-page');
@@ -1192,7 +1193,7 @@ function showListing() {
   lp.classList.add('page');
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
- 
+
 // Init
 renderCards(posts);
 </script>
