@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Defining a container security baseline that actually holds in production — ysf.root</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,700;0,9..40,800;1,9..40,400&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body class="page">
+
+<header class="site-header">
+  <a class="site-logo" href="../index.html">
+    <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
+      <rect width="28" height="28" rx="5" fill="#1a1a1a"/>
+      <text x="14" y="20" text-anchor="middle" font-family="'DM Sans', monospace" font-size="17" font-weight="800" fill="#e8541a">$</text>
+    </svg>
+    <span class="logo-text">ysf.root</span>
+  </a>
+  <div class="header-tags">
+    <a class="header-tag" href="../index.html">All</a>
+    <a class="header-tag" href="../index.html?filter=security">Security</a>
+    <a class="header-tag" href="../index.html?filter=engineering">Engineering</a>
+    <a class="header-tag" href="../index.html?filter=inside">Inside</a>
+  </div>
+</header>
+
+<article class="article-page">
+  <a class="back-btn" href="../index.html">
+    <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M10 3L5 8l5 5"/>
+    </svg>
+    All posts
+  </a>
+
+  <div class="article-eyebrow">
+    <span class="tag">Security</span><span class="tag">Engineering</span><span class="tag">Cloud</span>
+    <span class="reading-time">11 min read</span>
+  </div>
+
+  <h1 class="article-title">Defining a container security baseline that actually holds in production</h1>
+
+  <div class="article-meta">
+    <div class="meta-author">
+      <div class="author-avatar">YM</div>
+      <div>
+        <div class="author-name">Yusuf M</div>
+        <div class="author-role">Security</div>
+      </div>
+    </div>
+    <div class="meta-sep"></div>
+    <div class="meta-info">
+      <strong>May 21, 2026</strong>
+      Published
+    </div>
+    <div class="meta-sep"></div>
+    <div class="meta-info">
+      <strong>11 min read</strong>
+      Reading time
+    </div>
+  </div>
+
+  <!-- Hero SVG: bright, bold, two-panel — insecure vs hardened container -->
+  <div class="article-hero-thumb">
+    <svg width="100%" viewBox="0 0 800 450" role="img" xmlns="http://www.w3.org/2000/svg">
+      <title>Container security baseline hero</title>
+      <desc>Bright two-panel illustration: left shows an insecure container running as root, right shows a hardened container with security controls</desc>
+
+      <!-- LEFT PANEL: insecure — vivid purple -->
+      <rect x="0" y="0" width="400" height="450" fill="#6B21A8"/>
+      <ellipse cx="200" cy="220" rx="150" ry="120" fill="#7C3AED" opacity="0.7"/>
+
+      <!-- Container box — dark, ominous -->
+      <rect x="80" y="110" width="240" height="230" rx="10" fill="#3B0764"/>
+      <!-- Container lid/top -->
+      <rect x="80" y="110" width="240" height="36" rx="8" fill="#4C1D95"/>
+      <!-- Container label -->
+      <text x="200" y="133" text-anchor="middle" font-family="monospace" font-size="11" font-weight="700" fill="#C084FC">container</text>
+
+      <!-- Root user indicator — glowing red warning -->
+      <circle cx="200" cy="200" r="38" fill="#4C1D95"/>
+      <text x="200" y="193" text-anchor="middle" font-family="monospace" font-size="10" fill="#F87171">running as</text>
+      <text x="200" y="210" text-anchor="middle" font-family="monospace" font-size="13" font-weight="800" fill="#EF4444">root</text>
+      <text x="200" y="226" text-anchor="middle" font-family="monospace" font-size="10" fill="#F87171">uid=0</text>
+
+      <!-- Warning badges -->
+      <circle cx="120" cy="270" r="14" fill="#EF4444"/>
+      <text x="120" y="275" text-anchor="middle" font-family="monospace" font-size="13" font-weight="800" fill="#fff">!</text>
+      <text x="140" y="272" font-family="monospace" font-size="9" fill="#F9A8D4">writable fs</text>
+
+      <circle cx="120" cy="300" r="14" fill="#F97316"/>
+      <text x="120" y="305" text-anchor="middle" font-family="monospace" font-size="13" font-weight="800" fill="#fff">!</text>
+      <text x="140" y="302" font-family="monospace" font-size="9" fill="#F9A8D4">all caps</text>
+
+      <circle cx="120" cy="330" r="14" fill="#FBBF24"/>
+      <text x="120" y="335" text-anchor="middle" font-family="monospace" font-size="13" font-weight="800" fill="#3B0764">!</text>
+      <text x="140" y="332" font-family="monospace" font-size="9" fill="#F9A8D4">no limits</text>
+
+      <!-- Glow effect around root circle -->
+      <circle cx="200" cy="200" r="46" fill="none" stroke="#EF4444" stroke-width="2" opacity="0.5"/>
+      <circle cx="200" cy="200" r="54" fill="none" stroke="#EF4444" stroke-width="1" opacity="0.25"/>
+
+      <!-- DIVIDER -->
+      <rect x="396" y="0" width="8" height="450" fill="#1a1a1a"/>
+
+      <!-- RIGHT PANEL: hardened — vivid cyan/lime -->
+      <rect x="404" y="0" width="396" height="450" fill="#064E3B"/>
+      <ellipse cx="602" cy="220" rx="150" ry="120" fill="#065F46" opacity="0.8"/>
+
+      <!-- Hardened container box -->
+      <rect x="484" y="110" width="240" height="230" rx="10" fill="#022C22"/>
+      <rect x="484" y="110" width="240" height="36" rx="8" fill="#034732"/>
+      <text x="604" y="133" text-anchor="middle" font-family="monospace" font-size="11" font-weight="700" fill="#34D399">container</text>
+
+      <!-- Non-root indicator -->
+      <circle cx="604" cy="200" r="38" fill="#034732"/>
+      <text x="604" y="193" text-anchor="middle" font-family="monospace" font-size="10" fill="#6EE7B7">running as</text>
+      <text x="604" y="210" text-anchor="middle" font-family="monospace" font-size="11" font-weight="800" fill="#34D399">appuser</text>
+      <text x="604" y="226" text-anchor="middle" font-family="monospace" font-size="10" fill="#6EE7B7">uid=1001</text>
+
+      <!-- Check badges — bright lime/cyan -->
+      <circle cx="524" cy="270" r="14" fill="#10B981"/>
+      <path d="M517 270 L522 276 L532 263" stroke="#fff" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      <text x="544" y="272" font-family="monospace" font-size="9" fill="#6EE7B7">read-only fs</text>
+
+      <circle cx="524" cy="300" r="14" fill="#06B6D4"/>
+      <path d="M517 300 L522 306 L532 293" stroke="#fff" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      <text x="544" y="302" font-family="monospace" font-size="9" fill="#6EE7B7">caps dropped</text>
+
+      <circle cx="524" cy="330" r="14" fill="#8B5CF6"/>
+      <path d="M517 330 L522 336 L532 323" stroke="#fff" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      <text x="544" y="332" font-family="monospace" font-size="9" fill="#6EE7B7">seccomp on</text>
+
+      <!-- Glow around hardened circle -->
+      <circle cx="604" cy="200" r="46" fill="none" stroke="#34D399" stroke-width="2" opacity="0.5"/>
+      <circle cx="604" cy="200" r="54" fill="none" stroke="#34D399" stroke-width="1" opacity="0.25"/>
+
+      <!-- LABELS -->
+      <rect x="80" y="400" width="240" height="30" rx="5" fill="#4C1D95"/>
+      <text x="200" y="420" text-anchor="middle" font-family="'DM Sans', monospace" font-size="12" font-weight="700" fill="#C084FC">default config ✕</text>
+      <rect x="484" y="400" width="240" height="30" rx="5" fill="#034732"/>
+      <text x="604" y="420" text-anchor="middle" font-family="'DM Sans', monospace" font-size="12" font-weight="700" fill="#34D399">hardened baseline ✓</text>
+    </svg>
+  </div>
+
+  <div class="article-body">
+
+    <p>A container running as root with a writable filesystem and all Linux capabilities intact is not a container — it's a process with extra steps. The isolation people assume they're getting from containerization doesn't come from the container runtime. It comes from how you configure it. Most production containers I've seen are configured with the defaults, which means most production containers are significantly less isolated than they appear.</p>
+
+    <p>This post is the baseline we defined for production container workloads running on Docker and Kubernetes — five controls, why each one matters, and exactly what the configuration looks like. Not a theoretical checklist. The actual settings.</p>
+
+    <h2>Why "we use containers" is not a security posture</h2>
+
+    <p>Container isolation is real but it's not magic. A container shares the host kernel with every other container on that node. If a process inside a container can exploit a kernel vulnerability, escalate to root, or escape the container namespace, the host is compromised — and from the host, every other container on that node is reachable.</p>
+
+    <p>The default Docker and Kubernetes configurations don't protect against this. A container runs as root unless you tell it not to. The filesystem is writable unless you tell it not to be. All Linux capabilities are available unless you explicitly drop them. Syscalls that have no business being called by an application process are permitted by default.</p>
+
+    <p>The baseline is the set of settings that close these gaps. It's not about achieving perfect isolation — it's about making container escape meaningfully harder and limiting blast radius when it happens anyway.</p>
+
+    <h2>Control 1: Non-root user</h2>
+
+    <p>Running as root inside a container means a process that escapes the container namespace lands on the host as root. That's game over for that node. There's no legitimate reason for an application process to run as uid 0, and most don't need to — but they will unless you explicitly configure otherwise.</p>
+
+    <p>In the Dockerfile, create a dedicated user and switch to it before the final <code>CMD</code> or <code>ENTRYPOINT</code>:</p>
+
+<pre><code># Dockerfile
+FROM node:20-alpine
+
+WORKDIR /app
+COPY package*.json ./
+RUN npm ci --only=production
+
+COPY . .
+
+# Create non-root user
+RUN addgroup -S appgroup && adduser -S appuser -G appgroup
+
+# Own the app directory
+RUN chown -R appuser:appgroup /app
+
+# Switch to non-root user before running
+USER appuser
+
+EXPOSE 3000
+CMD ["node", "server.js"]</code></pre>
+
+    <p>In Kubernetes, enforce this at the pod level with a <code>SecurityContext</code> — and go further by explicitly disabling privilege escalation:</p>
+
+<pre><code># Kubernetes: pod security context
+apiVersion: v1
+kind: Pod
+spec:
+  securityContext:
+    runAsNonRoot: true
+    runAsUser: 1001
+    runAsGroup: 1001
+    fsGroup: 1001
+  containers:
+  - name: app
+    image: myapp:latest
+    securityContext:
+      allowPrivilegeEscalation: false
+      runAsNonRoot: true
+      runAsUser: 1001</code></pre>
+
+    <p>The <code>allowPrivilegeEscalation: false</code> flag is as important as <code>runAsNonRoot</code>. It prevents a process from gaining more privileges than its parent — even if a setuid binary inside the container would otherwise allow it.</p>
+
+    <h2>Control 2: Read-only root filesystem</h2>
+
+    <p>A writable filesystem is a persistence mechanism. An attacker who achieves code execution inside a container can write malware, modify binaries, or drop a backdoor. A read-only root filesystem eliminates that entire class of post-exploitation technique.</p>
+
+    <p>Most applications don't need to write to the root filesystem at runtime. They need to write to specific directories — temp files, logs, uploads. Mount those directories explicitly as writable volumes and make everything else read-only:</p>
+
+<pre><code># Kubernetes: read-only root filesystem with specific writable mounts
+containers:
+- name: app
+  image: myapp:latest
+  securityContext:
+    readOnlyRootFilesystem: true
+  volumeMounts:
+  - name: tmp
+    mountPath: /tmp
+  - name: logs
+    mountPath: /app/logs
+volumes:
+- name: tmp
+  emptyDir: {}
+- name: logs
+  emptyDir: {}</code></pre>
+
+    <p>The first time you apply this you'll discover every directory your application writes to — because it'll crash on startup. That's actually useful information. Applications that assumed they could write anywhere now have explicit, documented write paths.</p>
+
+    <h2>Control 3: Drop Linux capabilities</h2>
+
+    <p>Linux capabilities break root's all-or-nothing privilege model into discrete units. A container process running with <code>CAP_NET_ADMIN</code> can reconfigure network interfaces. With <code>CAP_SYS_PTRACE</code> it can attach to any process. With <code>CAP_SYS_MODULE</code> it can load kernel modules. Docker grants a default set of capabilities that most application processes have absolutely no need for.</p>
+
+    <p>The correct default is to drop all capabilities and add back only what's explicitly required:</p>
+
+<pre><code># Kubernetes: drop all capabilities, add back only what's needed
+containers:
+- name: app
+  image: myapp:latest
+  securityContext:
+    capabilities:
+      drop:
+      - ALL
+      add:
+      # Only add what your application actually needs.
+      # Most web services need nothing added back.
+      # Examples of legitimate additions:
+      # - NET_BIND_SERVICE  # bind to ports < 1024 (better: run on 8080+)
+      # - CHOWN             # only if container needs to chown files at start</code></pre>
+
+    <p>In practice, the vast majority of web services and microservices need zero capabilities added back after dropping all. If your application needs to bind to port 80, run it on port 8080 and let Kubernetes handle the port mapping — that eliminates the <code>NET_BIND_SERVICE</code> requirement entirely.</p>
+
+    <p>The capabilities an application actually uses versus the capabilities it's granted by default are almost never the same set. Auditing this gap is one of the fastest ways to reduce your container attack surface.</p>
+
+    <h2>Control 4: Seccomp profiles</h2>
+
+    <p>Seccomp (secure computing mode) filters the syscalls a process is allowed to make. A container process that can only make the syscalls it legitimately needs cannot exploit a kernel vulnerability that requires a different syscall — even if the vulnerability exists on that kernel version.</p>
+
+    <p>Kubernetes has shipped with a default seccomp profile since 1.27 — but it's not applied unless you ask for it. The <code>RuntimeDefault</code> profile blocks a meaningful set of dangerous syscalls (including <code>ptrace</code>, <code>reboot</code>, <code>mount</code>, and others) with no application impact for standard workloads:</p>
+
+<pre><code># Kubernetes: apply default seccomp profile
+containers:
+- name: app
+  image: myapp:latest
+  securityContext:
+    seccompProfile:
+      type: RuntimeDefault</code></pre>
+
+    <p>For higher-sensitivity workloads, a custom profile scoped to exactly the syscalls your application makes is stronger — but requires profiling first. The <code>--security-opt seccomp=unconfined</code> flag in Docker and the equivalent Kubernetes config should be treated as a critical finding. Unconfined means no syscall filtering at all.</p>
+
+<pre><code># Generate a syscall profile using Docker's built-in tracing
+# Run your application under load, then extract the syscalls it actually uses
+docker run --security-opt seccomp=unconfined \
+  --cap-add SYS_PTRACE \
+  myapp:latest &
+
+# Use strace or the Falco syscall tracer to capture the syscall set
+# Then build a custom seccomp profile from that allowlist</code></pre>
+
+    <h2>Control 5: Resource limits</h2>
+
+    <p>Resource limits aren't just an operational concern — they're a security control. A container with no CPU or memory limits can consume the entire node's resources, starving every other container on that node. That's a denial of service vector available to any process that achieves code execution inside your cluster.</p>
+
+    <p>Every container in production should have both requests (the guaranteed allocation) and limits (the hard ceiling) defined:</p>
+
+<pre><code># Kubernetes: resource requests and limits
+containers:
+- name: app
+  image: myapp:latest
+  resources:
+    requests:
+      memory: "128Mi"
+      cpu: "100m"
+    limits:
+      memory: "256Mi"
+      cpu: "500m"</code></pre>
+
+    <p>The memory limit is the more important security control. When a process exceeds its memory limit, Kubernetes OOM-kills it — bounded blast radius. Without a limit, a memory leak or a memory exhaustion attack takes down the node. CPU limits prevent a single container from monopolizing compute, which matters for availability but also limits the throughput an attacker has available for brute-force or cryptomining workloads.</p>
+
+    <h2>Putting it together: the full security context</h2>
+
+    <p>All five controls together in a production-ready Kubernetes deployment:</p>
+
+<pre><code>apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: myapp
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: myapp
+  template:
+    metadata:
+      labels:
+        app: myapp
+    spec:
+      # Pod-level: non-root enforcement
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1001
+        runAsGroup: 1001
+        fsGroup: 1001
+        seccompProfile:
+          type: RuntimeDefault
+      containers:
+      - name: app
+        image: myapp:latest
+        ports:
+        - containerPort: 3000
+        # Container-level security controls
+        securityContext:
+          allowPrivilegeEscalation: false
+          readOnlyRootFilesystem: true
+          runAsNonRoot: true
+          runAsUser: 1001
+          capabilities:
+            drop:
+            - ALL
+        # Resource limits
+        resources:
+          requests:
+            memory: "128Mi"
+            cpu: "100m"
+          limits:
+            memory: "256Mi"
+            cpu: "500m"
+        # Explicit writable mounts only
+        volumeMounts:
+        - name: tmp
+          mountPath: /tmp
+        - name: app-logs
+          mountPath: /app/logs
+      volumes:
+      - name: tmp
+        emptyDir: {}
+      - name: app-logs
+        emptyDir: {}</code></pre>
+
+    <h2>Enforcing the baseline at scale</h2>
+
+    <p>A baseline nobody enforces is a doc nobody reads. Two controls make this stick across a cluster without requiring every team to get it right independently.</p>
+
+    <p>First, a <code>PodSecurityAdmission</code> policy at the namespace level. Kubernetes ships with three built-in policy levels — <code>privileged</code>, <code>baseline</code>, and <code>restricted</code>. The <code>restricted</code> profile enforces most of what's in this post: non-root, no privilege escalation, seccomp, dropped capabilities. Apply it to all production namespaces:</p>
+
+<pre><code># Label production namespaces to enforce restricted policy
+kubectl label namespace production \
+  pod-security.kubernetes.io/enforce=restricted \
+  pod-security.kubernetes.io/enforce-version=latest \
+  pod-security.kubernetes.io/warn=restricted \
+  pod-security.kubernetes.io/audit=restricted</code></pre>
+
+    <p>Second, a Conftest or OPA Gatekeeper policy in CI that fails any deployment manifest missing the required security context fields — before it reaches the cluster:</p>
+
+<pre><code># conftest/policies/container_security.rego
+package main
+
+deny[msg] {
+  container := input.spec.template.spec.containers[_]
+  not container.securityContext.readOnlyRootFilesystem
+  msg := sprintf("Container '%s' must set readOnlyRootFilesystem: true", [container.name])
+}
+
+deny[msg] {
+  container := input.spec.template.spec.containers[_]
+  not container.securityContext.allowPrivilegeEscalation == false
+  msg := sprintf("Container '%s' must set allowPrivilegeEscalation: false", [container.name])
+}
+
+deny[msg] {
+  container := input.spec.template.spec.containers[_]
+  not container.resources.limits.memory
+  msg := sprintf("Container '%s' must define a memory limit", [container.name])
+}</code></pre>
+
+    <h2>What the baseline actually prevents</h2>
+
+    <p>It's worth being explicit. These five controls don't make containers unbreakable. A sufficiently motivated attacker with a kernel exploit can still escape a hardened container. What they do is raise the cost significantly and bound the blast radius when something does go wrong.</p>
+
+    <p>Non-root prevents a container escape from landing as root on the host. Read-only filesystem prevents persistence and binary tampering. Dropped capabilities remove the most commonly-exploited privilege escalation vectors. Seccomp blocks the syscalls that kernel exploits typically require. Resource limits contain the operational impact of a compromised container.</p>
+
+    <blockquote>The question isn't whether containers can be escaped. They can. The question is what an attacker can do after they escape — and whether your baseline makes the answer "very little" instead of "everything."</blockquote>
+
+    <p>None of these settings require application changes in most cases. They require someone to write them down, apply them as defaults, and enforce them in CI. That's the gap between "we use containers" and "our containers are hardened." It's smaller than most teams think.</p>
+
+  </div>
+</article>
+
+<section class="more-posts">
+  <p class="more-posts-label">More posts</p>
+  <div class="blog-grid more-grid">
+    <a class="blog-card" href="secure-terraform-modules.html">
+      <div class="card-thumb">
+        <svg viewBox="0 0 800 450" xmlns="http://www.w3.org/2000/svg">
+          <rect width="800" height="450" fill="#1C0A00"/>
+          <ellipse cx="200" cy="210" rx="140" ry="110" fill="#2E1200" opacity="0.7"/>
+          <rect x="40" y="90" width="150" height="110" rx="5" fill="#2A1000" stroke="#e8541a" stroke-width="1.5"/>
+          <circle cx="178" cy="90" r="12" fill="#e8541a"/>
+          <text x="178" y="95" text-anchor="middle" font-family="monospace" font-size="12" font-weight="800" fill="#fff">!</text>
+          <rect x="404" y="0" width="396" height="450" fill="#0A1F0A"/>
+          <rect x="424" y="70" width="160" height="100" rx="6" fill="#112211" stroke="#4CAF50" stroke-width="1.5"/>
+          <circle cx="572" cy="70" r="12" fill="#4CAF50"/>
+          <path d="M565 70 L570 76 L580 63" stroke="#fff" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+          <rect x="424" y="190" width="160" height="100" rx="6" fill="#112211" stroke="#4CAF50" stroke-width="1.5"/>
+          <circle cx="572" cy="190" r="12" fill="#4CAF50"/>
+          <path d="M565 190 L570 196 L580 183" stroke="#fff" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+      <div class="card-body">
+        <p class="card-date">May 21, 2026</p>
+        <h2 class="card-title">Secure-by-design Terraform: AWS guardrails developers actually deploy</h2>
+        <p class="card-author">By Yusuf M</p>
+        <p class="card-excerpt">How we built reusable Terraform modules for S3, IAM, and WAF with security baked in by default — so developers never have to think about it.</p>
+        <div class="card-tags"><span class="tag">Security</span><span class="tag">Cloud</span><span class="tag">Engineering</span></div>
+      </div>
+    </a>
+    <a class="blog-card" href="iam-attack-surface.html">
+      <div class="card-thumb">
+        <svg viewBox="0 0 800 450" xmlns="http://www.w3.org/2000/svg">
+          <rect width="800" height="450" fill="#0d0d0d"/>
+          <circle cx="400" cy="225" r="52" fill="#1a1a1a" stroke="#e8541a" stroke-width="2"/>
+          <text x="400" y="219" text-anchor="middle" font-family="monospace" font-size="11" fill="#e8541a">IAM</text>
+          <text x="400" y="235" text-anchor="middle" font-family="monospace" font-size="11" fill="#e8541a">Role</text>
+          <circle cx="180" cy="120" r="36" fill="#1a1a1a" stroke="#444" stroke-width="1.5"/>
+          <text x="180" y="125" text-anchor="middle" font-family="monospace" font-size="9" fill="#888">Lambda</text>
+          <circle cx="620" cy="120" r="36" fill="#1a1a1a" stroke="#444" stroke-width="1.5"/>
+          <text x="620" y="125" text-anchor="middle" font-family="monospace" font-size="9" fill="#888">EC2</text>
+          <line x1="213" y1="138" x2="358" y2="196" stroke="#2a2a2a" stroke-width="1.5"/>
+          <line x1="587" y1="138" x2="442" y2="196" stroke="#2a2a2a" stroke-width="1.5"/>
+          <circle cx="400" cy="50" r="28" fill="#1a0000" stroke="#e8541a" stroke-width="1.5" stroke-dasharray="4,2"/>
+          <line x1="400" y1="78" x2="400" y2="173" stroke="#e8541a" stroke-width="2" stroke-dasharray="5,3"/>
+        </svg>
+      </div>
+      <div class="card-body">
+        <p class="card-date">May 21, 2026</p>
+        <h2 class="card-title">IAM is your real attack surface — not your app</h2>
+        <p class="card-author">By Yusuf M</p>
+        <p class="card-excerpt">One overpermissioned role, one compromised workload, full environment access. The IAM patterns attackers exploit and how to close them at scale.</p>
+        <div class="card-tags"><span class="tag">Security</span><span class="tag">Cloud</span></div>
+      </div>
+    </a>
+    <a class="blog-card" href="api-gateway-not-a-boundary.html">
+      <div class="card-thumb">
+        <svg viewBox="0 0 800 450" xmlns="http://www.w3.org/2000/svg">
+          <rect width="800" height="450" fill="#0D5C63"/>
+          <ellipse cx="200" cy="210" rx="140" ry="110" fill="#117A82" opacity="0.6"/>
+          <rect x="115" y="130" width="170" height="200" rx="6" fill="#072E31"/>
+          <rect x="115" y="130" width="170" height="38" rx="4" fill="#0A4448"/>
+          <circle cx="200" cy="108" r="18" fill="#F5A623"/>
+          <circle cx="200" cy="218" r="34" fill="#0A4448"/>
+          <path d="M184 218 L196 232 L218 206" stroke="#4DD9E0" stroke-width="5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+          <rect x="404" y="0" width="396" height="450" fill="#E8541A"/>
+          <rect x="488" y="230" width="120" height="100" rx="6" fill="#A03000"/>
+          <circle cx="548" cy="218" r="14" fill="#FF4444"/>
+          <text x="548" y="223" text-anchor="middle" font-family="monospace" font-size="14" font-weight="800" fill="#fff">!</text>
+        </svg>
+      </div>
+      <div class="card-body">
+        <p class="card-date">May 21, 2026</p>
+        <h2 class="card-title">Your API gateway is not a security boundary</h2>
+        <p class="card-author">By Yusuf M</p>
+        <p class="card-excerpt">The gateway handles auth. That's the assumption most microservices architectures are built on. It's also how they get compromised.</p>
+        <div class="card-tags"><span class="tag">Security</span><span class="tag">AppSec</span></div>
+      </div>
+    </a>
+  </div>
+</section>
+
+<footer class="site-footer">
+  <span class="footer-copy">© 2026 ysf.root</span>
+  <div class="footer-links">
+    <a href="#">RSS</a>
+    <a href="#">Twitter</a>
+    <a href="#">GitHub</a>
+  </div>
+</footer>
+</body>
+</html>

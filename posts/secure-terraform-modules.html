@@ -1,0 +1,582 @@
+Secure terraform modules · HTML
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Secure-by-design Terraform: AWS guardrails developers actually deploy — ysf.root</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,700;0,9..40,800;1,9..40,400&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body class="page">
+ 
+<header class="site-header">
+  <a class="site-logo" href="../index.html">
+    <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
+      <rect width="28" height="28" rx="5" fill="#1a1a1a"/>
+      <text x="14" y="20" text-anchor="middle" font-family="'DM Sans', monospace" font-size="17" font-weight="800" fill="#e8541a">$</text>
+    </svg>
+    <span class="logo-text">ysf.root</span>
+  </a>
+  <div class="header-tags">
+    <a class="header-tag" href="../index.html">All</a>
+    <a class="header-tag" href="../index.html?filter=security">Security</a>
+    <a class="header-tag" href="../index.html?filter=engineering">Engineering</a>
+    <a class="header-tag" href="../index.html?filter=inside">Inside</a>
+  </div>
+</header>
+ 
+<article class="article-page">
+  <a class="back-btn" href="../index.html">
+    <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M10 3L5 8l5 5"/>
+    </svg>
+    All posts
+  </a>
+ 
+  <div class="article-eyebrow">
+    <span class="tag">Security</span><span class="tag">Cloud</span><span class="tag">Engineering</span>
+    <span class="reading-time">11 min read</span>
+  </div>
+ 
+  <h1 class="article-title">Secure-by-design Terraform: AWS guardrails developers actually deploy</h1>
+ 
+  <div class="article-meta">
+    <div class="meta-author">
+      <div class="author-avatar">YM</div>
+      <div>
+        <div class="author-name">Yusuf M</div>
+        <div class="author-role">Security</div>
+      </div>
+    </div>
+    <div class="meta-sep"></div>
+    <div class="meta-info">
+      <strong>May 21, 2026</strong>
+      Published
+    </div>
+    <div class="meta-sep"></div>
+    <div class="meta-info">
+      <strong>11 min read</strong>
+      Reading time
+    </div>
+  </div>
+ 
+  <!-- Hero SVG: two-panel flat illustration, Terraform secure modules theme -->
+  <div class="article-hero-thumb">
+    <svg width="100%" viewBox="0 0 800 450" role="img" xmlns="http://www.w3.org/2000/svg">
+      <title>Secure Terraform modules hero</title>
+      <desc>Flat editorial illustration: left panel shows raw unsafe Terraform, right panel shows secure reusable modules with guardrails</desc>
+ 
+      <!-- LEFT PANEL: raw / unsafe — muted red -->
+      <rect x="0" y="0" width="400" height="450" fill="#1C0A00"/>
+      <ellipse cx="200" cy="210" rx="140" ry="110" fill="#2E1200" opacity="0.7"/>
+ 
+      <!-- Raw config blocks — messy, overlapping -->
+      <rect x="40" y="90" width="150" height="110" rx="5" fill="#2A1000" stroke="#e8541a" stroke-width="1.5"/>
+      <text x="56" y="114" font-family="monospace" font-size="9" fill="#e8541a">resource "aws_s3_bucket"</text>
+      <text x="56" y="130" font-family="monospace" font-size="8" fill="#804020">  acl = "public-read"</text>
+      <text x="56" y="144" font-family="monospace" font-size="8" fill="#804020">  versioning {</text>
+      <text x="56" y="158" font-family="monospace" font-size="8" fill="#804020">    enabled = false</text>
+      <text x="56" y="172" font-family="monospace" font-size="8" fill="#804020">  }</text>
+      <!-- Warning badge -->
+      <circle cx="178" cy="90" r="12" fill="#e8541a"/>
+      <text x="178" y="95" text-anchor="middle" font-family="monospace" font-size="12" font-weight="800" fill="#fff">!</text>
+ 
+      <rect x="90" y="220" width="150" height="100" rx="5" fill="#2A1000" stroke="#F5A623" stroke-width="1.5"/>
+      <text x="106" y="242" font-family="monospace" font-size="9" fill="#F5A623">resource "aws_iam_role"</text>
+      <text x="106" y="258" font-family="monospace" font-size="8" fill="#804020">  managed_policies = [</text>
+      <text x="106" y="272" font-family="monospace" font-size="8" fill="#804020">    "AdministratorAccess"</text>
+      <text x="106" y="286" font-family="monospace" font-size="8" fill="#804020">  ]</text>
+      <circle cx="228" cy="220" r="12" fill="#F5A623"/>
+      <text x="228" y="225" text-anchor="middle" font-family="monospace" font-size="12" font-weight="800" fill="#1C0A00">!</text>
+ 
+      <rect x="210" y="130" width="150" height="80" rx="5" fill="#2A1000" stroke="#FF6B6B" stroke-width="1.5"/>
+      <text x="226" y="152" font-family="monospace" font-size="9" fill="#FF6B6B">resource "aws_wafv2"</text>
+      <text x="226" y="168" font-family="monospace" font-size="8" fill="#804020">  # TODO: add rules</text>
+      <text x="226" y="184" font-family="monospace" font-size="8" fill="#804020">  default_action = allow</text>
+      <circle cx="348" cy="130" r="12" fill="#FF6B6B"/>
+      <text x="348" y="135" text-anchor="middle" font-family="monospace" font-size="12" font-weight="800" fill="#fff">!</text>
+ 
+      <!-- DIVIDER -->
+      <rect x="396" y="0" width="8" height="450" fill="#1a1a1a"/>
+ 
+      <!-- RIGHT PANEL: secure modules — deep green -->
+      <rect x="404" y="0" width="396" height="450" fill="#0A1F0A"/>
+      <ellipse cx="602" cy="210" rx="140" ry="110" fill="#122412" opacity="0.7"/>
+ 
+      <!-- Module cards — clean, structured -->
+      <!-- S3 module -->
+      <rect x="424" y="70" width="160" height="100" rx="6" fill="#112211" stroke="#4CAF50" stroke-width="1.5"/>
+      <text x="440" y="94" font-family="monospace" font-size="9" font-weight="700" fill="#4CAF50">module "s3_secure"</text>
+      <text x="440" y="112" font-family="monospace" font-size="8" fill="#2E7D32">  block_public_access = true</text>
+      <text x="440" y="126" font-family="monospace" font-size="8" fill="#2E7D32">  versioning          = true</text>
+      <text x="440" y="140" font-family="monospace" font-size="8" fill="#2E7D32">  encryption          = AES256</text>
+      <!-- Check badge -->
+      <circle cx="572" cy="70" r="12" fill="#4CAF50"/>
+      <path d="M565 70 L570 76 L580 63" stroke="#fff" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+ 
+      <!-- IAM module -->
+      <rect x="424" y="190" width="160" height="100" rx="6" fill="#112211" stroke="#4CAF50" stroke-width="1.5"/>
+      <text x="440" y="214" font-family="monospace" font-size="9" font-weight="700" fill="#4CAF50">module "iam_role"</text>
+      <text x="440" y="232" font-family="monospace" font-size="8" fill="#2E7D32">  permissions_boundary</text>
+      <text x="440" y="246" font-family="monospace" font-size="8" fill="#2E7D32">  least_privilege = true</text>
+      <text x="440" y="260" font-family="monospace" font-size="8" fill="#2E7D32">  no_wildcards    = true</text>
+      <circle cx="572" cy="190" r="12" fill="#4CAF50"/>
+      <path d="M565 190 L570 196 L580 183" stroke="#fff" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+ 
+      <!-- WAF module -->
+      <rect x="604" y="130" width="160" height="100" rx="6" fill="#112211" stroke="#4CAF50" stroke-width="1.5"/>
+      <text x="620" y="154" font-family="monospace" font-size="9" font-weight="700" fill="#4CAF50">module "waf"</text>
+      <text x="620" y="172" font-family="monospace" font-size="8" fill="#2E7D32">  managed_rules   = true</text>
+      <text x="620" y="186" font-family="monospace" font-size="8" fill="#2E7D32">  rate_limiting   = true</text>
+      <text x="620" y="200" font-family="monospace" font-size="8" fill="#2E7D32">  logging_enabled = true</text>
+      <circle cx="752" cy="130" r="12" fill="#4CAF50"/>
+      <path d="M745 130 L750 136 L760 123" stroke="#fff" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+ 
+      <!-- Connecting lines between modules -->
+      <line x1="584" y1="120" x2="604" y2="155" stroke="#2E7D32" stroke-width="1" stroke-dasharray="3,2" opacity="0.6"/>
+      <line x1="584" y1="240" x2="604" y2="205" stroke="#2E7D32" stroke-width="1" stroke-dasharray="3,2" opacity="0.6"/>
+ 
+      <!-- Top indicator -->
+      <circle cx="602" cy="50" r="18" fill="#112211" stroke="#4CAF50" stroke-width="1.5"/>
+      <text x="602" y="55" text-anchor="middle" font-family="monospace" font-size="13" fill="#4CAF50">✓</text>
+ 
+      <!-- LABELS -->
+      <rect x="60" y="400" width="240" height="30" rx="5" fill="#2A1000"/>
+      <text x="180" y="420" text-anchor="middle" font-family="'DM Sans', monospace" font-size="12" font-weight="700" fill="#e8541a">raw terraform ✕</text>
+      <rect x="464" y="400" width="240" height="30" rx="5" fill="#112211" stroke="#4CAF50" stroke-width="1"/>
+      <text x="584" y="420" text-anchor="middle" font-family="'DM Sans', monospace" font-size="12" font-weight="700" fill="#4CAF50">secure modules ✓</text>
+    </svg>
+  </div>
+ 
+  <div class="article-body">
+ 
+    <p>The Terraform module took two weeks to build. It saved the next six months of security review findings. Every team that used the S3 module got encryption at rest, versioning, and public access blocking by default — not because they read a security doc, but because those were the only options the module exposed.</p>
+ 
+    <p>That's the idea behind secure-by-design infrastructure: encode the security baseline into the thing developers reach for, so the secure path and the easy path are the same path. This post walks through how we built reusable Terraform modules for AWS — covering WAF, S3, and IAM — with security guardrails that ship with every deployment and can't be accidentally left out.</p>
+ 
+    <h2>The problem with raw Terraform</h2>
+ 
+    <p>Left to write raw Terraform, developers make the same set of decisions repeatedly — and make the same mistakes repeatedly. An S3 bucket gets created with <code>acl = "public-read"</code> because that's what the Stack Overflow answer used. An IAM role gets <code>AdministratorAccess</code> because it was faster than figuring out the right policy. A WAF resource gets created with no rules because the managed rule groups weren't obvious from the docs.</p>
+ 
+    <p>None of these are malicious decisions. They're time-pressure decisions. The developer's goal is a working deployment, not a secure one — and if the secure configuration requires more research than the insecure one, the insecure one ships.</p>
+ 
+    <p>The module pattern inverts this. Security engineers write the module once, with the secure configuration as the default. Developers call the module with a handful of required inputs. The security decisions are already made.</p>
+ 
+    <h2>Module design principles</h2>
+ 
+    <p>Before the code, the design constraints that shaped every module we built:</p>
+ 
+    <p><strong>Secure defaults, not secure options.</strong> Security properties are on by default and require explicit opt-out to disable — not explicit opt-in to enable. A developer who doesn't think about encryption gets encryption. A developer who needs to disable a default for a legitimate reason can, but they have to do it deliberately, with a comment explaining why.</p>
+ 
+    <p><strong>Minimal required inputs.</strong> The module should be callable with as few required variables as possible. Every required variable is friction; friction gets bypassed. If a security property doesn't vary between deployments, it's a default, not a variable.</p>
+ 
+    <p><strong>No escape hatches for dangerous patterns.</strong> Some inputs simply don't exist. There's no <code>make_public</code> variable on the S3 module. There's no <code>allow_wildcard_actions</code> variable on the IAM module. If a team has a legitimate edge case, they talk to the security team — they don't configure their way around the module.</p>
+ 
+    <h2>The S3 module</h2>
+ 
+    <p>S3 buckets have a short list of security properties that should be true in virtually every deployment: public access blocked, server-side encryption enabled, versioning on, access logging enabled, and SSL enforced for all requests. The raw Terraform to configure all of these correctly is verbose and easy to get wrong. The module makes it one call.</p>
+ 
+<pre><code># modules/s3_secure/main.tf
+ 
+resource "aws_s3_bucket" "this" {
+  bucket = var.bucket_name
+  tags   = var.tags
+}
+ 
+# Block all public access — no variable, always on
+resource "aws_s3_bucket_public_access_block" "this" {
+  bucket                  = aws_s3_bucket.this.id
+  block_public_acls       = true
+  block_public_policy     = true
+  ignore_public_acls      = true
+  restrict_public_buckets = true
+}
+ 
+# Encryption at rest — AES256 default, KMS if key provided
+resource "aws_s3_bucket_server_side_encryption_configuration" "this" {
+  bucket = aws_s3_bucket.this.id
+  rule {
+    apply_server_side_encryption_by_default {
+      sse_algorithm     = var.kms_key_id != null ? "aws:kms" : "AES256"
+      kms_master_key_id = var.kms_key_id
+    }
+    bucket_key_enabled = true
+  }
+}
+ 
+# Versioning — on by default, can be disabled with justification
+resource "aws_s3_bucket_versioning" "this" {
+  bucket = aws_s3_bucket.this.id
+  versioning_configuration {
+    status = var.versioning_enabled ? "Enabled" : "Suspended"
+  }
+}
+ 
+# Enforce SSL — bucket policy denies non-HTTPS requests
+resource "aws_s3_bucket_policy" "this" {
+  bucket = aws_s3_bucket.this.id
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [{
+      Sid       = "DenyNonSSL"
+      Effect    = "Deny"
+      Principal = "*"
+      Action    = "s3:*"
+      Resource  = [
+        aws_s3_bucket.this.arn,
+        "${aws_s3_bucket.this.arn}/*"
+      ]
+      Condition = {
+        Bool = { "aws:SecureTransport" = "false" }
+      }
+    }]
+  })
+}</code></pre>
+ 
+<pre><code># modules/s3_secure/variables.tf
+ 
+variable "bucket_name" { type = string }
+variable "tags"        { type = map(string); default = {} }
+variable "kms_key_id"  { type = string; default = null }
+ 
+variable "versioning_enabled" {
+  type        = bool
+  default     = true
+  description = "Disable only for high-churn buckets where versioning cost is prohibitive. Requires security team sign-off."
+}</code></pre>
+ 
+    <p>Calling the module requires exactly one input:</p>
+ 
+<pre><code># How a developer uses it
+module "uploads_bucket" {
+  source      = "git::https://github.com/your-org/terraform-modules//s3_secure"
+  bucket_name = "myapp-uploads-prod"
+  tags        = { env = "prod", team = "payments" }
+}
+# Public access blocked, encrypted, versioned, SSL-enforced.
+# Developer made zero security decisions.</code></pre>
+ 
+    <h2>The IAM role module</h2>
+ 
+    <p>IAM is where the most dangerous configurations live, and where the module pattern pays off most. The three things we enforce unconditionally: a permissions boundary on every role, no wildcard actions in inline policies, and a required <code>description</code> field so every role has a documented purpose.</p>
+ 
+<pre><code># modules/iam_role/main.tf
+ 
+resource "aws_iam_role" "this" {
+  name                 = var.role_name
+  description          = var.description  # required — no default
+  assume_role_policy   = var.assume_role_policy
+  permissions_boundary = local.boundary_arn
+  tags                 = var.tags
+}
+ 
+locals {
+  # Boundary ARN is derived from the account ID — no way to skip it
+  boundary_arn = "arn:aws:iam::${data.aws_caller_identity.current.account_id}:policy/ServiceRoleBoundary"
+}
+ 
+data "aws_caller_identity" "current" {}
+ 
+# Inline policy — validated for wildcards before apply
+resource "aws_iam_role_policy" "this" {
+  count  = var.inline_policy != null ? 1 : 0
+  name   = "${var.role_name}-policy"
+  role   = aws_iam_role.this.id
+  policy = var.inline_policy
+}
+ 
+# Validation: reject wildcard actions in inline policies
+locals {
+  policy_doc     = var.inline_policy != null ? jsondecode(var.inline_policy) : null
+  has_wildcards  = var.inline_policy != null ? anytrue([
+    for stmt in local.policy_doc.Statement :
+    contains(tolist(try(tolist(stmt.Action), [stmt.Action])), "*")
+  ]) : false
+}
+ 
+# Terraform will refuse to apply if wildcards are found
+resource "null_resource" "wildcard_check" {
+  count = local.has_wildcards ? 1 : 0
+  provisioner "local-exec" {
+    command = "echo 'ERROR: Wildcard actions (*) are not permitted in IAM inline policies. Scope your actions explicitly.' && exit 1"
+  }
+  lifecycle { replace_triggered_by = [aws_iam_role.this] }
+}</code></pre>
+ 
+<pre><code># modules/iam_role/variables.tf
+ 
+variable "role_name"          { type = string }
+variable "description"        { type = string }  # required, no default
+variable "assume_role_policy" { type = string }
+variable "inline_policy"      { type = string; default = null }
+variable "tags"               { type = map(string); default = {} }
+# permissions_boundary is NOT a variable — it's always applied</code></pre>
+ 
+    <p>The wildcard check is the most important piece. It turns a security review finding into a Terraform plan failure — the policy gets rejected before it ever reaches AWS.</p>
+ 
+    <h2>The WAF module</h2>
+ 
+    <p>WAF configuration has the steepest learning curve of the three. AWS Managed Rule Groups cover the most common attack patterns — OWASP Top 10, known bad inputs, IP reputation — but the defaults aren't on, the priority ordering isn't obvious, and logging requires a separate resource that's easy to forget. The module handles all of it.</p>
+ 
+<pre><code># modules/waf/main.tf
+ 
+resource "aws_wafv2_web_acl" "this" {
+  name  = var.name
+  scope = var.scope  # REGIONAL or CLOUDFRONT
+ 
+  default_action {
+    allow {}  # default allow; rules block specific patterns
+  }
+ 
+  # AWS Core Rule Set — OWASP Top 10 coverage
+  rule {
+    name     = "AWSManagedRulesCommonRuleSet"
+    priority = 10
+    override_action { none {} }
+    statement {
+      managed_rule_group_statement {
+        name        = "AWSManagedRulesCommonRuleSet"
+        vendor_name = "AWS"
+      }
+    }
+    visibility_config {
+      cloudwatch_metrics_enabled = true
+      metric_name                = "${var.name}-common-rules"
+      sampled_requests_enabled   = true
+    }
+  }
+ 
+  # Known bad inputs — SQLi, XSS, command injection patterns
+  rule {
+    name     = "AWSManagedRulesKnownBadInputsRuleSet"
+    priority = 20
+    override_action { none {} }
+    statement {
+      managed_rule_group_statement {
+        name        = "AWSManagedRulesKnownBadInputsRuleSet"
+        vendor_name = "AWS"
+      }
+    }
+    visibility_config {
+      cloudwatch_metrics_enabled = true
+      metric_name                = "${var.name}-bad-inputs"
+      sampled_requests_enabled   = true
+    }
+  }
+ 
+  # Rate limiting — configurable, but always present
+  rule {
+    name     = "RateLimitRule"
+    priority = 1  # evaluated first
+    action { block {} }
+    statement {
+      rate_based_statement {
+        limit              = var.rate_limit
+        aggregate_key_type = "IP"
+      }
+    }
+    visibility_config {
+      cloudwatch_metrics_enabled = true
+      metric_name                = "${var.name}-rate-limit"
+      sampled_requests_enabled   = true
+    }
+  }
+ 
+  visibility_config {
+    cloudwatch_metrics_enabled = true
+    metric_name                = var.name
+    sampled_requests_enabled   = true
+  }
+}
+ 
+# Logging — always enabled, no variable to skip it
+resource "aws_wafv2_web_acl_logging_configuration" "this" {
+  log_destination_configs = [aws_cloudwatch_log_group.waf.arn]
+  resource_arn            = aws_wafv2_web_acl.this.arn
+}
+ 
+resource "aws_cloudwatch_log_group" "waf" {
+  name              = "/aws/waf/${var.name}"
+  retention_in_days = var.log_retention_days
+}
+</code></pre>
+ 
+<pre><code># modules/waf/variables.tf
+ 
+variable "name"  { type = string }
+variable "scope" {
+  type    = string
+  default = "REGIONAL"
+  validation {
+    condition     = contains(["REGIONAL", "CLOUDFRONT"], var.scope)
+    error_message = "scope must be REGIONAL or CLOUDFRONT"
+  }
+}
+ 
+variable "rate_limit" {
+  type        = number
+  default     = 2000
+  description = "Max requests per 5-minute window per IP. Lower for sensitive endpoints."
+}
+ 
+variable "log_retention_days" {
+  type    = number
+  default = 90
+  # Can be increased, not decreased below 90
+  validation {
+    condition     = var.log_retention_days >= 90
+    error_message = "WAF log retention must be at least 90 days for compliance."
+  }
+}</code></pre>
+ 
+    <h2>Enforcement: making the modules the only path</h2>
+ 
+    <p>Modules are only as effective as their adoption. A module that exists but isn't required is just a suggestion. Two controls make adoption mandatory rather than optional.</p>
+ 
+    <p>First, an SCP that prevents raw <code>aws_s3_bucket</code>, <code>aws_iam_role</code>, and <code>aws_wafv2_web_acl</code> resources from being created without the required tags that the modules automatically apply. Any Terraform that bypasses the module won't have the tags and will be rejected by AWS before it provisions anything.</p>
+ 
+<pre><code>// SCP: Deny S3 bucket creation without required security tags
+{
+  "Effect": "Deny",
+  "Action": "s3:CreateBucket",
+  "Resource": "*",
+  "Condition": {
+    "Null": {
+      "aws:RequestedRegion": "false",
+      "s3:x-amz-acl": "false"
+    },
+    "StringNotEquals": {
+      "aws:RequestTag/managed-by": "terraform-secure-module"
+    }
+  }
+}</code></pre>
+ 
+    <p>Second, a Checkov custom check in CI that verifies any <code>aws_s3_bucket</code>, <code>aws_iam_role</code>, or <code>aws_wafv2_web_acl</code> resource in a PR is instantiated via the approved module source — not written inline.</p>
+ 
+<pre><code># .checkov/custom_checks/require_approved_modules.py
+from checkov.terraform.checks.resource.base_resource_check import BaseResourceCheck
+from checkov.common.models.enums import CheckResult, CheckCategories
+ 
+APPROVED_MODULE_SOURCE = "git::https://github.com/your-org/terraform-modules"
+ 
+class RequireApprovedS3Module(BaseResourceCheck):
+    def __init__(self):
+        super().__init__(
+            name="Ensure S3 buckets use the approved secure module",
+            id="CKV_CUSTOM_S3_MODULE",
+            categories=[CheckCategories.ENCRYPTION],
+            supported_resources=["aws_s3_bucket"]
+        )
+ 
+    def scan_resource_conf(self, conf):
+        # If the resource is defined directly (not via module), fail
+        module_source = conf.get("__module_source__", "")
+        if APPROVED_MODULE_SOURCE not in module_source:
+            return CheckResult.FAILED
+        return CheckResult.PASSED</code></pre>
+ 
+    <h2>What this looks like at the end</h2>
+ 
+    <p>A developer who needs an S3 bucket, an IAM role, and a WAF for their new service writes roughly 20 lines of Terraform calling three modules. They get encryption, public access blocking, SSL enforcement, a permissions-bounded IAM role with wildcard validation, and a WAF with OWASP managed rules and rate limiting — without making a single security decision themselves.</p>
+ 
+    <p>The security decisions were made once, by the team that built the modules, with the threat model in front of them. Every subsequent deployment inherits those decisions for free.</p>
+ 
+    <p>That's the return on the two weeks it took to build. Not a one-time audit finding. Not a review gate. A security baseline that scales with the org because it's built into the infrastructure teams already use.</p>
+ 
+    <blockquote>Secure-by-design doesn't mean making security invisible. It means making the secure choice the default choice — so developers aren't making security decisions they're not equipped to make.</blockquote>
+ 
+    <p>The modules are the paved road. The SCPs and CI checks are the guardrails on the sides. Together they mean the question isn't "did this team follow the security guidelines" — it's "did this team's infrastructure provision successfully." If it did, it's already compliant.</p>
+ 
+  </div>
+</article>
+ 
+<section class="more-posts">
+  <p class="more-posts-label">More posts</p>
+  <div class="blog-grid more-grid">
+    <a class="blog-card" href="llm-threat-modeling.html">
+      <div class="card-thumb">
+        <svg viewBox="0 0 800 450" xmlns="http://www.w3.org/2000/svg">
+          <rect width="800" height="450" fill="#0A1628"/>
+          <ellipse cx="200" cy="210" rx="140" ry="110" fill="#112240" opacity="0.8"/>
+          <rect x="148" y="140" width="104" height="90" rx="6" fill="#0D1F3C" stroke="#4D9FFF" stroke-width="1.5"/>
+          <circle cx="200" cy="175" r="22" fill="#112240"/>
+          <text x="200" y="180" text-anchor="middle" font-family="monospace" font-size="9" fill="#4D9FFF">LLM</text>
+          <rect x="404" y="0" width="396" height="450" fill="#1C0A00"/>
+          <rect x="424" y="70" width="150" height="72" rx="6" fill="#2A0D00" stroke="#e8541a" stroke-width="1.5"/>
+          <circle cx="438" cy="84" r="8" fill="#e8541a"/>
+          <rect x="424" y="162" width="150" height="72" rx="6" fill="#2A0D00" stroke="#F5A623" stroke-width="1.5"/>
+          <circle cx="438" cy="176" r="8" fill="#F5A623"/>
+          <rect x="424" y="254" width="150" height="72" rx="6" fill="#2A0D00" stroke="#FF6B6B" stroke-width="1.5"/>
+          <circle cx="438" cy="268" r="8" fill="#FF6B6B"/>
+        </svg>
+      </div>
+      <div class="card-body">
+        <p class="card-date">May 21, 2026</p>
+        <h2 class="card-title">How to threat model an LLM feature before you ship it</h2>
+        <p class="card-author">By Yusuf M</p>
+        <p class="card-excerpt">Prompt injection, RAG poisoning, tool call abuse — the four threat classes STRIDE doesn't cover and most LLM features ship without modeling.</p>
+        <div class="card-tags"><span class="tag">Security</span><span class="tag">AI</span></div>
+      </div>
+    </a>
+    <a class="blog-card" href="iam-attack-surface.html">
+      <div class="card-thumb">
+        <svg viewBox="0 0 800 450" xmlns="http://www.w3.org/2000/svg">
+          <rect width="800" height="450" fill="#0d0d0d"/>
+          <circle cx="400" cy="225" r="52" fill="#1a1a1a" stroke="#e8541a" stroke-width="2"/>
+          <text x="400" y="219" text-anchor="middle" font-family="monospace" font-size="11" fill="#e8541a">IAM</text>
+          <text x="400" y="235" text-anchor="middle" font-family="monospace" font-size="11" fill="#e8541a">Role</text>
+          <circle cx="180" cy="120" r="36" fill="#1a1a1a" stroke="#444" stroke-width="1.5"/>
+          <text x="180" y="125" text-anchor="middle" font-family="monospace" font-size="9" fill="#888">Lambda</text>
+          <circle cx="620" cy="120" r="36" fill="#1a1a1a" stroke="#444" stroke-width="1.5"/>
+          <text x="620" y="125" text-anchor="middle" font-family="monospace" font-size="9" fill="#888">EC2</text>
+          <line x1="213" y1="138" x2="358" y2="196" stroke="#2a2a2a" stroke-width="1.5"/>
+          <line x1="587" y1="138" x2="442" y2="196" stroke="#2a2a2a" stroke-width="1.5"/>
+          <circle cx="400" cy="50" r="28" fill="#1a0000" stroke="#e8541a" stroke-width="1.5" stroke-dasharray="4,2"/>
+          <line x1="400" y1="78" x2="400" y2="173" stroke="#e8541a" stroke-width="2" stroke-dasharray="5,3"/>
+        </svg>
+      </div>
+      <div class="card-body">
+        <p class="card-date">May 21, 2026</p>
+        <h2 class="card-title">IAM is your real attack surface — not your app</h2>
+        <p class="card-author">By Yusuf M</p>
+        <p class="card-excerpt">One overpermissioned role, one compromised workload, full environment access. The IAM patterns attackers exploit and how to close them at scale.</p>
+        <div class="card-tags"><span class="tag">Security</span><span class="tag">Cloud</span></div>
+      </div>
+    </a>
+    <a class="blog-card" href="security-review-gates.html">
+      <div class="card-thumb">
+        <svg viewBox="0 0 800 450" xmlns="http://www.w3.org/2000/svg">
+          <rect width="800" height="450" fill="#111111"/>
+          <rect x="80" y="185" width="100" height="80" rx="8" fill="#1a1a1a" stroke="#333" stroke-width="1.5"/>
+          <text x="130" y="230" text-anchor="middle" font-family="monospace" font-size="20" fill="#e8541a">{ }</text>
+          <rect x="220" y="175" width="120" height="100" rx="8" fill="#1a1a1a" stroke="#e8541a" stroke-width="2"/>
+          <line x1="258" y1="235" x2="302" y2="255" stroke="#e8541a" stroke-width="2.5" stroke-linecap="round"/>
+          <line x1="302" y1="235" x2="258" y2="255" stroke="#e8541a" stroke-width="2.5" stroke-linecap="round"/>
+          <rect x="380" y="185" width="120" height="80" rx="8" fill="#0d1a0d" stroke="#2a6e2a" stroke-width="1.5"/>
+          <path d="M426 242 L436 252 L454 236" stroke="#4a9e4a" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+      <div class="card-body">
+        <p class="card-date">May 21, 2026</p>
+        <h2 class="card-title">Security review gates don't scale</h2>
+        <p class="card-author">By Yusuf M</p>
+        <p class="card-excerpt">Why the security approval model breaks down as engineering orgs grow — and what to replace it with.</p>
+        <div class="card-tags"><span class="tag">Security</span><span class="tag">Engineering</span></div>
+      </div>
+    </a>
+  </div>
+</section>
+ 
+<footer class="site-footer">
+  <span class="footer-copy">© 2026 ysf.root</span>
+  <div class="footer-links">
+    <a href="#">RSS</a>
+    <a href="#">Twitter</a>
+    <a href="#">GitHub</a>
+  </div>
+</footer>
+</body>
+</html>

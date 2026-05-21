@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>IAM is your real attack surface — ysf.root</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,700;0,9..40,800;1,9..40,400&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body class="page">
+
+<header class="site-header">
+  <a class="site-logo" href="../index.html">
+    <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
+      <rect width="28" height="28" rx="5" fill="#1a1a1a"/>
+      <text x="14" y="20" text-anchor="middle" font-family="'DM Sans', monospace" font-size="17" font-weight="800" fill="#e8541a">$</text>
+    </svg>
+    <span class="logo-text">ysf.root</span>
+  </a>
+  <div class="header-tags">
+    <a class="header-tag" href="../index.html">All</a>
+    <a class="header-tag" href="../index.html?filter=security">Security</a>
+    <a class="header-tag" href="../index.html?filter=engineering">Engineering</a>
+    <a class="header-tag" href="../index.html?filter=inside">Inside</a>
+  </div>
+</header>
+
+<article class="article-page">
+  <a class="back-btn" href="../index.html">
+    <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M10 3L5 8l5 5"/>
+    </svg>
+    All posts
+  </a>
+
+  <div class="article-eyebrow">
+    <span class="tag">Security</span><span class="tag">Cloud</span>
+    <span class="reading-time">10 min read</span>
+  </div>
+
+  <h1 class="article-title">IAM is your real attack surface — not your app</h1>
+
+  <div class="article-meta">
+    <div class="meta-author">
+      <div class="author-avatar">YM</div>
+      <div>
+        <div class="author-name">Yusuf M</div>
+        <div class="author-role">Security</div>
+      </div>
+    </div>
+    <div class="meta-sep"></div>
+    <div class="meta-info">
+      <strong>May 21, 2026</strong>
+      Published
+    </div>
+    <div class="meta-sep"></div>
+    <div class="meta-info">
+      <strong>10 min read</strong>
+      Reading time
+    </div>
+  </div>
+
+  <!-- Hero SVG: dark AWS IAM theme — trust chains, role graph, orange accent -->
+  <div class="article-hero-thumb">
+    <svg viewBox="0 0 800 450" xmlns="http://www.w3.org/2000/svg">
+      <rect width="800" height="450" fill="#0d0d0d"/>
+
+      <!-- Subtle grid -->
+      <line x1="0" y1="150" x2="800" y2="150" stroke="#161616" stroke-width="1"/>
+      <line x1="0" y1="300" x2="800" y2="300" stroke="#161616" stroke-width="1"/>
+      <line x1="266" y1="0" x2="266" y2="450" stroke="#161616" stroke-width="1"/>
+      <line x1="533" y1="0" x2="533" y2="450" stroke="#161616" stroke-width="1"/>
+
+      <!-- Central IAM role node -->
+      <circle cx="400" cy="225" r="52" fill="#1a1a1a" stroke="#e8541a" stroke-width="2"/>
+      <text x="400" y="219" text-anchor="middle" font-family="monospace" font-size="11" fill="#e8541a">IAM</text>
+      <text x="400" y="235" text-anchor="middle" font-family="monospace" font-size="11" fill="#e8541a">Role</text>
+
+      <!-- Spoke nodes -->
+      <!-- Lambda -->
+      <circle cx="180" cy="120" r="36" fill="#1a1a1a" stroke="#444" stroke-width="1.5"/>
+      <text x="180" y="115" text-anchor="middle" font-family="monospace" font-size="9" fill="#888">Lambda</text>
+      <text x="180" y="130" text-anchor="middle" font-family="monospace" font-size="9" fill="#888">fn-api</text>
+
+      <!-- EC2 -->
+      <circle cx="620" cy="120" r="36" fill="#1a1a1a" stroke="#444" stroke-width="1.5"/>
+      <text x="620" y="115" text-anchor="middle" font-family="monospace" font-size="9" fill="#888">EC2</text>
+      <text x="620" y="130" text-anchor="middle" font-family="monospace" font-size="9" fill="#888">instance</text>
+
+      <!-- S3 -->
+      <circle cx="130" cy="310" r="36" fill="#1a1a1a" stroke="#444" stroke-width="1.5"/>
+      <text x="130" y="305" text-anchor="middle" font-family="monospace" font-size="9" fill="#888">S3</text>
+      <text x="130" y="320" text-anchor="middle" font-family="monospace" font-size="9" fill="#888">s3:*</text>
+
+      <!-- RDS -->
+      <circle cx="670" cy="310" r="36" fill="#1a1a1a" stroke="#444" stroke-width="1.5"/>
+      <text x="670" y="305" text-anchor="middle" font-family="monospace" font-size="9" fill="#888">RDS</text>
+      <text x="670" y="320" text-anchor="middle" font-family="monospace" font-size="9" fill="#888">rds:*</text>
+
+      <!-- Attacker node -->
+      <circle cx="400" cy="50" r="28" fill="#1a0000" stroke="#e8541a" stroke-width="1.5" stroke-dasharray="4,2"/>
+      <text x="400" y="45" text-anchor="middle" font-family="monospace" font-size="9" fill="#e8541a">attacker</text>
+      <text x="400" y="59" text-anchor="middle" font-family="monospace" font-size="9" fill="#e8541a">sts:AssumeRole</text>
+
+      <!-- Edges: spokes to center -->
+      <line x1="213" y1="138" x2="358" y2="196" stroke="#2a2a2a" stroke-width="1.5"/>
+      <line x1="587" y1="138" x2="442" y2="196" stroke="#2a2a2a" stroke-width="1.5"/>
+      <line x1="163" y1="278" x2="358" y2="248" stroke="#2a2a2a" stroke-width="1.5"/>
+      <line x1="637" y1="278" x2="442" y2="248" stroke="#2a2a2a" stroke-width="1.5"/>
+
+      <!-- Attacker edge — orange, prominent -->
+      <line x1="400" y1="78" x2="400" y2="173" stroke="#e8541a" stroke-width="2" stroke-dasharray="5,3"/>
+      <polygon points="400,173 394,158 406,158" fill="#e8541a"/>
+
+      <!-- Wildcard warning badge on S3 -->
+      <circle cx="158" cy="292" r="10" fill="#e8541a"/>
+      <text x="158" y="296" text-anchor="middle" font-family="monospace" font-size="10" font-weight="bold" fill="#fff">!</text>
+
+      <!-- Wildcard warning badge on RDS -->
+      <circle cx="642" cy="292" r="10" fill="#e8541a"/>
+      <text x="642" y="296" text-anchor="middle" font-family="monospace" font-size="10" font-weight="bold" fill="#fff">!</text>
+
+      <!-- Bottom label -->
+      <text x="400" y="410" text-anchor="middle" font-family="'DM Sans', monospace" font-size="12" fill="#333">one overpermissioned role  →  full environment access</text>
+    </svg>
+  </div>
+
+  <div class="article-body">
+
+    <p>Across every AWS environment I've reviewed or seen incident reports from, the story is nearly always the same: the application code was fine. The IAM configuration was a disaster. The attacker didn't exploit a vulnerability in the app — they exploited a role that had no business having the permissions it did.</p>
+
+    <p>Security teams spend cycles on SAST, dependency scanning, and penetration testing of application endpoints. Those things matter. But in cloud-native environments, IAM is where the real leverage is — for attackers and defenders alike. An overpermissioned role doesn't just expose one service; it exposes everything that role can reach, across your entire AWS account.</p>
+
+    <h2>Why IAM is different from traditional access control</h2>
+
+    <p>In a traditional on-prem environment, access control is largely about network segmentation and host-level permissions. Compromise a service, and you get what that host has access to — usually bounded by its network position.</p>
+
+    <p>In AWS, IAM roles are attached to compute resources — Lambda functions, EC2 instances, ECS tasks, Fargate containers — and those roles can grant access to virtually any AWS API. Compromise a Lambda function running with an overpermissioned role, and you're not just inside that function. You can enumerate S3 buckets, pull secrets from Secrets Manager, invoke other Lambda functions, modify security group rules, or assume <em>other</em> roles with even broader access.</p>
+
+    <p>The blast radius of an IAM misconfiguration isn't bounded by the service it's attached to. It's bounded only by what the role can do — which, in most environments I've seen, is far more than it should be.</p>
+
+    <h2>The three IAM misconfigs that show up everywhere</h2>
+
+    <h3>1. Wildcard actions on production resources</h3>
+
+    <p>This is the most common pattern, and it usually starts innocently. A developer needs their Lambda to read from S3, so they attach a policy. It works in dev. It ships to prod. Nobody audits it again.</p>
+
+<pre><code>{
+  "Effect": "Allow",
+  "Action": "s3:*",
+  "Resource": "*"
+}</code></pre>
+
+    <p><code>s3:*</code> on <code>*</code> means this role can read, write, delete, and modify ACLs on every S3 bucket in the account — including your audit logs, your backups, your other teams' data. The developer needed <code>s3:GetObject</code> on one specific bucket. What they got was account-wide S3 admin.</p>
+
+    <p>This pattern repeats across every AWS service: <code>ec2:*</code>, <code>rds:*</code>, <code>secretsmanager:*</code>. The wildcard is the lazy path, and in most orgs there's no automated check catching it before it reaches production.</p>
+
+    <h3>2. Trust policies nobody audited</h3>
+
+    <p>Every IAM role has two components: the permission policy (what the role can do) and the trust policy (who can assume the role). Most teams review permissions, at least occasionally. Almost nobody reviews trust policies with the same rigor.</p>
+
+<pre><code>{
+  "Effect": "Allow",
+  "Principal": {
+    "AWS": "arn:aws:iam::123456789012:root"
+  },
+  "Action": "sts:AssumeRole"
+}</code></pre>
+
+    <p>The <code>:root</code> principal means <em>any</em> IAM identity in that account — any user, any role — can assume this role. In a large org, that's potentially hundreds of principals, including service accounts used by third-party tools, developer IAM users with broad console access, and CI/CD runners. One compromised identity in that account can pivot to this role and inherit everything it can do.</p>
+
+    <p>In cross-account scenarios this gets worse. Trust policies that allow assumption from an entire external account (<code>arn:aws:iam::PARTNER_ACCOUNT:root</code>) without an <code>ExternalId</code> condition are vulnerable to the confused deputy problem — any role in that partner account can assume yours, not just the specific service you intended.</p>
+
+    <h3>3. Role chaining that nobody mapped</h3>
+
+    <p>Individual roles might look acceptable in isolation. The problem emerges when you map the full assume-role graph. Role A can assume Role B. Role B can assume Role C. Role C has <code>AdministratorAccess</code>. No single hop looks alarming; the chain is the vulnerability.</p>
+
+    <p>This isn't theoretical. It's a documented pattern in real AWS privilege escalation paths. Tools like <a href="https://github.com/nccgroup/PMapper">PMapper</a> exist specifically to enumerate these graphs — and attackers use them. Most defenders don't.</p>
+
+<pre><code># PMapper: find privilege escalation paths to admin
+pmapper --profile prod graph create
+pmapper --profile prod analysis --suggest</code></pre>
+
+    <p>If you haven't run something like this against your environment, you don't know what your role graph looks like. And if you don't know, an attacker who does has a structural advantage.</p>
+
+    <h2>Why this keeps happening</h2>
+
+    <p>The root cause isn't carelessness — it's incentives and tooling gaps. IAM policy authoring is tedious. The principle of least privilege is easy to state and hard to implement when you're trying to get a feature shipped. The AWS policy simulator helps, but it requires you to know exactly which API calls your code makes, which most developers don't at the time they're writing the policy.</p>
+
+    <p>The result is a ratchet: permissions get added when something breaks, and almost never get removed when requirements change. Over time, every role drifts toward broader access than it needs.</p>
+
+    <p>The other factor is visibility. Most teams have no centralized view of their IAM configuration. Roles live in Terraform files scattered across dozens of repos, created manually in the console, or provisioned by third-party tools. Nobody has a complete picture of the trust graph, which means nobody can reason about the blast radius of any single role being compromised.</p>
+
+    <h2>What the defensive posture actually looks like</h2>
+
+    <p>Fixing IAM at scale isn't a one-time audit. It requires structural controls that enforce least privilege continuously, not just when someone remembers to check.</p>
+
+    <h3>Permission boundaries as a hard ceiling</h3>
+
+    <p>IAM permission boundaries are an underused primitive. A permission boundary attached to a role acts as an outer limit — even if the role's policy grants <code>s3:*</code>, the effective permissions are the intersection of the policy and the boundary. This means you can let developers create and modify their own IAM roles (reducing the security team bottleneck) while guaranteeing they can never grant more than the boundary allows.</p>
+
+<pre><code># Terraform: attach permission boundary to all developer-created roles
+resource "aws_iam_role" "service_role" {
+  name                 = "my-service-role"
+  assume_role_policy   = data.aws_iam_policy_document.assume.json
+  permissions_boundary = "arn:aws:iam::${var.account_id}:policy/DeveloperBoundary"
+}</code></pre>
+
+    <p>The boundary policy itself should reflect what any service in your environment could legitimately need — not <code>AdministratorAccess</code>, but a scoped set of services and actions. It becomes the floor beneath which no escalation can reach.</p>
+
+    <h3>SCPs as organizational guardrails</h3>
+
+    <p>Service Control Policies at the AWS Organizations level can make dangerous IAM configurations impossible — not just flagged, but rejected by AWS before they take effect. A few high-value SCPs:</p>
+
+<pre><code>// Deny creating roles without a permission boundary
+{
+  "Effect": "Deny",
+  "Action": [
+    "iam:CreateRole",
+    "iam:PutRolePolicy"
+  ],
+  "Resource": "*",
+  "Condition": {
+    "StringNotLike": {
+      "iam:PermissionsBoundary": "arn:aws:iam::*:policy/DeveloperBoundary"
+    }
+  }
+}</code></pre>
+
+    <p>This SCP makes it impossible to create a role without the boundary attached. Combined with a boundary that caps permissions, you've broken the ratchet: developers can still self-service their IAM needs, but the ceiling is enforced by AWS, not by a reviewer in a ticket queue.</p>
+
+    <h3>Continuous detection, not point-in-time audits</h3>
+
+    <p>AWS Access Analyzer should be running in every account, in every region, with findings routed to your security team's alerting pipeline — not sitting in the console waiting for someone to check it. It won't catch everything, but it surfaces externally-accessible resources and cross-account trust relationships automatically.</p>
+
+    <p>For deeper analysis, IAM Access Advisor shows last-accessed timestamps per service per role. A role that hasn't accessed a service in 90 days almost certainly doesn't need access to it. Build a quarterly process — or better, an automated job — that surfaces these and drives cleanup.</p>
+
+<pre><code># AWS CLI: get last-accessed data for a role
+aws iam generate-service-last-accessed-details \
+  --arn arn:aws:iam::123456789012:role/my-service-role
+
+aws iam get-service-last-accessed-details \
+  --job-id &lt;job-id&gt;</code></pre>
+
+    <h2>The attacker's perspective</h2>
+
+    <p>It's worth being explicit about why this matters from an attacker's point of view. Once an attacker has code execution on a workload in your AWS environment — through an RCE vulnerability, a supply chain compromise, a misconfigured container — their first move is almost always to query the IMDS for credentials:</p>
+
+<pre><code># Attacker queries IMDSv1 for role credentials
+curl http://169.254.169.254/latest/meta-data/iam/security-credentials/
+curl http://169.254.169.254/latest/meta-data/iam/security-credentials/my-service-role</code></pre>
+
+    <p>IMDSv1 requires no authentication — any process on the instance can make this request. If the role attached to that instance has broad permissions, the attacker now has AWS credentials scoped to everything that role can do. If the role can assume other roles, they can pivot further. If the trust graph is unaudited, they may reach admin within a few hops.</p>
+
+    <p>IMDSv2 (requiring a PUT-first token exchange) closes the trivial IMDS credential theft vector for many attack classes — but it's still not universally enforced. An SCP requiring IMDSv2 across all instances is one of the highest-ROI controls you can deploy:</p>
+
+<pre><code>// SCP: Require IMDSv2 on all EC2 instances
+{
+  "Effect": "Deny",
+  "Action": "ec2:RunInstances",
+  "Resource": "arn:aws:ec2:*:*:instance/*",
+  "Condition": {
+    "StringNotEquals": {
+      "ec2:MetadataHttpTokens": "required"
+    }
+  }
+}</code></pre>
+
+    <h2>Where to start if your IAM is already a mess</h2>
+
+    <p>Most environments are. The answer isn't a full rewrite — it's a prioritized sequence:</p>
+
+    <ol>
+      <li><strong>Enable AWS Access Analyzer in all accounts and regions today.</strong> Route findings to a real alerting channel. This costs nothing and surfaces your most exposed configurations immediately.</li>
+      <li><strong>Require IMDSv2 via SCP.</strong> One policy, account-wide, closes a high-frequency attacker primitive.</li>
+      <li><strong>Run PMapper or a similar tool against your environment.</strong> Understand your privilege escalation graph before an attacker does.</li>
+      <li><strong>Design and deploy a permission boundary policy.</strong> Then enforce it via SCP so new roles can't be created without it.</li>
+      <li><strong>Pull last-accessed data for your 20 most-permissioned roles.</strong> Scope them down based on what they actually use. This alone will dramatically reduce your blast radius.</li>
+    </ol>
+
+    <p>None of this is glamorous work. IAM hygiene doesn't show up in CVE databases or get presented at conferences. But across every real-world AWS breach I've read a post-mortem on, the IAM configuration was part of the story — either as the initial foothold, the lateral movement path, or the reason the blast radius was catastrophic instead of contained.</p>
+
+    <blockquote>Your application can be perfectly secure and your AWS environment still wide open. The attack surface isn't just your code — it's every trust relationship, every wildcard action, every role nobody audited since it was created.</blockquote>
+
+    <p>Treat IAM like the security boundary it is. Because attackers already do.</p>
+
+  </div>
+</article>
+
+<section class="more-posts">
+  <p class="more-posts-label">More posts</p>
+  <div class="blog-grid more-grid">
+    <a class="blog-card" href="security-review-gates.html">
+      <div class="card-thumb">
+        <svg viewBox="0 0 800 450" xmlns="http://www.w3.org/2000/svg">
+          <rect width="800" height="450" fill="#111111"/>
+          <line x1="0" y1="112" x2="800" y2="112" stroke="#1e1e1e" stroke-width="1"/>
+          <line x1="0" y1="225" x2="800" y2="225" stroke="#1e1e1e" stroke-width="1"/>
+          <line x1="0" y1="337" x2="800" y2="337" stroke="#1e1e1e" stroke-width="1"/>
+          <line x1="200" y1="0" x2="200" y2="450" stroke="#1e1e1e" stroke-width="1"/>
+          <line x1="400" y1="0" x2="400" y2="450" stroke="#1e1e1e" stroke-width="1"/>
+          <line x1="600" y1="0" x2="600" y2="450" stroke="#1e1e1e" stroke-width="1"/>
+          <line x1="80" y1="225" x2="720" y2="225" stroke="#2a2a2a" stroke-width="3"/>
+          <rect x="80" y="185" width="100" height="80" rx="8" fill="#1a1a1a" stroke="#333" stroke-width="1.5"/>
+          <text x="130" y="230" text-anchor="middle" font-family="monospace" font-size="20" fill="#e8541a">{ }</text>
+          <rect x="220" y="175" width="120" height="100" rx="8" fill="#1a1a1a" stroke="#e8541a" stroke-width="2"/>
+          <line x1="258" y1="235" x2="302" y2="255" stroke="#e8541a" stroke-width="2.5" stroke-linecap="round"/>
+          <line x1="302" y1="235" x2="258" y2="255" stroke="#e8541a" stroke-width="2.5" stroke-linecap="round"/>
+          <rect x="380" y="185" width="120" height="80" rx="8" fill="#0d1a0d" stroke="#2a6e2a" stroke-width="1.5"/>
+          <path d="M426 242 L436 252 L454 236" stroke="#4a9e4a" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+          <rect x="540" y="185" width="100" height="80" rx="8" fill="#1a1a1a" stroke="#333" stroke-width="1.5"/>
+        </svg>
+      </div>
+      <div class="card-body">
+        <p class="card-date">May 21, 2026</p>
+        <h2 class="card-title">Security review gates don't scale</h2>
+        <p class="card-author">By Yusuf M</p>
+        <p class="card-excerpt">Why the security approval model breaks down as engineering orgs grow — and what to replace it with.</p>
+        <div class="card-tags"><span class="tag">Security</span><span class="tag">Engineering</span></div>
+      </div>
+    </a>
+    <a class="blog-card" href="device-trust.html">
+      <div class="card-thumb"><svg viewBox="0 0 800 450" xmlns="http://www.w3.org/2000/svg">
+  <rect width="800" height="450" fill="#7B4FE0"/>
+  <rect x="0" y="0" width="220" height="450" fill="#5B3AB0"/>
+  <rect x="580" y="0" width="220" height="450" fill="#5B3AB0"/>
+  <rect x="80" y="60" width="120" height="180" rx="6" fill="#9A70F8"/>
+  <rect x="95" y="75" width="90" height="130" rx="3" fill="#B89FFF"/>
+  <circle cx="140" cy="140" r="28" fill="#7B4FE0"/>
+  <rect x="118" y="133" width="44" height="14" rx="3" fill="#9A70F8"/>
+  <rect x="600" y="70" width="120" height="160" rx="6" fill="#9A70F8"/>
+  <rect x="615" y="85" width="90" height="115" rx="3" fill="#B89FFF"/>
+  <circle cx="660" cy="150" r="24" fill="#7B4FE0"/>
+  <rect x="240" y="100" width="320" height="220" rx="10" fill="#fff"/>
+  <rect x="265" y="130" width="160" height="14" rx="3" fill="#E8E0F5"/>
+  <rect x="265" y="155" width="120" height="10" rx="2" fill="#E8E0F5"/>
+  <circle cx="400" cy="270" r="20" fill="#FF6B6B"/>
+  <line x1="388" y1="270" x2="412" y2="270" stroke="#fff" stroke-width="3"/>
+</svg></div>
+      <div class="card-body">
+        <p class="card-date">December 8, 2025</p>
+        <h2 class="card-title">Enforcing device trust on code changes</h2>
+        <p class="card-author">By Yusuf M</p>
+        <p class="card-excerpt">How the security engineering team leveraged commit signatures and Okta Device Trust certificates to protect GitHub release branches.</p>
+        <div class="card-tags"><span class="tag">Inside</span><span class="tag">Engineering</span><span class="tag">Security</span></div>
+      </div>
+    </a>
+    <a class="blog-card" href="sandboxing-intro.html">
+      <div class="card-thumb"><svg viewBox="0 0 800 450" xmlns="http://www.w3.org/2000/svg">
+  <rect width="800" height="450" fill="#B8D4E8"/>
+  <rect x="0" y="200" width="800" height="250" fill="#8BB8D4"/>
+  <rect x="70" y="110" width="200" height="300" rx="10" fill="#D4E8F5" stroke="#7AAAC8" stroke-width="1.5"/>
+  <rect x="300" y="50" width="200" height="360" rx="10" fill="#D4E8F5" stroke="#7AAAC8" stroke-width="1.5"/>
+  <rect x="530" y="80" width="200" height="330" rx="10" fill="#D4E8F5" stroke="#7AAAC8" stroke-width="1.5"/>
+  <circle cx="170" cy="100" r="26" fill="#FFD700"/>
+  <circle cx="400" cy="38" r="26" fill="#FFD700"/>
+  <circle cx="630" cy="66" r="26" fill="#FFD700"/>
+</svg></div>
+      <div class="card-body">
+        <p class="card-date">January 4, 2026</p>
+        <h2 class="card-title">Server-side sandboxing: An introduction</h2>
+        <p class="card-author">By Yusuf M</p>
+        <p class="card-excerpt">In this three-part series, practical tips for deploying and operating application sandboxing techniques at scale.</p>
+        <div class="card-tags"><span class="tag">Inside</span><span class="tag">Security</span><span class="tag">Engineering</span></div>
+      </div>
+    </a>
+  </div>
+</section>
+
+<footer class="site-footer">
+  <span class="footer-copy">© 2026 ysf.root</span>
+  <div class="footer-links">
+    <a href="#">RSS</a>
+    <a href="#">Twitter</a>
+    <a href="#">GitHub</a>
+  </div>
+</footer>
+</body>
+</html>

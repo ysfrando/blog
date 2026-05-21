@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Your API gateway is not a security boundary — ysf.root</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,700;0,9..40,800;1,9..40,400&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body class="page">
+
+<header class="site-header">
+  <a class="site-logo" href="../index.html">
+    <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
+      <rect width="28" height="28" rx="5" fill="#1a1a1a"/>
+      <text x="14" y="20" text-anchor="middle" font-family="'DM Sans', monospace" font-size="17" font-weight="800" fill="#e8541a">$</text>
+    </svg>
+    <span class="logo-text">ysf.root</span>
+  </a>
+  <div class="header-tags">
+    <a class="header-tag" href="../index.html">All</a>
+    <a class="header-tag" href="../index.html?filter=security">Security</a>
+    <a class="header-tag" href="../index.html?filter=engineering">Engineering</a>
+    <a class="header-tag" href="../index.html?filter=inside">Inside</a>
+  </div>
+</header>
+
+<article class="article-page">
+  <a class="back-btn" href="../index.html">
+    <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M10 3L5 8l5 5"/>
+    </svg>
+    All posts
+  </a>
+
+  <div class="article-eyebrow">
+    <span class="tag">Security</span><span class="tag">AppSec</span>
+    <span class="reading-time">10 min read</span>
+  </div>
+
+  <h1 class="article-title">Your API gateway is not a security boundary</h1>
+
+  <div class="article-meta">
+    <div class="meta-author">
+      <div class="author-avatar">YM</div>
+      <div>
+        <div class="author-name">Yusuf M</div>
+        <div class="author-role">Security</div>
+      </div>
+    </div>
+    <div class="meta-sep"></div>
+    <div class="meta-info">
+      <strong>May 21, 2026</strong>
+      Published
+    </div>
+    <div class="meta-sep"></div>
+    <div class="meta-info">
+      <strong>10 min read</strong>
+      Reading time
+    </div>
+  </div>
+
+  <!-- Hero SVG: two-panel flat illustration, API gateway false boundary theme -->
+  <div class="article-hero-thumb">
+    <svg width="100%" viewBox="0 0 800 450" role="img" xmlns="http://www.w3.org/2000/svg">
+      <title>API gateway security boundary hero</title>
+      <desc>Flat editorial illustration: left panel shows a gateway with a false sense of security, right panel shows exposed internal services</desc>
+
+      <!-- LEFT PANEL: Gateway — deep teal -->
+      <rect x="0" y="0" width="400" height="450" fill="#0D5C63"/>
+      <ellipse cx="200" cy="210" rx="140" ry="110" fill="#117A82" opacity="0.6"/>
+
+      <!-- Gateway box -->
+      <rect x="115" y="130" width="170" height="200" rx="6" fill="#072E31"/>
+
+      <!-- Gateway header bar -->
+      <rect x="115" y="130" width="170" height="38" rx="4" fill="#0A4448"/>
+
+      <!-- Top indicator light -->
+      <circle cx="200" cy="108" r="18" fill="#F5A623"/>
+      <circle cx="200" cy="108" r="10" fill="#FFD700"/>
+
+      <!-- Gateway label on header -->
+      <text x="200" y="154" text-anchor="middle" font-family="monospace" font-size="11" font-weight="700" fill="#4DD9E0">API GATEWAY</text>
+
+      <!-- Green tick — false sense of security -->
+      <circle cx="200" cy="218" r="34" fill="#0A4448"/>
+      <path d="M184 218 L196 232 L218 206" stroke="#4DD9E0" stroke-width="5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+
+      <!-- Lock icon below tick -->
+      <rect x="184" y="268" width="32" height="26" rx="4" fill="#0A4448"/>
+      <path d="M191 268 Q191 255 200 255 Q209 255 209 268" stroke="#4DD9E0" stroke-width="3" fill="none"/>
+
+      <!-- Gateway legs -->
+      <rect x="152" y="330" width="20" height="55" rx="4" fill="#072E31"/>
+      <rect x="228" y="330" width="20" height="55" rx="4" fill="#072E31"/>
+      <rect x="104" y="348" width="56" height="12" rx="4" fill="#F5A623"/>
+      <rect x="240" y="348" width="56" height="12" rx="4" fill="#F5A623"/>
+
+      <!-- Left person / client -->
+      <circle cx="46" cy="252" r="18" fill="#1A9DA6" opacity="0.9"/>
+      <rect x="30" y="272" width="32" height="36" rx="5" fill="#1A9DA6" opacity="0.9"/>
+      <path d="M36 284 Q46 280 56 284" stroke="#0D7A82" stroke-width="2" fill="none"/>
+      <path d="M36 294 Q46 290 56 294" stroke="#0D7A82" stroke-width="2" fill="none"/>
+      <line x1="78" y1="264" x2="115" y2="252" stroke="#1A9DA6" stroke-width="1.5" opacity="0.5"/>
+
+      <!-- DIVIDER -->
+      <rect x="396" y="0" width="8" height="450" fill="#1a1a1a"/>
+
+      <!-- RIGHT PANEL: Exposed internals — warm orange -->
+      <rect x="404" y="0" width="396" height="450" fill="#E8541A"/>
+      <ellipse cx="602" cy="210" rx="140" ry="110" fill="#F07040" opacity="0.5"/>
+
+      <!-- Internal service cards — exposed, messy -->
+      <!-- Service 1: Orders -->
+      <rect x="424" y="90" width="110" height="90" rx="6" fill="#C43E08"/>
+      <circle cx="479" cy="78" r="12" fill="#FFD700"/>
+      <text x="479" y="128" text-anchor="middle" font-family="monospace" font-size="10" fill="#FFD0B0">orders-svc</text>
+      <path d="M436 148 Q479 143 522 148" stroke="#FF8C5A" stroke-width="2" fill="none"/>
+
+      <!-- Service 2: Auth -->
+      <rect x="554" y="110" width="110" height="90" rx="6" fill="#C43E08"/>
+      <circle cx="609" cy="98" r="12" fill="#F5A623"/>
+      <text x="609" y="148" text-anchor="middle" font-family="monospace" font-size="10" fill="#FFD0B0">auth-svc</text>
+      <path d="M566 168 Q609 163 652 168" stroke="#FF8C5A" stroke-width="2" fill="none"/>
+
+      <!-- Service 3: User data — highlighted as exposed -->
+      <rect x="488" y="230" width="120" height="100" rx="6" fill="#A03000"/>
+      <circle cx="548" cy="218" r="14" fill="#FF4444"/>
+      <!-- Exclamation on circle -->
+      <text x="548" y="223" text-anchor="middle" font-family="monospace" font-size="14" font-weight="800" fill="#fff">!</text>
+      <text x="548" y="272" text-anchor="middle" font-family="monospace" font-size="10" fill="#FFD0B0">user-data-svc</text>
+      <path d="M500 290 Q548 285 596 290" stroke="#FF8C5A" stroke-width="2" fill="none"/>
+      <path d="M500 305 Q548 300 596 305" stroke="#FF8C5A" stroke-width="2" fill="none"/>
+
+      <!-- Dotted lines showing bypass paths -->
+      <line x1="404" y1="160" x2="424" y2="135" stroke="#FFD700" stroke-width="1.5" stroke-dasharray="5,3" opacity="0.7"/>
+      <line x1="404" y1="200" x2="554" y2="155" stroke="#FFD700" stroke-width="1.5" stroke-dasharray="5,3" opacity="0.7"/>
+      <line x1="404" y1="280" x2="488" y2="280" stroke="#FFD700" stroke-width="1.5" stroke-dasharray="5,3" opacity="0.7"/>
+
+      <!-- LABELS -->
+      <rect x="80" y="400" width="240" height="30" rx="5" fill="#4DD9E0" opacity="0.9"/>
+      <text x="200" y="420" text-anchor="middle" font-family="'DM Sans', monospace" font-size="12" font-weight="700" fill="#072E31">"auth handled" ✓</text>
+
+      <rect x="464" y="400" width="240" height="30" rx="5" fill="#A03000" opacity="0.9"/>
+      <text x="584" y="420" text-anchor="middle" font-family="'DM Sans', monospace" font-size="12" font-weight="700" fill="#FFD0B0">services exposed ✕</text>
+    </svg>
+  </div>
+
+  <div class="article-body">
+
+    <p>The API gateway handled auth. That was the assumption. It wasn't written down anywhere — it was just understood. So when one internal service started accepting requests directly from another without validating the JWT, nobody flagged it. Why would they? The gateway was there.</p>
+
+    <p>That's the misconfiguration I've seen exploited more than almost any other in microservices environments. Not a clever zero-day. Not a complex attack chain. Just a team that treated the gateway as a perimeter and gutted every security check behind it.</p>
+
+    <h2>What the gateway actually does</h2>
+
+    <p>API gateways — AWS API Gateway, Kong, Nginx, Envoy, whatever you're running — are routing and policy enforcement layers. They terminate TLS, validate tokens at the edge, rate limit, and handle cross-cutting concerns so individual services don't have to. That's genuinely useful. The problem is what teams infer from it.</p>
+
+    <p>The inference is: <em>if a request made it through the gateway, it's been authenticated and authorized</em>. That inference is wrong in several important ways, and understanding why requires thinking about what the gateway can and can't see.</p>
+
+    <p>The gateway validates that a token exists and is signed correctly. It does not know what that token is allowed to do inside your specific service. It does not validate business-level authorization — whether user A is allowed to access resource B. And critically, it only sees traffic that flows through it. Any request that doesn't touch the gateway — internal service-to-service calls, background jobs, admin interfaces, direct VPC access — gets none of that validation.</p>
+
+    <h2>The three failure patterns I've seen directly</h2>
+
+    <h3>1. Internal services with no auth</h3>
+
+    <p>This is the most common. The gateway sits in front of your public API and enforces token validation. Behind it, services call each other over internal networking — and because "internal" is assumed to mean "trusted", those calls have no authentication at all.</p>
+
+    <p>In practice, "internal" means reachable from anything else in that VPC, that cluster, or that network segment. Compromise any workload in that environment — a misconfigured Lambda, a container with a vulnerable dependency, an EC2 instance with overpermissioned IAM — and you can call those internal services directly, with no token, no authorization check, nothing.</p>
+
+<pre><code># What an attacker does after getting internal network access:
+# Direct call to an internal service that skips the gateway entirely
+curl http://orders-service.internal:8080/api/v1/orders \
+  -H "Content-Type: application/json"
+# No Authorization header. No gateway. Full access.</code></pre>
+
+    <p>I've seen this in environments that had sophisticated edge security — WAF, DDoS protection, JWT validation at the gateway — with completely open internal services. The perimeter was hardened. The interior was flat.</p>
+
+    <h3>2. JWT forwarding without re-validation</h3>
+
+    <p>A subtler variant: the gateway validates the token and forwards it to the upstream service. The upstream service receives the JWT in the <code>Authorization</code> header and… passes it along to the next service in the call chain. Which passes it to the next. Each service assumes the previous one validated it.</p>
+
+<pre><code>// Common pattern — service B trusts whatever service A forwarded
+app.get('/internal/user-data', (req, res) => {
+  // Token was validated at the gateway, so we trust it here, right?
+  const userId = req.headers['x-user-id']; // Set by service A
+  return db.getUserData(userId);
+});
+</code></pre>
+
+    <p>The <code>x-user-id</code> header is set by Service A. But if an attacker can call Service B directly — bypassing Service A — they set that header themselves. There's no signature, no cryptographic binding, no verification that the header value matches a real authenticated user. It's just a string anybody can send.</p>
+
+    <p>The fix is not complicated: every service that does anything sensitive must validate the JWT itself, not rely on a header set by an upstream service it didn't authenticate.</p>
+
+    <h3>3. Authorization at the gateway instead of the service</h3>
+
+    <p>Some teams push authorization logic — not just authentication, but "is this user allowed to do this action" — into the gateway layer. Route-level policies: <code>GET /admin/*</code> requires role <code>admin</code>, and so on.</p>
+
+    <p>This feels clean. It centralizes policy. In practice it creates a brittle coupling between your routing layer and your business logic, and it almost always has gaps. Route-level authorization can't reason about resource ownership. It can't check whether user A owns the specific record they're trying to access at <code>/orders/123</code>. That check has to happen in the service, with access to the data.</p>
+
+<pre><code># Gateway policy: users with role "user" can access GET /orders/:id
+# But this doesn't check whether the order belongs to THIS user
+GET /orders/456  →  allowed (user has "user" role)
+# An attacker enumerates order IDs and reads other users' orders
+GET /orders/457  →  allowed
+GET /orders/458  →  allowed</code></pre>
+
+    <p>That's an IDOR. The gateway let it through because the route was allowed. The service didn't check ownership because "the gateway handles auth." Both layers partially handled authorization and neither did it completely.</p>
+
+    <h2>What a real defense-in-depth model looks like</h2>
+
+    <p>The gateway stays. It's still useful for what it's good at: edge token validation, rate limiting, TLS termination, request routing. But it becomes one layer in a model that has enforcement at every tier, not the single enforcement point everything else depends on.</p>
+
+    <h3>mTLS for service-to-service calls</h3>
+
+    <p>Every internal service call should use mutual TLS. Each service has a certificate; each call is cryptographically authenticated in both directions. An attacker who compromises one workload and tries to call another service needs a valid certificate, not just network access.</p>
+
+    <p>In a Kubernetes environment, a service mesh like Istio or Linkerd handles this transparently. In AWS, ACM Private CA with automated certificate rotation via cert-manager is the pattern. The key outcome: "internal network reachable" no longer means "can call any service unauthenticated."</p>
+
+<pre><code># Istio: enforce mTLS across the entire mesh
+apiVersion: security.istio.io/v1beta1
+kind: PeerAuthentication
+metadata:
+  name: default
+  namespace: production
+spec:
+  mtls:
+    mode: STRICT</code></pre>
+
+    <h3>Per-service authorization, not gateway-level</h3>
+
+    <p>Every service must validate the JWT it receives — not trust a forwarded header, not assume an upstream service did it. The gateway's validation proves the token was valid at the edge; the service's validation proves the token authorizes this specific action on this specific resource.</p>
+
+    <p>Authorization logic — ownership checks, role checks, resource-level access control — lives in the service layer, next to the data. Not in the gateway, not in a shared middleware library that gets called inconsistently, but in the handler for each operation that needs it.</p>
+
+<pre><code>// Correct: service validates JWT and checks resource ownership
+app.get('/orders/:orderId', authenticateJWT, async (req, res) => {
+  const order = await db.getOrder(req.params.orderId);
+
+  if (!order) return res.status(404).json({ error: 'Not found' });
+
+  // Authorization check: does this token's subject own this order?
+  if (order.userId !== req.user.sub) {
+    return res.status(403).json({ error: 'Forbidden' });
+  }
+
+  return res.json(order);
+});</code></pre>
+
+    <h3>Network policy as a hard backstop</h3>
+
+    <p>Even with mTLS and per-service auth, network policy is cheap defense-in-depth. In Kubernetes, <code>NetworkPolicy</code> resources restrict which pods can talk to which other pods at the network level — before any application code runs. In AWS, security group rules between services serve the same role.</p>
+
+<pre><code># Kubernetes NetworkPolicy: only allow orders-service to call user-data-service
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: user-data-ingress
+  namespace: production
+spec:
+  podSelector:
+    matchLabels:
+      app: user-data-service
+  ingress:
+  - from:
+    - podSelector:
+        matchLabels:
+          app: orders-service</code></pre>
+
+    <p>This doesn't replace mTLS or application-level auth. It adds a layer that operates independently — a compromised workload that isn't <code>orders-service</code> can't reach <code>user-data-service</code> at all, regardless of what credentials it has.</p>
+
+    <h2>The mental model shift</h2>
+
+    <p>The underlying issue isn't a specific misconfiguration — it's a mental model. The gateway-as-perimeter model imports a network security assumption (trust inside the boundary) into an application security context where it doesn't hold. In a microservices architecture, there is no meaningful inside. Services are independently deployable, independently scalable, and independently compromisable. Each one needs to behave as if the request it's receiving could be from an attacker.</p>
+
+    <blockquote>Zero trust isn't a product you buy. It's the recognition that "this request came from inside the network" is not an authorization decision.</blockquote>
+
+    <p>The gateway is a useful piece of infrastructure. It's not a security boundary. The sooner that distinction is explicit in your architecture documentation, your threat models, and your code review checklist, the fewer services you'll ship that only look secure from the outside.</p>
+
+    <h2>Where to start if this describes your environment</h2>
+
+    <ol>
+      <li><strong>Map every service-to-service call in your environment.</strong> Which ones have authentication? Which ones rely on network trust? This inventory alone will surface your highest-risk paths.</li>
+      <li><strong>Audit your JWT validation.</strong> For every service that handles sensitive data, verify it validates the token itself — not a forwarded header from an upstream service.</li>
+      <li><strong>Enforce mTLS at the mesh level.</strong> If you're on Kubernetes, set <code>PeerAuthentication</code> to <code>STRICT</code> across your production namespace. If you're not, start with your highest-risk service pairs.</li>
+      <li><strong>Add network policy as a backstop.</strong> Even coarse-grained policies that restrict which services can talk to which others reduce your blast radius significantly.</li>
+      <li><strong>Move authorization checks into service handlers.</strong> Find every place you're relying on gateway-level route authorization for resource-level access control and fix it at the source.</li>
+    </ol>
+
+    <p>None of this requires a platform rewrite. It requires treating each service as a trust boundary — because in practice, it already is one. You're just not enforcing it yet.</p>
+
+  </div>
+</article>
+
+<section class="more-posts">
+  <p class="more-posts-label">More posts</p>
+  <div class="blog-grid more-grid">
+    <a class="blog-card" href="iam-attack-surface.html">
+      <div class="card-thumb">
+        <svg viewBox="0 0 800 450" xmlns="http://www.w3.org/2000/svg">
+          <rect width="800" height="450" fill="#0d0d0d"/>
+          <circle cx="400" cy="225" r="52" fill="#1a1a1a" stroke="#e8541a" stroke-width="2"/>
+          <text x="400" y="219" text-anchor="middle" font-family="monospace" font-size="11" fill="#e8541a">IAM</text>
+          <text x="400" y="235" text-anchor="middle" font-family="monospace" font-size="11" fill="#e8541a">Role</text>
+          <circle cx="180" cy="120" r="36" fill="#1a1a1a" stroke="#444" stroke-width="1.5"/>
+          <text x="180" y="125" text-anchor="middle" font-family="monospace" font-size="9" fill="#888">Lambda</text>
+          <circle cx="620" cy="120" r="36" fill="#1a1a1a" stroke="#444" stroke-width="1.5"/>
+          <text x="620" y="125" text-anchor="middle" font-family="monospace" font-size="9" fill="#888">EC2</text>
+          <circle cx="130" cy="310" r="36" fill="#1a1a1a" stroke="#444" stroke-width="1.5"/>
+          <text x="130" y="315" text-anchor="middle" font-family="monospace" font-size="9" fill="#888">S3</text>
+          <circle cx="670" cy="310" r="36" fill="#1a1a1a" stroke="#444" stroke-width="1.5"/>
+          <text x="670" y="315" text-anchor="middle" font-family="monospace" font-size="9" fill="#888">RDS</text>
+          <line x1="213" y1="138" x2="358" y2="196" stroke="#2a2a2a" stroke-width="1.5"/>
+          <line x1="587" y1="138" x2="442" y2="196" stroke="#2a2a2a" stroke-width="1.5"/>
+          <line x1="163" y1="278" x2="358" y2="248" stroke="#2a2a2a" stroke-width="1.5"/>
+          <line x1="637" y1="278" x2="442" y2="248" stroke="#2a2a2a" stroke-width="1.5"/>
+          <circle cx="400" cy="50" r="28" fill="#1a0000" stroke="#e8541a" stroke-width="1.5" stroke-dasharray="4,2"/>
+          <line x1="400" y1="78" x2="400" y2="173" stroke="#e8541a" stroke-width="2" stroke-dasharray="5,3"/>
+        </svg>
+      </div>
+      <div class="card-body">
+        <p class="card-date">May 21, 2026</p>
+        <h2 class="card-title">IAM is your real attack surface — not your app</h2>
+        <p class="card-author">By Yusuf M</p>
+        <p class="card-excerpt">One overpermissioned role, one compromised workload, full environment access. The IAM misconfiguration patterns that show up in every AWS environment.</p>
+        <div class="card-tags"><span class="tag">Security</span><span class="tag">Cloud</span></div>
+      </div>
+    </a>
+    <a class="blog-card" href="security-review-gates.html">
+      <div class="card-thumb">
+        <svg viewBox="0 0 800 450" xmlns="http://www.w3.org/2000/svg">
+          <rect width="800" height="450" fill="#111111"/>
+          <line x1="0" y1="225" x2="800" y2="225" stroke="#1e1e1e" stroke-width="1"/>
+          <line x1="400" y1="0" x2="400" y2="450" stroke="#1e1e1e" stroke-width="1"/>
+          <rect x="80" y="185" width="100" height="80" rx="8" fill="#1a1a1a" stroke="#333" stroke-width="1.5"/>
+          <text x="130" y="230" text-anchor="middle" font-family="monospace" font-size="20" fill="#e8541a">{ }</text>
+          <rect x="220" y="175" width="120" height="100" rx="8" fill="#1a1a1a" stroke="#e8541a" stroke-width="2"/>
+          <line x1="258" y1="235" x2="302" y2="255" stroke="#e8541a" stroke-width="2.5" stroke-linecap="round"/>
+          <line x1="302" y1="235" x2="258" y2="255" stroke="#e8541a" stroke-width="2.5" stroke-linecap="round"/>
+          <rect x="380" y="185" width="120" height="80" rx="8" fill="#0d1a0d" stroke="#2a6e2a" stroke-width="1.5"/>
+          <path d="M426 242 L436 252 L454 236" stroke="#4a9e4a" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+      <div class="card-body">
+        <p class="card-date">May 21, 2026</p>
+        <h2 class="card-title">Security review gates don't scale</h2>
+        <p class="card-author">By Yusuf M</p>
+        <p class="card-excerpt">Why the security approval model breaks down as engineering orgs grow — and what to replace it with.</p>
+        <div class="card-tags"><span class="tag">Security</span><span class="tag">Engineering</span></div>
+      </div>
+    </a>
+    <a class="blog-card" href="device-trust.html">
+      <div class="card-thumb"><svg viewBox="0 0 800 450" xmlns="http://www.w3.org/2000/svg">
+  <rect width="800" height="450" fill="#7B4FE0"/>
+  <rect x="0" y="0" width="220" height="450" fill="#5B3AB0"/>
+  <rect x="580" y="0" width="220" height="450" fill="#5B3AB0"/>
+  <rect x="80" y="60" width="120" height="180" rx="6" fill="#9A70F8"/>
+  <rect x="95" y="75" width="90" height="130" rx="3" fill="#B89FFF"/>
+  <circle cx="140" cy="140" r="28" fill="#7B4FE0"/>
+  <rect x="118" y="133" width="44" height="14" rx="3" fill="#9A70F8"/>
+  <rect x="600" y="70" width="120" height="160" rx="6" fill="#9A70F8"/>
+  <rect x="615" y="85" width="90" height="115" rx="3" fill="#B89FFF"/>
+  <circle cx="660" cy="150" r="24" fill="#7B4FE0"/>
+  <rect x="240" y="100" width="320" height="220" rx="10" fill="#fff"/>
+  <rect x="265" y="130" width="160" height="14" rx="3" fill="#E8E0F5"/>
+  <rect x="265" y="155" width="120" height="10" rx="2" fill="#E8E0F5"/>
+  <circle cx="400" cy="270" r="20" fill="#FF6B6B"/>
+  <line x1="388" y1="270" x2="412" y2="270" stroke="#fff" stroke-width="3"/>
+</svg></div>
+      <div class="card-body">
+        <p class="card-date">December 8, 2025</p>
+        <h2 class="card-title">Enforcing device trust on code changes</h2>
+        <p class="card-author">By Yusuf M</p>
+        <p class="card-excerpt">How the security engineering team leveraged commit signatures and Okta Device Trust certificates to protect GitHub release branches.</p>
+        <div class="card-tags"><span class="tag">Inside</span><span class="tag">Engineering</span><span class="tag">Security</span></div>
+      </div>
+    </a>
+  </div>
+</section>
+
+<footer class="site-footer">
+  <span class="footer-copy">© 2026 ysf.root</span>
+  <div class="footer-links">
+    <a href="#">RSS</a>
+    <a href="#">Twitter</a>
+    <a href="#">GitHub</a>
+  </div>
+</footer>
+</body>
+</html>
