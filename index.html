@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ysf.root</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,700;0,9..40,800;1,9..40,400&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body class="page">
+
+<header class="site-header">
+  <a class="site-logo" href="index.html">
+    <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
+      <rect width="28" height="28" rx="5" fill="#1a1a1a"/>
+      <text x="14" y="20" text-anchor="middle" font-family="'DM Sans', monospace" font-size="17" font-weight="800" fill="#e8541a">$</text>
+    </svg>
+    <span class="logo-text">ysf.root</span>
+  </a>
+  <div class="header-tags">
+    <a class="header-tag active" href="index.html">All</a>
+    <a class="header-tag" href="index.html?filter=security">Security</a>
+    <a class="header-tag" href="index.html?filter=engineering">Engineering</a>
+    <a class="header-tag" href="index.html?filter=inside">Inside</a>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="hero-left">
+    <p class="hero-eyebrow">ysf.root</p>
+    <h1 class="hero-title">Breaking,<br><em>building,</em><br>securing.</h1>
+  </div>
+  <div class="hero-right">
+    <p class="hero-desc">My notes on breaking, building, and securing systems.</p>
+    <div class="hero-stat">
+      <strong id="post-count">6</strong>
+      Articles published
+    </div>
+  </div>
+</section>
+
+<div class="filter-bar">
+  <span class="filter-label">Filter</span>
+  <button class="filter-btn active" data-filter="all">All posts</button>
+  <button class="filter-btn" data-filter="security">Security</button>
+  <button class="filter-btn" data-filter="engineering">Engineering</button>
+  <button class="filter-btn" data-filter="inside">Inside</button>
+</div>
+
+<div class="blog-grid" id="blog-grid"></div>
+
+<footer class="site-footer">
+  <span class="footer-copy">© 2026 ysf.root</span>
+  <div class="footer-links">
+    <a href="#">RSS</a>
+    <a href="#">Twitter</a>
+    <a href="#">GitHub</a>
+  </div>
+</footer>
+
+<script>
+const posts = [
+  {
+    slug: "device-trust",
+    title: "Enforcing device trust on code changes",
+    date: "December 8, 2025",
+    author: "Yusuf M",
+    tags: ["inside", "engineering", "security"],
+    tagLabels: ["Inside", "Engineering", "Security"],
+    excerpt: "Here's how the security engineering team leveraged commit signatures and Okta Device Trust certificates to protect GitHub release branches from unauthorized changes.",
+    featured: false,
+    thumb: `<svg viewBox="0 0 800 450" xmlns="http://www.w3.org/2000/svg">
+      <rect width="800" height="450" fill="#7B4FE0"/>
+      <rect x="0" y="0" width="220" height="450" fill="#5B3AB0"/>
+      <rect x="580" y="0" width="220" height="450" fill="#5B3AB0"/>
+      <rect x="80" y="60" width="120" height="180" rx="6" fill="#9A70F8"/>
+      <rect x="95" y="75" width="90" height="130" rx="3" fill="#B89FFF"/>
+      <circle cx="140" cy="140" r="28" fill="#7B4FE0"/>
+      <rect x="118" y="133" width="44" height="14" rx="3" fill="#9A70F8"/>
+      <rect x="600" y="70" width="120" height="160" rx="6" fill="#9A70F8"/>
+      <rect x="615" y="85" width="90" height="115" rx="3" fill="#B89FFF"/>
+      <circle cx="660" cy="150" r="24" fill="#7B4FE0"/>
+      <rect x="240" y="100" width="320" height="220" rx="10" fill="#fff"/>
+      <rect x="265" y="130" width="160" height="14" rx="3" fill="#E8E0F5"/>
+      <rect x="265" y="155" width="120" height="10" rx="2" fill="#E8E0F5"/>
+      <rect x="265" y="173" width="145" height="10" rx="2" fill="#E8E0F5"/>
+      <rect x="265" y="191" width="100" height="10" rx="2" fill="#E8E0F5"/>
+      <circle cx="400" cy="270" r="20" fill="#FF6B6B"/>
+      <line x1="388" y1="270" x2="412" y2="270" stroke="#fff" stroke-width="3"/>
+      <line x1="148" y1="205" x2="240" y2="185" stroke="#C4A0FF" stroke-width="2"/>
+      <line x1="660" y1="195" x2="558" y2="185" stroke="#C4A0FF" stroke-width="2"/>
+    </svg>`
+  },
+  {
+    slug: "sandboxing-containers",
+    title: "Server-side sandboxing: Containers and seccomp",
+    date: "December 26, 2025",
+    author: "Yusuf M",
+    tags: ["inside", "security", "engineering"],
+    tagLabels: ["Inside", "Security", "Engineering"],
+    excerpt: "Containers and secure computing mode (seccomp) are sandboxing primitives that offer a lighter weight alternative to virtual machines for isolating untrusted workloads.",
+    featured: true,
+    thumb: `<svg viewBox="0 0 800 450" xmlns="http://www.w3.org/2000/svg">
+      <rect width="800" height="450" fill="#F05A00"/>
+      <ellipse cx="400" cy="170" rx="230" ry="150" fill="#FF8C00"/>
+      <rect x="260" y="155" width="280" height="240" rx="8" fill="#1a0a00"/>
+      <rect x="285" y="175" width="80" height="120" rx="38" fill="#2a1500"/>
+      <rect x="435" y="175" width="80" height="120" rx="38" fill="#2a1500"/>
+      <circle cx="325" cy="195" r="22" fill="#FFB347"/>
+      <circle cx="475" cy="195" r="22" fill="#FFB347"/>
+      <rect x="350" y="250" width="100" height="65" rx="8" fill="#FF6B00"/>
+      <path d="M310 355 Q400 385 490 355" stroke="#FF8C00" stroke-width="4" fill="none"/>
+      <rect x="190" y="295" width="420" height="8" fill="#1a0a00" opacity="0.4"/>
+      <path d="M245 295 L215 395" stroke="#FF6B00" stroke-width="16" stroke-linecap="round"/>
+      <path d="M555 295 L585 395" stroke="#FF6B00" stroke-width="16" stroke-linecap="round"/>
+      <path d="M300 295 L282 375" stroke="#CC4400" stroke-width="10" stroke-linecap="round"/>
+      <path d="M500 295 L518 375" stroke="#CC4400" stroke-width="10" stroke-linecap="round"/>
+      <circle cx="400" cy="80" r="22" fill="#FFD700"/>
+      <rect x="390" y="102" width="20" height="55" fill="#FF8C00"/>
+    </svg>`
+  },
+  {
+    slug: "sandboxing-intro",
+    title: "Server-side sandboxing: An introduction",
+    date: "January 4, 2026",
+    author: "Yusuf M",
+    tags: ["inside", "security", "engineering"],
+    tagLabels: ["Inside", "Security", "Engineering"],
+    excerpt: "In this three-part series, our security engineering team shares practical tips for deploying and operating application sandboxing techniques at scale.",
+    featured: false,
+    thumb: `<svg viewBox="0 0 800 450" xmlns="http://www.w3.org/2000/svg">
+      <rect width="800" height="450" fill="#B8D4E8"/>
+      <rect x="0" y="200" width="800" height="250" fill="#8BB8D4"/>
+      <rect x="70" y="110" width="200" height="300" rx="10" fill="#D4E8F5" stroke="#7AAAC8" stroke-width="1.5"/>
+      <rect x="300" y="50" width="200" height="360" rx="10" fill="#D4E8F5" stroke="#7AAAC8" stroke-width="1.5"/>
+      <rect x="530" y="80" width="200" height="330" rx="10" fill="#D4E8F5" stroke="#7AAAC8" stroke-width="1.5"/>
+      <circle cx="170" cy="100" r="26" fill="#FFD700"/>
+      <circle cx="400" cy="38" r="26" fill="#FFD700"/>
+      <circle cx="630" cy="66" r="26" fill="#FFD700"/>
+      <path d="M100 310 Q115 280 130 310 Q145 340 160 310 Q175 280 190 310 Q205 340 220 310" stroke="#FF8C00" stroke-width="3" fill="none"/>
+      <path d="M330 260 Q345 230 360 260 Q375 290 390 260 Q405 230 420 260 Q435 290 450 260" stroke="#FF8C00" stroke-width="3" fill="none"/>
+      <path d="M560 290 Q575 260 590 290 Q605 320 620 290 Q635 260 650 290 Q665 320 680 290" stroke="#FF8C00" stroke-width="3" fill="none"/>
+    </svg>`
+  },
+  {
+    slug: "zero-trust",
+    title: "Zero-trust network access at scale",
+    date: "January 21, 2026",
+    author: "Yusuf M",
+    tags: ["security", "engineering"],
+    tagLabels: ["Security", "Engineering"],
+    excerpt: "A deep-dive into the architecture decisions behind our move to a zero-trust network model, including the tooling we built and the lessons learned along the way.",
+    featured: false,
+    thumb: `<svg viewBox="0 0 800 450" xmlns="http://www.w3.org/2000/svg">
+      <rect width="800" height="450" fill="#0D2137"/>
+      <circle cx="400" cy="225" r="140" fill="none" stroke="#1A4A7A" stroke-width="70"/>
+      <circle cx="400" cy="225" r="75" fill="#1A3A5C"/>
+      <circle cx="400" cy="225" r="35" fill="#2A5A8C"/>
+      <rect x="393" y="85" width="14" height="50" rx="7" fill="#4A8AC4"/>
+      <rect x="393" y="315" width="14" height="50" rx="7" fill="#4A8AC4"/>
+      <rect x="245" y="218" width="50" height="14" rx="7" fill="#4A8AC4"/>
+      <rect x="505" y="218" width="50" height="14" rx="7" fill="#4A8AC4"/>
+      <circle cx="400" cy="85" r="10" fill="#64B4FF"/>
+      <circle cx="400" cy="365" r="10" fill="#64B4FF"/>
+      <circle cx="245" cy="225" r="10" fill="#64B4FF"/>
+      <circle cx="555" cy="225" r="10" fill="#64B4FF"/>
+      <circle cx="400" cy="225" r="14" fill="#90D0FF"/>
+    </svg>`
+  },
+  {
+    slug: "static-analysis",
+    title: "Scaling security review with static analysis",
+    date: "February 5, 2026",
+    author: "Yusuf M",
+    tags: ["security", "engineering", "inside"],
+    tagLabels: ["Security", "Engineering", "Inside"],
+    excerpt: "How we scaled security review across hundreds of engineers by building automated tooling that catches common vulnerability classes before they ever reach a human reviewer.",
+    featured: false,
+    thumb: `<svg viewBox="0 0 800 450" xmlns="http://www.w3.org/2000/svg">
+      <rect width="800" height="450" fill="#1C3A1C"/>
+      <rect x="100" y="80" width="600" height="290" rx="12" fill="#2A5A2A"/>
+      <rect x="130" y="110" width="540" height="230" rx="6" fill="#0f1f0f"/>
+      <rect x="155" y="140" width="160" height="14" rx="3" fill="#4CAF50"/>
+      <rect x="155" y="165" width="240" height="10" rx="2" fill="#2E7D32"/>
+      <rect x="155" y="183" width="200" height="10" rx="2" fill="#2E7D32"/>
+      <rect x="155" y="201" width="280" height="10" rx="2" fill="#2E7D32"/>
+      <rect x="460" y="140" width="180" height="140" rx="6" fill="#0a150a"/>
+      <circle cx="550" cy="195" r="36" fill="none" stroke="#4CAF50" stroke-width="3"/>
+      <path d="M536 195 L546 207 L568 183" stroke="#4CAF50" stroke-width="3.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>`
+  },
+  {
+    slug: "bug-bounty",
+    title: "Bug bounty: Year one in review",
+    date: "March 18, 2026",
+    author: "Yusuf M",
+    tags: ["security", "inside"],
+    tagLabels: ["Security", "Inside"],
+    excerpt: "What we learned from our first year running a public bug bounty program — the good, the surprising, and the infrastructure we had to build to handle it.",
+    featured: false,
+    thumb: `<svg viewBox="0 0 800 450" xmlns="http://www.w3.org/2000/svg">
+      <rect width="800" height="450" fill="#3A1A4A"/>
+      <path d="M0 280 Q200 160 400 240 Q600 320 800 200 L800 450 L0 450Z" fill="#2A0A3A"/>
+      <circle cx="160" cy="175" r="60" fill="#6A2A8A" opacity="0.55"/>
+      <circle cx="400" cy="140" r="80" fill="#7A3A9A" opacity="0.45"/>
+      <circle cx="640" cy="165" r="65" fill="#6A2A8A" opacity="0.55"/>
+      <rect x="340" y="88" width="120" height="105" rx="10" fill="#9A5AC8"/>
+      <rect x="356" y="104" width="88" height="60" rx="6" fill="#B87EE0"/>
+      <path d="M340 193 L320 230 L480 230 L460 193Z" fill="#9A5AC8"/>
+      <circle cx="400" cy="148" r="18" fill="#D4A8F0"/>
+      <rect x="315" y="230" width="170" height="45" rx="6" fill="#5A1A7A"/>
+    </svg>`
+  }
+];
+
+// Read filter from URL query param
+const urlFilter = new URLSearchParams(window.location.search).get('filter') || 'all';
+
+function renderCards(filter) {
+  const grid = document.getElementById('blog-grid');
+  const filtered = filter === 'all' ? posts : posts.filter(p => p.tags.includes(filter));
+  document.getElementById('post-count').textContent = filtered.length;
+
+  grid.innerHTML = filtered.map((post, i) => `
+    <a class="blog-card${post.featured ? ' featured' : ''}" href="posts/${post.slug}.html" style="animation-delay:${i * 0.05}s">
+      <div class="card-thumb">${post.thumb}</div>
+      <div class="card-body">
+        <p class="card-date">${post.date}</p>
+        <h2 class="card-title">${post.title}</h2>
+        <p class="card-author">By ${post.author}</p>
+        <p class="card-excerpt">${post.excerpt}</p>
+        <div class="card-tags">
+          ${post.tagLabels.map(t => `<span class="tag">${t}</span>`).join('')}
+        </div>
+      </div>
+    </a>
+  `).join('');
+}
+
+// Filter buttons
+document.querySelectorAll('.filter-btn').forEach(btn => {
+  const f = btn.dataset.filter;
+  if (f === urlFilter) btn.classList.add('active');
+  else btn.classList.remove('active');
+
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    renderCards(f);
+    // Update URL without reload
+    const url = f === 'all' ? window.location.pathname : `?filter=${f}`;
+    window.history.pushState({}, '', url);
+  });
+});
+
+// Header tag active state
+document.querySelectorAll('.header-tag').forEach(tag => {
+  const href = tag.getAttribute('href');
+  const tagFilter = href.includes('filter=') ? href.split('filter=')[1] : 'all';
+  tag.classList.toggle('active', tagFilter === urlFilter);
+});
+
+renderCards(urlFilter);
+</script>
+</body>
+</html>
