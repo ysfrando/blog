@@ -292,17 +292,60 @@ curl http://169.254.169.254/latest/meta-data/iam/security-credentials/my-service
 <section class="more-posts">
   <p class="more-posts-label">More posts</p>
   <div class="blog-grid more-grid">
+    <a class="blog-card" href="llm-threat-modeling.html">
+      <div class="card-thumb">
+        <svg viewBox="0 0 800 450" xmlns="http://www.w3.org/2000/svg">
+          <rect width="800" height="450" fill="#0A1628"/>
+          <ellipse cx="200" cy="210" rx="140" ry="110" fill="#112240" opacity="0.8"/>
+          <rect x="148" y="140" width="104" height="90" rx="6" fill="#0D1F3C" stroke="#4D9FFF" stroke-width="1.5"/>
+          <circle cx="200" cy="175" r="22" fill="#112240"/>
+          <text x="200" y="180" text-anchor="middle" font-family="monospace" font-size="9" fill="#4D9FFF">LLM</text>
+          <rect x="404" y="0" width="396" height="450" fill="#1C0A00"/>
+          <rect x="424" y="70" width="150" height="72" rx="6" fill="#2A0D00" stroke="#e8541a" stroke-width="1.5"/>
+          <circle cx="438" cy="84" r="8" fill="#e8541a"/>
+          <rect x="424" y="162" width="150" height="72" rx="6" fill="#2A0D00" stroke="#F5A623" stroke-width="1.5"/>
+          <circle cx="438" cy="176" r="8" fill="#F5A623"/>
+          <rect x="424" y="254" width="150" height="72" rx="6" fill="#2A0D00" stroke="#FF6B6B" stroke-width="1.5"/>
+          <circle cx="438" cy="268" r="8" fill="#FF6B6B"/>
+        </svg>
+      </div>
+      <div class="card-body">
+        <p class="card-date">May 21, 2026</p>
+        <h2 class="card-title">How to threat model an LLM feature before you ship it</h2>
+        <p class="card-author">By Yusuf M</p>
+        <p class="card-excerpt">Prompt injection, RAG poisoning, tool call abuse — the four threat classes STRIDE doesn't cover and most LLM features ship without modeling.</p>
+        <div class="card-tags"><span class="tag">Security</span><span class="tag">AI</span></div>
+      </div>
+    </a>
+    <a class="blog-card" href="iam-attack-surface.html">
+      <div class="card-thumb">
+        <svg viewBox="0 0 800 450" xmlns="http://www.w3.org/2000/svg">
+          <rect width="800" height="450" fill="#0d0d0d"/>
+          <circle cx="400" cy="225" r="52" fill="#1a1a1a" stroke="#e8541a" stroke-width="2"/>
+          <text x="400" y="219" text-anchor="middle" font-family="monospace" font-size="11" fill="#e8541a">IAM</text>
+          <text x="400" y="235" text-anchor="middle" font-family="monospace" font-size="11" fill="#e8541a">Role</text>
+          <circle cx="180" cy="120" r="36" fill="#1a1a1a" stroke="#444" stroke-width="1.5"/>
+          <text x="180" y="125" text-anchor="middle" font-family="monospace" font-size="9" fill="#888">Lambda</text>
+          <circle cx="620" cy="120" r="36" fill="#1a1a1a" stroke="#444" stroke-width="1.5"/>
+          <text x="620" y="125" text-anchor="middle" font-family="monospace" font-size="9" fill="#888">EC2</text>
+          <line x1="213" y1="138" x2="358" y2="196" stroke="#2a2a2a" stroke-width="1.5"/>
+          <line x1="587" y1="138" x2="442" y2="196" stroke="#2a2a2a" stroke-width="1.5"/>
+          <circle cx="400" cy="50" r="28" fill="#1a0000" stroke="#e8541a" stroke-width="1.5" stroke-dasharray="4,2"/>
+          <line x1="400" y1="78" x2="400" y2="173" stroke="#e8541a" stroke-width="2" stroke-dasharray="5,3"/>
+        </svg>
+      </div>
+      <div class="card-body">
+        <p class="card-date">May 21, 2026</p>
+        <h2 class="card-title">IAM is your real attack surface — not your app</h2>
+        <p class="card-author">By Yusuf M</p>
+        <p class="card-excerpt">One overpermissioned role, one compromised workload, full environment access. The IAM patterns attackers exploit and how to close them at scale.</p>
+        <div class="card-tags"><span class="tag">Security</span><span class="tag">Cloud</span></div>
+      </div>
+    </a>
     <a class="blog-card" href="security-review-gates.html">
       <div class="card-thumb">
         <svg viewBox="0 0 800 450" xmlns="http://www.w3.org/2000/svg">
           <rect width="800" height="450" fill="#111111"/>
-          <line x1="0" y1="112" x2="800" y2="112" stroke="#1e1e1e" stroke-width="1"/>
-          <line x1="0" y1="225" x2="800" y2="225" stroke="#1e1e1e" stroke-width="1"/>
-          <line x1="0" y1="337" x2="800" y2="337" stroke="#1e1e1e" stroke-width="1"/>
-          <line x1="200" y1="0" x2="200" y2="450" stroke="#1e1e1e" stroke-width="1"/>
-          <line x1="400" y1="0" x2="400" y2="450" stroke="#1e1e1e" stroke-width="1"/>
-          <line x1="600" y1="0" x2="600" y2="450" stroke="#1e1e1e" stroke-width="1"/>
-          <line x1="80" y1="225" x2="720" y2="225" stroke="#2a2a2a" stroke-width="3"/>
           <rect x="80" y="185" width="100" height="80" rx="8" fill="#1a1a1a" stroke="#333" stroke-width="1.5"/>
           <text x="130" y="230" text-anchor="middle" font-family="monospace" font-size="20" fill="#e8541a">{ }</text>
           <rect x="220" y="175" width="120" height="100" rx="8" fill="#1a1a1a" stroke="#e8541a" stroke-width="2"/>
@@ -310,7 +353,6 @@ curl http://169.254.169.254/latest/meta-data/iam/security-credentials/my-service
           <line x1="302" y1="235" x2="258" y2="255" stroke="#e8541a" stroke-width="2.5" stroke-linecap="round"/>
           <rect x="380" y="185" width="120" height="80" rx="8" fill="#0d1a0d" stroke="#2a6e2a" stroke-width="1.5"/>
           <path d="M426 242 L436 252 L454 236" stroke="#4a9e4a" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
-          <rect x="540" y="185" width="100" height="80" rx="8" fill="#1a1a1a" stroke="#333" stroke-width="1.5"/>
         </svg>
       </div>
       <div class="card-body">
@@ -319,51 +361,6 @@ curl http://169.254.169.254/latest/meta-data/iam/security-credentials/my-service
         <p class="card-author">By Yusuf M</p>
         <p class="card-excerpt">Why the security approval model breaks down as engineering orgs grow — and what to replace it with.</p>
         <div class="card-tags"><span class="tag">Security</span><span class="tag">Engineering</span></div>
-      </div>
-    </a>
-    <a class="blog-card" href="device-trust.html">
-      <div class="card-thumb"><svg viewBox="0 0 800 450" xmlns="http://www.w3.org/2000/svg">
-  <rect width="800" height="450" fill="#7B4FE0"/>
-  <rect x="0" y="0" width="220" height="450" fill="#5B3AB0"/>
-  <rect x="580" y="0" width="220" height="450" fill="#5B3AB0"/>
-  <rect x="80" y="60" width="120" height="180" rx="6" fill="#9A70F8"/>
-  <rect x="95" y="75" width="90" height="130" rx="3" fill="#B89FFF"/>
-  <circle cx="140" cy="140" r="28" fill="#7B4FE0"/>
-  <rect x="118" y="133" width="44" height="14" rx="3" fill="#9A70F8"/>
-  <rect x="600" y="70" width="120" height="160" rx="6" fill="#9A70F8"/>
-  <rect x="615" y="85" width="90" height="115" rx="3" fill="#B89FFF"/>
-  <circle cx="660" cy="150" r="24" fill="#7B4FE0"/>
-  <rect x="240" y="100" width="320" height="220" rx="10" fill="#fff"/>
-  <rect x="265" y="130" width="160" height="14" rx="3" fill="#E8E0F5"/>
-  <rect x="265" y="155" width="120" height="10" rx="2" fill="#E8E0F5"/>
-  <circle cx="400" cy="270" r="20" fill="#FF6B6B"/>
-  <line x1="388" y1="270" x2="412" y2="270" stroke="#fff" stroke-width="3"/>
-</svg></div>
-      <div class="card-body">
-        <p class="card-date">December 8, 2025</p>
-        <h2 class="card-title">Enforcing device trust on code changes</h2>
-        <p class="card-author">By Yusuf M</p>
-        <p class="card-excerpt">How the security engineering team leveraged commit signatures and Okta Device Trust certificates to protect GitHub release branches.</p>
-        <div class="card-tags"><span class="tag">Inside</span><span class="tag">Engineering</span><span class="tag">Security</span></div>
-      </div>
-    </a>
-    <a class="blog-card" href="sandboxing-intro.html">
-      <div class="card-thumb"><svg viewBox="0 0 800 450" xmlns="http://www.w3.org/2000/svg">
-  <rect width="800" height="450" fill="#B8D4E8"/>
-  <rect x="0" y="200" width="800" height="250" fill="#8BB8D4"/>
-  <rect x="70" y="110" width="200" height="300" rx="10" fill="#D4E8F5" stroke="#7AAAC8" stroke-width="1.5"/>
-  <rect x="300" y="50" width="200" height="360" rx="10" fill="#D4E8F5" stroke="#7AAAC8" stroke-width="1.5"/>
-  <rect x="530" y="80" width="200" height="330" rx="10" fill="#D4E8F5" stroke="#7AAAC8" stroke-width="1.5"/>
-  <circle cx="170" cy="100" r="26" fill="#FFD700"/>
-  <circle cx="400" cy="38" r="26" fill="#FFD700"/>
-  <circle cx="630" cy="66" r="26" fill="#FFD700"/>
-</svg></div>
-      <div class="card-body">
-        <p class="card-date">January 4, 2026</p>
-        <h2 class="card-title">Server-side sandboxing: An introduction</h2>
-        <p class="card-author">By Yusuf M</p>
-        <p class="card-excerpt">In this three-part series, practical tips for deploying and operating application sandboxing techniques at scale.</p>
-        <div class="card-tags"><span class="tag">Inside</span><span class="tag">Security</span><span class="tag">Engineering</span></div>
       </div>
     </a>
   </div>
